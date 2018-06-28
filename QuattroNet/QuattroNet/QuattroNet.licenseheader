@@ -1,0 +1,15 @@
+﻿extensions: .xaml
+<!-- =============================================== -->
+<!--    Quattro - Licencia Apache 2.0 - A.Herrero    -->
+<!--                                                 -->
+<!--  Vea el archivo Licencia.txt para mas detalles  -->
+<!-- =============================================== -->
+extensions: .cs
+#region COPYRIGHT
+// ===============================================
+//    Quattro - Licencia Apache 2.0 - A.Herrero
+// -----------------------------------------------
+//  Vea el archivo Licencia.txt para más detalles 
+// ===============================================
+#endregion
+extensions: 
