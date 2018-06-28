@@ -1,6 +1,6 @@
 ﻿#region COPYRIGHT
 // ===============================================
-//    Quattro - Licencia Apache 2.0 - A.Herrero
+//   Quattro - Licencia GPL/GNU 3.0 - A.Herrero
 // -----------------------------------------------
 //  Vea el archivo Licencia.txt para más detalles 
 // ===============================================
