@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27703.2026
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Quattro", "Quattro\Quattro.csproj", "{8B77199F-E510-4640-9256-4DD32B3DC53F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Quattro", "Quattro\Quattro.csproj", "{8B77199F-E510-4640-9256-4DD32B3DC53F}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QuattroNet", "..\QuattroNet\QuattroNet\QuattroNet.csproj", "{B16F9762-4C6A-4096-8A65-AEFC69883ADD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{8B77199F-E510-4640-9256-4DD32B3DC53F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8B77199F-E510-4640-9256-4DD32B3DC53F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8B77199F-E510-4640-9256-4DD32B3DC53F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B16F9762-4C6A-4096-8A65-AEFC69883ADD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B16F9762-4C6A-4096-8A65-AEFC69883ADD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B16F9762-4C6A-4096-8A65-AEFC69883ADD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B16F9762-4C6A-4096-8A65-AEFC69883ADD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
