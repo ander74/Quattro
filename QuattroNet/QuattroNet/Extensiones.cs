@@ -6,6 +6,7 @@
 // ===============================================
 #endregion
 using System;
+using System.Data.Common;
 
 namespace QuattroNet {
 
@@ -69,6 +70,171 @@ namespace QuattroNet {
 
 		#endregion
 		// ====================================================================================================
+
+
+		// ====================================================================================================
+		#region MÉTODOS DE EXTENSION PARA OLEDBDATAREADER
+		// ====================================================================================================
+
+		/// <summary>
+		/// Extrae un campo de tipo TimeSpan del lector.
+		/// </summary>
+		/// <param name="lector">Lector del que se extraerá el campo.</param>
+		/// <param name="campo">Campo que se va a extraer</param>
+		/// <returns>Un TimeSpan con el valor almacenado en el campo.</returns>
+		public static TimeSpan ToTimeSpan(this DbDataReader lector, string campo) {
+			if (lector == null || lector[campo] is DBNull) return TimeSpan.Zero;
+			return TimeSpan.FromTicks(Convert.ToInt64(lector[campo]));
+		}
+
+
+		/// <summary>
+		/// Extrae un campo de tipo TimeSpan? del lector.
+		/// </summary>
+		/// <param name="lector">Lector del que se extraerá el campo.</param>
+		/// <param name="campo">Campo que se va a extraer</param>
+		/// <returns>Un TimeSpan? con el valor almacenado en el campo.</returns>
+		public static TimeSpan? ToTimeSpanNulable(this DbDataReader lector, string campo) {
+			if (lector == null || lector[campo] is DBNull) return null;
+			return TimeSpan.FromTicks(Convert.ToInt64(lector[campo]));
+		}
+
+
+		/// <summary>
+		/// Extrae un campo de tipo String del lector.
+		/// </summary>
+		/// <param name="lector">Lector del que se extraerá el campo.</param>
+		/// <param name="campo">Campo que se va a extraer</param>
+		/// <returns>Un String con el valor almacenado en el campo.</returns>
+		public static string ToString(this DbDataReader lector, string campo) {
+			if (lector == null || lector[campo] is DBNull) return null;
+			return Convert.ToString(lector[campo]);
+		}
+
+
+		/// <summary>
+		/// Extrae un campo de tipo Bool del lector.
+		/// </summary>
+		/// <param name="lector">Lector del que se extraerá el campo.</param>
+		/// <param name="campo">Campo que se va a extraer</param>
+		/// <returns>Un Bool con el valor almacenado en el campo.</returns>
+		public static bool ToBool(this DbDataReader lector, string campo) {
+			if (lector == null || lector[campo] is DBNull) return false;
+			return Convert.ToBoolean(lector[campo]);
+		}
+
+
+		/// <summary>
+		/// Extrae un campo de tipo DateTime del lector.
+		/// </summary>
+		/// <param name="lector">Lector del que se extraerá el campo.</param>
+		/// <param name="campo">Campo que se va a extraer</param>
+		/// <returns>Un DateTime con el valor almacenado en el campo.</returns>
+		public static DateTime ToDateTime(this DbDataReader lector, string campo) {
+			if (lector == null || lector[campo] is DBNull) return new DateTime(0);
+			return Convert.ToDateTime(lector[campo]);
+		}
+
+
+		/// <summary>
+		/// Extrae un campo de tipo DateTime? del lector.
+		/// </summary>
+		/// <param name="lector">Lector del que se extraerá el campo.</param>
+		/// <param name="campo">Campo que se va a extraer</param>
+		/// <returns>Un DateTime? con el valor almacenado en el campo.</returns>
+		public static DateTime? ToDateTimeNulable(this DbDataReader lector, string campo) {
+			if (lector == null || lector[campo] is DBNull) return null;
+			return Convert.ToDateTime(lector[campo]);
+		}
+
+
+		/// <summary>
+		/// Extrae un campo de tipo Byte del lector.
+		/// </summary>
+		/// <param name="lector">Lector del que se extraerá el campo.</param>
+		/// <param name="campo">Campo que se va a extraer</param>
+		/// <returns>Un Byte con el valor almacenado en el campo.</returns>
+		public static byte ToByte(this DbDataReader lector, string campo) {
+			if (lector == null || lector[campo] is DBNull) return 0;
+			return Convert.ToByte(lector[campo]);
+		}
+
+
+		/// <summary>
+		/// Extrae un campo de tipo Single del lector.
+		/// </summary>
+		/// <param name="lector">Lector del que se extraerá el campo.</param>
+		/// <param name="campo">Campo que se va a extraer</param>
+		/// <returns>Un Single con el valor almacenado en el campo.</returns>
+		public static Single ToSingle(this DbDataReader lector, string campo) {
+			if (lector == null || lector[campo] is DBNull) return 0;
+			return Convert.ToSingle(lector[campo]);
+		}
+
+
+		/// <summary>
+		/// Extrae un campo de tipo Int16 del lector.
+		/// </summary>
+		/// <param name="lector">Lector del que se extraerá el campo.</param>
+		/// <param name="campo">Campo que se va a extraer</param>
+		/// <returns>Un Int16 con el valor almacenado en el campo.</returns>
+		public static Int16 ToInt16(this DbDataReader lector, string campo) {
+			if (lector == null || lector[campo] is DBNull) return 0;
+			return Convert.ToInt16(lector[campo]);
+		}
+
+
+		/// <summary>
+		/// Extrae un campo de tipo Int32(int) del lector.
+		/// </summary>
+		/// <param name="lector">Lector del que se extraerá el campo.</param>
+		/// <param name="campo">Campo que se va a extraer</param>
+		/// <returns>Un Int32(int) con el valor almacenado en el campo.</returns>
+		public static Int32 ToInt32(this DbDataReader lector, string campo) {
+			if (lector == null || lector[campo] is DBNull) return 0;
+			return Convert.ToInt32(lector[campo]);
+		}
+
+
+		/// <summary>
+		/// Extrae un campo de tipo Int64(long) del lector.
+		/// </summary>
+		/// <param name="lector">Lector del que se extraerá el campo.</param>
+		/// <param name="campo">Campo que se va a extraer</param>
+		/// <returns>Un Int64(long) con el valor almacenado en el campo.</returns>
+		public static Int64 ToInt64(this DbDataReader lector, string campo) {
+			if (lector == null || lector[campo] is DBNull) return 0;
+			return Convert.ToInt64(lector[campo]);
+		}
+
+
+		/// <summary>
+		/// Extrae un campo de tipo Double del lector.
+		/// </summary>
+		/// <param name="lector">Lector del que se extraerá el campo.</param>
+		/// <param name="campo">Campo que se va a extraer</param>
+		/// <returns>Un Double con el valor almacenado en el campo.</returns>
+		public static double ToDouble(this DbDataReader lector, string campo) {
+			if (lector == null || lector[campo] is DBNull) return 0;
+			return Convert.ToDouble(lector[campo]);
+		}
+
+
+		/// <summary>
+		/// Extrae un campo de tipo Decimal del lector.
+		/// </summary>
+		/// <param name="lector">Lector del que se extraerá el campo.</param>
+		/// <param name="campo">Campo que se va a extraer</param>
+		/// <returns>Un Decimal con el valor almacenado en el campo.</returns>
+		public static decimal ToDecimal(this DbDataReader lector, string campo) {
+			if (lector == null || lector[campo] is DBNull) return 0;
+			return Convert.ToDecimal(lector[campo]);
+		}
+
+
+		#endregion
+		// ====================================================================================================
+
 
 
 		// ====================================================================================================
