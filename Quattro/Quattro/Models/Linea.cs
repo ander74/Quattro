@@ -5,15 +5,12 @@
 //  Vea el archivo Licencia.txt para más detalles 
 // ===============================================
 #endregion
-using System;
-using System.Collections.Generic;
 using System.Data.Common;
-using System.Text;
 using QuattroNet;
 
 namespace Quattro.Models {
 
-    public class Linea : NotifyBase {
+	public class Linea : NotifyBase {
 
 
 		// ====================================================================================================
@@ -73,6 +70,11 @@ namespace Quattro.Models {
 		#region MÉTODOS OVERRIDE
 		// ====================================================================================================
 
+		public override string ToString() {
+			return $"{Numero}: {Texto}";
+		}
+
+
 		public override bool Equals(object obj) {
 			var linea = obj as Linea;
 			if (linea == null) return false;
@@ -97,12 +99,33 @@ namespace Quattro.Models {
 		#region MÉTODOS ESTÁTICOS
 		// ====================================================================================================
 
+		public static string GetSelectQuery() {
+			return "SELECT * " +
+				   "FROM Lineas " +
+				   "ORDER BY Numero;";
+		}
+
+
 		public static string GetInsertQuery() {
 			return "INSERT INTO Lineas " +
 				   "   (Numero, Texto, Notas) " +
 				   "VALUES " +
 				   "   (@Numero, @Texto, @Notas);";
 		}
+
+
+		public static string GetUpdateQuery() {
+			return "UPDATE Lineas " +
+				   "SET Numero=@Numero, Texto=@Texto, Notas=@Notas " +
+				   "WHERE _id=@Id;";
+		}
+
+
+		public static string GetDeleteQuery() {
+			return "DELETE FROM Lineas " +
+				   "WHERE _id=@Id;";
+		}
+
 
 		#endregion
 		// ====================================================================================================
