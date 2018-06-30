@@ -58,7 +58,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BdFactory.cs" />
+    <Compile Include="DataBaseFactory.cs" />
     <Compile Include="Extensiones.cs" />
     <Compile Include="NotifyBase.cs" />
     <Compile Include="NotifyCollection.cs" />

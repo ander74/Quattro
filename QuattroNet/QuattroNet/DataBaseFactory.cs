@@ -17,10 +17,11 @@ namespace QuattroNet {
 		SQLite, Access, SqlServer
 	}
 
-    public static class BdFactory {
+    public static class DataBaseFactory {
 
-		public static DbConnection GetConnection(SqlProviders provider) {
-			switch (provider) {
+
+		public static DbConnection GetConnection(SqlProviders dbProvider) {
+			switch (dbProvider) {
 				case SqlProviders.SQLite:
 					return new SQLiteConnection();
 				case SqlProviders.Access:
