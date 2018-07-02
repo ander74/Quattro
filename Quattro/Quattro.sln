@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27703.2026
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Quattro", "Quattro\Quattro.csproj", "{8B77199F-E510-4640-9256-4DD32B3DC53F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Quattro", "Quattro\Quattro.csproj", "{BC5C746B-6F86-469A-A96B-92567463FC87}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QuattroNet", "..\QuattroNet\QuattroNet\QuattroNet.csproj", "{B16F9762-4C6A-4096-8A65-AEFC69883ADD}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Models", "Models\Models.csproj", "{3D10C227-8115-4381-9304-0D0B8CF0A058}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -13,19 +13,19 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{8B77199F-E510-4640-9256-4DD32B3DC53F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{8B77199F-E510-4640-9256-4DD32B3DC53F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{8B77199F-E510-4640-9256-4DD32B3DC53F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{8B77199F-E510-4640-9256-4DD32B3DC53F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{B16F9762-4C6A-4096-8A65-AEFC69883ADD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B16F9762-4C6A-4096-8A65-AEFC69883ADD}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B16F9762-4C6A-4096-8A65-AEFC69883ADD}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B16F9762-4C6A-4096-8A65-AEFC69883ADD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BC5C746B-6F86-469A-A96B-92567463FC87}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BC5C746B-6F86-469A-A96B-92567463FC87}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BC5C746B-6F86-469A-A96B-92567463FC87}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BC5C746B-6F86-469A-A96B-92567463FC87}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3D10C227-8115-4381-9304-0D0B8CF0A058}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3D10C227-8115-4381-9304-0D0B8CF0A058}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3D10C227-8115-4381-9304-0D0B8CF0A058}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3D10C227-8115-4381-9304-0D0B8CF0A058}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {8A4A29DE-4349-4AC5-88D2-855A478F443A}
+		SolutionGuid = {DE5F146A-D32D-4551-8C9B-F27807E49BFC}
 	EndGlobalSection
 EndGlobal
