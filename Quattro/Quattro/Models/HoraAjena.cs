@@ -1,28 +1,21 @@
-﻿#region COPYRIGHT
-// ===============================================
-//   Quattro - Licencia GNU/GPL 3.0 - A.Herrero
-// -----------------------------------------------
-//  Vea el archivo Licencia.txt para más detalles 
-// ===============================================
-#endregion
+﻿using System;
 using System.Data.Common;
 using QuattroNet;
 
 namespace Quattro.Models {
 
-	public class Linea : NotifyBase {
+	class HoraAjena : NotifyBase {
 
 		// ====================================================================================================
 		#region CONSTRUCTORES
 		// ====================================================================================================
 
-		public Linea () { }
+		public HoraAjena() { }
 
 
-		public Linea(DbDataReader lector) {
+		public HoraAjena(DbDataReader lector) {
 			FromReader(lector);
 		}
-
 
 		#endregion
 		// ====================================================================================================
@@ -34,34 +27,42 @@ namespace Quattro.Models {
 
 		public void FromReader(DbDataReader lector) {
 			id = lector.ToInt32("_id");
-			numero = lector.ToString("Numero");
-			texto = lector.ToString("Texto");
-			notas = lector.ToString("Notas");
+			fecha = lector.ToDateTime("Fecha");
+			horas = lector.ToDecimal("Horas");
+			motivo = lector.ToString("Motivo");
+			codigo = lector.ToInt32("Codigo");
 		}
 
 
 		public void ToCommand(ref DbCommand comando) {
-			// Numero
+			// Fecha
 			DbParameter parametro = comando.CreateParameter();
-			parametro.DbType = System.Data.DbType.String;
-			parametro.ParameterName = "@Numero";
-			parametro.Value = numero;
-			// Texto
+			parametro.DbType = System.Data.DbType.DateTime;
+			parametro.ParameterName = "@Fecha";
+			parametro.Value = fecha;
+			// Horas
+			parametro = comando.CreateParameter();
+			parametro.DbType = System.Data.DbType.Decimal;
+			parametro.ParameterName = "@Horas";
+			parametro.Value = horas;
+			// Motivo
 			parametro = comando.CreateParameter();
 			parametro.DbType = System.Data.DbType.String;
-			parametro.ParameterName = "@Texto";
-			parametro.Value = texto;
-			// Notas
+			parametro.ParameterName = "@Motivo";
+			parametro.Value = motivo;
+			// Codigo
 			parametro = comando.CreateParameter();
-			parametro.DbType = System.Data.DbType.String;
-			parametro.ParameterName = "@Notas";
-			parametro.Value = notas;
+			parametro.DbType = System.Data.DbType.Int32;
+			parametro.ParameterName = "@Codigo";
+			parametro.Value = codigo;
 			// Id
 			parametro = comando.CreateParameter();
 			parametro.DbType = System.Data.DbType.Int32;
 			parametro.ParameterName = "@Id";
 			parametro.Value = id;
 		}
+
+
 
 
 		#endregion
@@ -73,21 +74,24 @@ namespace Quattro.Models {
 		// ====================================================================================================
 
 		public override string ToString() {
-			return $"{Numero}: {Texto}";
+			return $"{Fecha:dd:MM:yyyy}: {Horas:0.00} {Motivo}";
 		}
 
 
 		public override bool Equals(object obj) {
-			var linea = obj as Linea;
-			if (linea == null) return false;
-			return Numero == linea.Numero;
+			var horaajena = obj as HoraAjena;
+			if (horaajena == null) return false;
+			return Fecha == horaajena.Fecha && Horas == horaajena.Horas && Motivo == horaajena.Motivo && Codigo == horaajena.Codigo;
 		}
 
 
 		public override int GetHashCode() {
 			unchecked {
 				int hash = 5060;
-				hash = hash * numero?.GetHashCode() ?? 1234;
+				hash = hash * fecha.GetHashCode();
+				hash = hash * horas.GetHashCode();
+				hash = hash * motivo?.GetHashCode() ?? 1234;
+				hash = hash * codigo.GetHashCode();
 				return hash;
 			}
 		}
@@ -103,28 +107,28 @@ namespace Quattro.Models {
 
 		public static string GetSelectQuery() {
 			return "SELECT * " +
-				   "FROM Lineas " +
-				   "ORDER BY Numero;";
+				   "FROM HorasAjenas " +
+				   "ORDER BY Fecha;";
 		}
 
 
 		public static string GetInsertQuery() {
-			return "INSERT INTO Lineas " +
-				   "   (Numero, Texto, Notas) " +
+			return "INSERT INTO HorasAjenas " +
+				   "   (Fecha, Horas, Mofivo, Codigo) " +
 				   "VALUES " +
-				   "   (@Numero, @Texto, @Notas);";
+				   "   (@Fecha, @Horas, @Motivo, @Codigo);";
 		}
 
 
 		public static string GetUpdateQuery() {
-			return "UPDATE Lineas " +
-				   "SET Numero=@Numero, Texto=@Texto, Notas=@Notas " +
+			return "UPDATE HorasAjenas " +
+				   "SET Fecha=@Fecha, Horas=@Horas, Motivo=@Motivo, Codigo=@Codigo " +
 				   "WHERE _id=@Id;";
 		}
 
 
 		public static string GetDeleteQuery() {
-			return "DELETE FROM Lineas " +
+			return "DELETE FROM HorasAjenas " +
 				   "WHERE _id=@Id;";
 		}
 
@@ -136,6 +140,7 @@ namespace Quattro.Models {
 		// ====================================================================================================
 		#region PROPIEDADES
 		// ====================================================================================================
+
 
 		private int id;
 		public int Id {
@@ -149,45 +154,58 @@ namespace Quattro.Models {
 		}
 
 
-		private string numero;
-		public string Numero {
-			get { return numero; }
+		private DateTime fecha;
+		public DateTime Fecha {
+			get { return fecha; }
 			set {
-				if (numero != value) {
-					numero = value;
+				if (fecha != value) {
+					fecha = value;
 					PropiedadCambiada();
 				}
 			}
 		}
 
 
-		private string texto;
-		public string Texto {
-			get { return texto; }
+		private decimal horas;
+		public decimal Horas {
+			get { return horas; }
 			set {
-				if (texto != value) {
-					texto = value;
+				if (horas != value) {
+					horas = value;
 					PropiedadCambiada();
 				}
 			}
 		}
 
 
-		private string notas;
-		public string Notas {
-			get { return notas; }
+		private string motivo;
+		public string Motivo {
+			get { return motivo; }
 			set {
-				if (notas != value) {
-					notas = value;
+				if (motivo != value) {
+					motivo = value;
 					PropiedadCambiada();
 				}
 			}
 		}
 
+
+		private int codigo;
+		public int Codigo {
+			get { return codigo; }
+			set {
+				if (codigo != value) {
+					codigo = value;
+					PropiedadCambiada();
+				}
+			}
+		}
 
 
 		#endregion
 		// ====================================================================================================
+
+
 
 
 	}

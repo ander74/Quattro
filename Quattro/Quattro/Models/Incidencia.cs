@@ -10,19 +10,19 @@ using QuattroNet;
 
 namespace Quattro.Models {
 
-	public class Linea : NotifyBase {
+
+	class Incidencia : NotifyBase {
 
 		// ====================================================================================================
 		#region CONSTRUCTORES
 		// ====================================================================================================
 
-		public Linea () { }
+		public Incidencia() { }
 
 
-		public Linea(DbDataReader lector) {
+		public Incidencia(DbDataReader lector) {
 			FromReader(lector);
 		}
-
 
 		#endregion
 		// ====================================================================================================
@@ -34,23 +34,29 @@ namespace Quattro.Models {
 
 		public void FromReader(DbDataReader lector) {
 			id = lector.ToInt32("_id");
-			numero = lector.ToString("Numero");
+			codigo = lector.ToInt32("Codigo");
 			texto = lector.ToString("Texto");
+			tipo = lector.ToInt32("Tipo");
 			notas = lector.ToString("Notas");
 		}
 
 
 		public void ToCommand(ref DbCommand comando) {
-			// Numero
+			// Codigo
 			DbParameter parametro = comando.CreateParameter();
-			parametro.DbType = System.Data.DbType.String;
-			parametro.ParameterName = "@Numero";
-			parametro.Value = numero;
+			parametro.DbType = System.Data.DbType.Int32;
+			parametro.ParameterName = "@Codigo";
+			parametro.Value = codigo;
 			// Texto
 			parametro = comando.CreateParameter();
 			parametro.DbType = System.Data.DbType.String;
 			parametro.ParameterName = "@Texto";
 			parametro.Value = texto;
+			// Tipo
+			parametro = comando.CreateParameter();
+			parametro.DbType = System.Data.DbType.Int32;
+			parametro.ParameterName = "@Tipo";
+			parametro.Value = tipo;
 			// Notas
 			parametro = comando.CreateParameter();
 			parametro.DbType = System.Data.DbType.String;
@@ -64,6 +70,8 @@ namespace Quattro.Models {
 		}
 
 
+
+
 		#endregion
 		// ====================================================================================================
 
@@ -73,21 +81,21 @@ namespace Quattro.Models {
 		// ====================================================================================================
 
 		public override string ToString() {
-			return $"{Numero}: {Texto}";
+			return $"{codigo:00}: {Texto}";
 		}
 
 
 		public override bool Equals(object obj) {
-			var linea = obj as Linea;
-			if (linea == null) return false;
-			return Numero == linea.Numero;
+			var incidencia = obj as Incidencia;
+			if (incidencia == null) return false;
+			return Codigo == incidencia.Codigo;
 		}
 
 
 		public override int GetHashCode() {
 			unchecked {
 				int hash = 5060;
-				hash = hash * numero?.GetHashCode() ?? 1234;
+				hash = hash * codigo.GetHashCode();
 				return hash;
 			}
 		}
@@ -103,28 +111,28 @@ namespace Quattro.Models {
 
 		public static string GetSelectQuery() {
 			return "SELECT * " +
-				   "FROM Lineas " +
-				   "ORDER BY Numero;";
+				   "FROM Incidencias " +
+				   "ORDER BY Codigo;";
 		}
 
 
 		public static string GetInsertQuery() {
-			return "INSERT INTO Lineas " +
-				   "   (Numero, Texto, Notas) " +
+			return "INSERT INTO Incidencias " +
+				   "   (Codigo, Texto, Tipo, Notas) " +
 				   "VALUES " +
-				   "   (@Numero, @Texto, @Notas);";
+				   "   (@Codigo, @Texto, @Tipo, @Notas);";
 		}
 
 
 		public static string GetUpdateQuery() {
-			return "UPDATE Lineas " +
-				   "SET Numero=@Numero, Texto=@Texto, Notas=@Notas " +
+			return "UPDATE Incidencias " +
+				   "SET Codigo=@Codigo, Texto=@Texto, Tipo=@Tipo, Notas=@Notas " +
 				   "WHERE _id=@Id;";
 		}
 
 
 		public static string GetDeleteQuery() {
-			return "DELETE FROM Lineas " +
+			return "DELETE FROM Incidencias " +
 				   "WHERE _id=@Id;";
 		}
 
@@ -136,6 +144,7 @@ namespace Quattro.Models {
 		// ====================================================================================================
 		#region PROPIEDADES
 		// ====================================================================================================
+
 
 		private int id;
 		public int Id {
@@ -149,12 +158,12 @@ namespace Quattro.Models {
 		}
 
 
-		private string numero;
-		public string Numero {
-			get { return numero; }
+		private int codigo;
+		public int Codigo {
+			get { return codigo; }
 			set {
-				if (numero != value) {
-					numero = value;
+				if (codigo != value) {
+					codigo = value;
 					PropiedadCambiada();
 				}
 			}
@@ -167,6 +176,18 @@ namespace Quattro.Models {
 			set {
 				if (texto != value) {
 					texto = value;
+					PropiedadCambiada();
+				}
+			}
+		}
+
+
+		private int tipo;
+		public int Tipo {
+			get { return tipo; }
+			set {
+				if (tipo != value) {
+					tipo = value;
 					PropiedadCambiada();
 				}
 			}
@@ -188,6 +209,7 @@ namespace Quattro.Models {
 
 		#endregion
 		// ====================================================================================================
+
 
 
 	}

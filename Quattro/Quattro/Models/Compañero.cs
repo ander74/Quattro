@@ -10,19 +10,18 @@ using QuattroNet;
 
 namespace Quattro.Models {
 
-	public class Linea : NotifyBase {
+	class Compañero : NotifyBase {
 
 		// ====================================================================================================
 		#region CONSTRUCTORES
 		// ====================================================================================================
 
-		public Linea () { }
+		public Compañero() { }
 
 
-		public Linea(DbDataReader lector) {
+		public Compañero(DbDataReader lector) {
 			FromReader(lector);
 		}
-
 
 		#endregion
 		// ====================================================================================================
@@ -34,23 +33,47 @@ namespace Quattro.Models {
 
 		public void FromReader(DbDataReader lector) {
 			id = lector.ToInt32("_id");
-			numero = lector.ToString("Numero");
-			texto = lector.ToString("Texto");
+			matricula = lector.ToInt32("Matricula");
+			nombre = lector.ToString("Nombre");
+			apellidos = lector.ToString("Apellidos");
+			telefono = lector.ToString("Telefono");
+			clasificacion = lector.ToInt32("Clasificacion");
+			deuda = lector.ToInt32("Deuda");
 			notas = lector.ToString("Notas");
 		}
 
 
 		public void ToCommand(ref DbCommand comando) {
-			// Numero
+			// Matricula
 			DbParameter parametro = comando.CreateParameter();
-			parametro.DbType = System.Data.DbType.String;
-			parametro.ParameterName = "@Numero";
-			parametro.Value = numero;
-			// Texto
+			parametro.DbType = System.Data.DbType.Int32;
+			parametro.ParameterName = "@Matricula";
+			parametro.Value = matricula;
+			// Nombre
 			parametro = comando.CreateParameter();
 			parametro.DbType = System.Data.DbType.String;
-			parametro.ParameterName = "@Texto";
-			parametro.Value = texto;
+			parametro.ParameterName = "@Nombre";
+			parametro.Value = nombre;
+			// Apellidos
+			parametro = comando.CreateParameter();
+			parametro.DbType = System.Data.DbType.String;
+			parametro.ParameterName = "@Apellidos";
+			parametro.Value = apellidos;
+			// Telefono
+			parametro = comando.CreateParameter();
+			parametro.DbType = System.Data.DbType.String;
+			parametro.ParameterName = "@Telefono";
+			parametro.Value = telefono;
+			// Clasificacion
+			parametro = comando.CreateParameter();
+			parametro.DbType = System.Data.DbType.Int32;
+			parametro.ParameterName = "@Clasificacion";
+			parametro.Value = clasificacion;
+			// Deuda
+			parametro = comando.CreateParameter();
+			parametro.DbType = System.Data.DbType.Int32;
+			parametro.ParameterName = "@Deuda";
+			parametro.Value = deuda;
 			// Notas
 			parametro = comando.CreateParameter();
 			parametro.DbType = System.Data.DbType.String;
@@ -64,6 +87,8 @@ namespace Quattro.Models {
 		}
 
 
+
+
 		#endregion
 		// ====================================================================================================
 
@@ -73,21 +98,21 @@ namespace Quattro.Models {
 		// ====================================================================================================
 
 		public override string ToString() {
-			return $"{Numero}: {Texto}";
+			return $"{Matricula:00}: {Nombre} {Apellidos}";
 		}
 
 
 		public override bool Equals(object obj) {
-			var linea = obj as Linea;
-			if (linea == null) return false;
-			return Numero == linea.Numero;
+			var compañero = obj as Compañero;
+			if (compañero == null) return false;
+			return Matricula == compañero.Matricula;
 		}
 
 
 		public override int GetHashCode() {
 			unchecked {
 				int hash = 5060;
-				hash = hash * numero?.GetHashCode() ?? 1234;
+				hash = hash * matricula.GetHashCode();
 				return hash;
 			}
 		}
@@ -103,28 +128,29 @@ namespace Quattro.Models {
 
 		public static string GetSelectQuery() {
 			return "SELECT * " +
-				   "FROM Lineas " +
-				   "ORDER BY Numero;";
+				   "FROM Compañeros " +
+				   "ORDER BY Matricula;";
 		}
 
 
 		public static string GetInsertQuery() {
-			return "INSERT INTO Lineas " +
-				   "   (Numero, Texto, Notas) " +
+			return "INSERT INTO Compañeros " +
+				   "   (Matricula, Nombre, Apellidos, Telefono, Clasificacion, Deuda, Notas) " +
 				   "VALUES " +
-				   "   (@Numero, @Texto, @Notas);";
+				   "   (@Matricula, @Nombre, @Apellidos, @Telefono, @Clasificacion, @Deuda, @Notas);";
 		}
 
 
 		public static string GetUpdateQuery() {
-			return "UPDATE Lineas " +
-				   "SET Numero=@Numero, Texto=@Texto, Notas=@Notas " +
+			return "UPDATE Compañeros " +
+				   "SET Matricula=@Matricula, Nombre=@Nombre, Apellidos=@Apellidos, Telefono=@Telefono, " +
+				   "Clasificacion=@Clasificacion, Deuda=@Deuda, Notas=@Notas " +
 				   "WHERE _id=@Id;";
 		}
 
 
 		public static string GetDeleteQuery() {
-			return "DELETE FROM Lineas " +
+			return "DELETE FROM Compañeros " +
 				   "WHERE _id=@Id;";
 		}
 
@@ -136,6 +162,7 @@ namespace Quattro.Models {
 		// ====================================================================================================
 		#region PROPIEDADES
 		// ====================================================================================================
+
 
 		private int id;
 		public int Id {
@@ -149,24 +176,72 @@ namespace Quattro.Models {
 		}
 
 
-		private string numero;
-		public string Numero {
-			get { return numero; }
+		private int matricula;
+		public int Matricula {
+			get { return matricula; }
 			set {
-				if (numero != value) {
-					numero = value;
+				if (matricula != value) {
+					matricula = value;
 					PropiedadCambiada();
 				}
 			}
 		}
 
 
-		private string texto;
-		public string Texto {
-			get { return texto; }
+		private string nombre;
+		public string Nombre {
+			get { return nombre; }
 			set {
-				if (texto != value) {
-					texto = value;
+				if (nombre != value) {
+					nombre = value;
+					PropiedadCambiada();
+				}
+			}
+		}
+
+
+		private string apellidos;
+		public string Apellidos {
+			get { return apellidos; }
+			set {
+				if (apellidos != value) {
+					apellidos = value;
+					PropiedadCambiada();
+				}
+			}
+		}
+
+
+		private string telefono;
+		public string Telefono {
+			get { return telefono; }
+			set {
+				if (telefono != value) {
+					telefono = value;
+					PropiedadCambiada();
+				}
+			}
+		}
+
+
+		private int clasificacion;
+		public int Clasificacion {
+			get { return clasificacion; }
+			set {
+				if (clasificacion != value) {
+					clasificacion = value;
+					PropiedadCambiada();
+				}
+			}
+		}
+
+
+		private int deuda;
+		public int Deuda {
+			get { return deuda; }
+			set {
+				if (deuda != value) {
+					deuda = value;
 					PropiedadCambiada();
 				}
 			}
@@ -188,6 +263,7 @@ namespace Quattro.Models {
 
 		#endregion
 		// ====================================================================================================
+
 
 
 	}

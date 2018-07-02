@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27703.2026
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuattroNet", "QuattroNet\QuattroNet.csproj", "{C799928F-57F4-4835-858D-9724DE07FC82}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuattroNet", "QuattroNet\QuattroNet.csproj", "{1AD7A08E-30D3-4376-A482-2880F5233944}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,15 +11,15 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{C799928F-57F4-4835-858D-9724DE07FC82}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C799928F-57F4-4835-858D-9724DE07FC82}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C799928F-57F4-4835-858D-9724DE07FC82}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C799928F-57F4-4835-858D-9724DE07FC82}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1AD7A08E-30D3-4376-A482-2880F5233944}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1AD7A08E-30D3-4376-A482-2880F5233944}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1AD7A08E-30D3-4376-A482-2880F5233944}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1AD7A08E-30D3-4376-A482-2880F5233944}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {FA007EAA-2A6E-4B68-A744-531A87AF094F}
+		SolutionGuid = {CA10A472-5B21-4B7C-99A7-7E95BD11995E}
 	EndGlobalSection
 EndGlobal

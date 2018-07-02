@@ -5,24 +5,24 @@
 //  Vea el archivo Licencia.txt para más detalles 
 // ===============================================
 #endregion
+using System;
 using System.Data.Common;
 using QuattroNet;
 
 namespace Quattro.Models {
 
-	public class Linea : NotifyBase {
+    class ServicioBase : NotifyBase {
 
 		// ====================================================================================================
 		#region CONSTRUCTORES
 		// ====================================================================================================
 
-		public Linea () { }
+		public ServicioBase() { }
 
 
-		public Linea(DbDataReader lector) {
+		public ServicioBase(DbDataReader lector) {
 			FromReader(lector);
 		}
-
 
 		#endregion
 		// ====================================================================================================
@@ -34,23 +34,53 @@ namespace Quattro.Models {
 
 		public void FromReader(DbDataReader lector) {
 			id = lector.ToInt32("_id");
-			numero = lector.ToString("Numero");
-			texto = lector.ToString("Texto");
+			idLinea = lector.ToInt32("IdLinea");
+			servicio = lector.ToString("Servicio");
+			turno = lector.ToInt32("Turno");
+			inicio = lector.ToTimeSpanNulable("Inicio");
+			lugarInicio = lector.ToString("LugarInicio");
+			final = lector.ToTimeSpanNulable("Final");
+			lugarFinal = lector.ToString("LugarFinal");
 			notas = lector.ToString("Notas");
 		}
 
 
 		public void ToCommand(ref DbCommand comando) {
-			// Numero
+			// IdLinea
 			DbParameter parametro = comando.CreateParameter();
-			parametro.DbType = System.Data.DbType.String;
-			parametro.ParameterName = "@Numero";
-			parametro.Value = numero;
-			// Texto
+			parametro.DbType = System.Data.DbType.Int32;
+			parametro.ParameterName = "@IdLinea";
+			parametro.Value = idLinea;
+			// Servicio
 			parametro = comando.CreateParameter();
 			parametro.DbType = System.Data.DbType.String;
-			parametro.ParameterName = "@Texto";
-			parametro.Value = texto;
+			parametro.ParameterName = "@Servicio";
+			parametro.Value = servicio;
+			// Turno
+			parametro = comando.CreateParameter();
+			parametro.DbType = System.Data.DbType.Int32;
+			parametro.ParameterName = "@Turno";
+			parametro.Value = turno;
+			// Inicio
+			parametro = comando.CreateParameter();
+			parametro.DbType = System.Data.DbType.Time;
+			parametro.ParameterName = "@Inicio";
+			parametro.Value = inicio;
+			// Lugar Inicio
+			parametro = comando.CreateParameter();
+			parametro.DbType = System.Data.DbType.String;
+			parametro.ParameterName = "@LugarInicio";
+			parametro.Value = lugarInicio;
+			// Final
+			parametro = comando.CreateParameter();
+			parametro.DbType = System.Data.DbType.Time;
+			parametro.ParameterName = "@Final";
+			parametro.Value = final;
+			// Lugar Final
+			parametro = comando.CreateParameter();
+			parametro.DbType = System.Data.DbType.String;
+			parametro.ParameterName = "@LugarFinal";
+			parametro.Value = lugarFinal;
 			// Notas
 			parametro = comando.CreateParameter();
 			parametro.DbType = System.Data.DbType.String;
@@ -64,6 +94,8 @@ namespace Quattro.Models {
 		}
 
 
+
+
 		#endregion
 		// ====================================================================================================
 
@@ -73,21 +105,23 @@ namespace Quattro.Models {
 		// ====================================================================================================
 
 		public override string ToString() {
-			return $"{Numero}: {Texto}";
+			return $"{Servicio}/{Turno}: {Inicio} - {Final}";
 		}
 
 
 		public override bool Equals(object obj) {
-			var linea = obj as Linea;
-			if (linea == null) return false;
-			return Numero == linea.Numero;
+			var serviciobase = obj as ServicioBase;
+			if (serviciobase == null) return false;
+			return IdLinea == serviciobase.IdLinea && Servicio == serviciobase.Servicio && Turno == serviciobase.Turno;
 		}
 
 
 		public override int GetHashCode() {
 			unchecked {
 				int hash = 5060;
-				hash = hash * numero?.GetHashCode() ?? 1234;
+				hash = hash * idLinea.GetHashCode();
+				hash = hash * servicio?.GetHashCode() ?? 1234;
+				hash = hash * turno.GetHashCode();
 				return hash;
 			}
 		}
@@ -103,28 +137,29 @@ namespace Quattro.Models {
 
 		public static string GetSelectQuery() {
 			return "SELECT * " +
-				   "FROM Lineas " +
-				   "ORDER BY Numero;";
+				   "FROM Servicios " +
+				   "ORDER BY Servicio, Turno;";
 		}
 
 
 		public static string GetInsertQuery() {
-			return "INSERT INTO Lineas " +
-				   "   (Numero, Texto, Notas) " +
+			return "INSERT INTO Servicios " +
+				   "   (IdLinea, Servicio, Turno, Inicio, LugarInicio, Final, LugarFinal, Notas) " +
 				   "VALUES " +
-				   "   (@Numero, @Texto, @Notas);";
+				   "   (@IdLinea, @Servicio, @Turno, @Inicio, @LugarInicio, @Final, @LugarFinal, @Notas);";
 		}
 
 
 		public static string GetUpdateQuery() {
-			return "UPDATE Lineas " +
-				   "SET Numero=@Numero, Texto=@Texto, Notas=@Notas " +
+			return "UPDATE Servicios " +
+				   "SET IdLinea=@IdLinea, Servicio=@Servicio, Turno=@Turno, Inicio=@Inicio, LugarInicio=@LugarInicio " +
+				   "Final=@Final, LugarFinal=@LugarFinal, Notas=@Notas " +
 				   "WHERE _id=@Id;";
 		}
 
 
 		public static string GetDeleteQuery() {
-			return "DELETE FROM Lineas " +
+			return "DELETE FROM Servicios " +
 				   "WHERE _id=@Id;";
 		}
 
@@ -136,6 +171,7 @@ namespace Quattro.Models {
 		// ====================================================================================================
 		#region PROPIEDADES
 		// ====================================================================================================
+
 
 		private int id;
 		public int Id {
@@ -149,24 +185,84 @@ namespace Quattro.Models {
 		}
 
 
-		private string numero;
-		public string Numero {
-			get { return numero; }
+		private int idLinea;
+		public int IdLinea {
+			get { return idLinea; }
 			set {
-				if (numero != value) {
-					numero = value;
+				if (idLinea != value) {
+					idLinea = value;
 					PropiedadCambiada();
 				}
 			}
 		}
 
 
-		private string texto;
-		public string Texto {
-			get { return texto; }
+		private string servicio;
+		public string Servicio {
+			get { return servicio; }
 			set {
-				if (texto != value) {
-					texto = value;
+				if (servicio != value) {
+					servicio = value;
+					PropiedadCambiada();
+				}
+			}
+		}
+
+
+		private int turno;
+		public int Turno {
+			get { return turno; }
+			set {
+				if (turno != value) {
+					turno = value;
+					PropiedadCambiada();
+				}
+			}
+		}
+
+
+		private TimeSpan? inicio;
+		public TimeSpan? Inicio {
+			get { return inicio; }
+			set {
+				if (inicio != value) {
+					inicio = value;
+					PropiedadCambiada();
+				}
+			}
+		}
+
+
+		private string lugarInicio;
+		public string LugarInicio {
+			get { return lugarInicio; }
+			set {
+				if (lugarInicio != value) {
+					lugarInicio = value;
+					PropiedadCambiada();
+				}
+			}
+		}
+
+
+		private TimeSpan? final;
+		public TimeSpan? Final {
+			get { return final; }
+			set {
+				if (final != value) {
+					final = value;
+					PropiedadCambiada();
+				}
+			}
+		}
+
+
+		private string lugarFinal;
+		public string LugarFinal {
+			get { return lugarFinal; }
+			set {
+				if (lugarFinal != value) {
+					lugarFinal = value;
 					PropiedadCambiada();
 				}
 			}
@@ -184,11 +280,8 @@ namespace Quattro.Models {
 			}
 		}
 
-
-
 		#endregion
 		// ====================================================================================================
-
 
 	}
 }
