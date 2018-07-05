@@ -8,7 +8,7 @@
 using System;
 using System.Data.Common;
 
-namespace QuattroNet {
+namespace Quattro {
 
 
 	public static class Extensiones {

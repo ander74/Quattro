@@ -6,9 +6,9 @@
 // ===============================================
 #endregion
 using System.Data.Common;
-using QuattroNet;
+using Quattro;
 
-namespace Quattro.Models {
+namespace Models {
 
 
 	class Incidencia : NotifyBase {

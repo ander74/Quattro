@@ -8,9 +8,9 @@
 using System;
 using System.Collections.Generic;
 using System.Data.Common;
-using QuattroNet;
+using Quattro;
 
-namespace Quattro.Models {
+namespace Models {
 
     class Servicio : ServicioBase {
 

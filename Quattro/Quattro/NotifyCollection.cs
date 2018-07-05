@@ -11,7 +11,7 @@ using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
 
-namespace QuattroNet {
+namespace Quattro {
 
 	/// <summary>
 	/// Esta clase añade la notificación de cambios en las propiedades de los elementos dentro de la colección.

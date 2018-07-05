@@ -7,9 +7,9 @@
 #endregion
 using System;
 using System.Data.Common;
-using QuattroNet;
+using Quattro;
 
-namespace Quattro.Models {
+namespace Models {
 
     class ServicioBase : NotifyBase {
 

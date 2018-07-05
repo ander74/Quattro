@@ -1,8 +1,15 @@
-﻿using System;
+﻿#region COPYRIGHT
+// ===============================================
+//   Quattro - Licencia GNU/GPL 3.0 - A.Herrero
+// -----------------------------------------------
+//  Vea el archivo Licencia.txt para más detalles 
+// ===============================================
+#endregion
+using System;
 using System.Data.Common;
-using QuattroNet;
+using Quattro;
 
-namespace Quattro.Models {
+namespace Models {
 
 	class HoraAjena : NotifyBase {
 
