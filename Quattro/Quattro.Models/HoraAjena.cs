@@ -5,22 +5,22 @@
 //  Vea el archivo Licencia.txt para más detalles 
 // ===============================================
 #endregion
+using System;
 using System.Data.Common;
 using Quattro;
 
-namespace Models {
+namespace Quattro.Models {
 
-
-	class Incidencia : NotifyBase {
+	class HoraAjena : NotifyBase {
 
 		// ====================================================================================================
 		#region CONSTRUCTORES
 		// ====================================================================================================
 
-		public Incidencia() { }
+		public HoraAjena() { }
 
 
-		public Incidencia(DbDataReader lector) {
+		public HoraAjena(DbDataReader lector) {
 			FromReader(lector);
 		}
 
@@ -34,34 +34,34 @@ namespace Models {
 
 		public void FromReader(DbDataReader lector) {
 			id = lector.ToInt32("_id");
+			fecha = lector.ToDateTime("Fecha");
+			horas = lector.ToDecimal("Horas");
+			motivo = lector.ToString("Motivo");
 			codigo = lector.ToInt32("Codigo");
-			texto = lector.ToString("Texto");
-			tipo = lector.ToInt32("Tipo");
-			notas = lector.ToString("Notas");
 		}
 
 
 		public void ToCommand(ref DbCommand comando) {
-			// Codigo
+			// Fecha
 			DbParameter parametro = comando.CreateParameter();
+			parametro.DbType = System.Data.DbType.DateTime;
+			parametro.ParameterName = "@Fecha";
+			parametro.Value = fecha;
+			// Horas
+			parametro = comando.CreateParameter();
+			parametro.DbType = System.Data.DbType.Decimal;
+			parametro.ParameterName = "@Horas";
+			parametro.Value = horas;
+			// Motivo
+			parametro = comando.CreateParameter();
+			parametro.DbType = System.Data.DbType.String;
+			parametro.ParameterName = "@Motivo";
+			parametro.Value = motivo;
+			// Codigo
+			parametro = comando.CreateParameter();
 			parametro.DbType = System.Data.DbType.Int32;
 			parametro.ParameterName = "@Codigo";
 			parametro.Value = codigo;
-			// Texto
-			parametro = comando.CreateParameter();
-			parametro.DbType = System.Data.DbType.String;
-			parametro.ParameterName = "@Texto";
-			parametro.Value = texto;
-			// Tipo
-			parametro = comando.CreateParameter();
-			parametro.DbType = System.Data.DbType.Int32;
-			parametro.ParameterName = "@Tipo";
-			parametro.Value = tipo;
-			// Notas
-			parametro = comando.CreateParameter();
-			parametro.DbType = System.Data.DbType.String;
-			parametro.ParameterName = "@Notas";
-			parametro.Value = notas;
 			// Id
 			parametro = comando.CreateParameter();
 			parametro.DbType = System.Data.DbType.Int32;
@@ -81,20 +81,23 @@ namespace Models {
 		// ====================================================================================================
 
 		public override string ToString() {
-			return $"{codigo:00}: {Texto}";
+			return $"{Fecha:dd:MM:yyyy}: {Horas:0.00} {Motivo}";
 		}
 
 
 		public override bool Equals(object obj) {
-			var incidencia = obj as Incidencia;
-			if (incidencia == null) return false;
-			return Codigo == incidencia.Codigo;
+			var horaajena = obj as HoraAjena;
+			if (horaajena == null) return false;
+			return Fecha == horaajena.Fecha && Horas == horaajena.Horas && Motivo == horaajena.Motivo && Codigo == horaajena.Codigo;
 		}
 
 
 		public override int GetHashCode() {
 			unchecked {
 				int hash = 5060;
+				hash = hash * fecha.GetHashCode();
+				hash = hash * horas.GetHashCode();
+				hash = hash * motivo?.GetHashCode() ?? 1234;
 				hash = hash * codigo.GetHashCode();
 				return hash;
 			}
@@ -111,28 +114,28 @@ namespace Models {
 
 		public static string GetSelectQuery() {
 			return "SELECT * " +
-				   "FROM Incidencias " +
-				   "ORDER BY Codigo;";
+				   "FROM HorasAjenas " +
+				   "ORDER BY Fecha;";
 		}
 
 
 		public static string GetInsertQuery() {
-			return "INSERT INTO Incidencias " +
-				   "   (Codigo, Texto, Tipo, Notas) " +
+			return "INSERT INTO HorasAjenas " +
+				   "   (Fecha, Horas, Mofivo, Codigo) " +
 				   "VALUES " +
-				   "   (@Codigo, @Texto, @Tipo, @Notas);";
+				   "   (@Fecha, @Horas, @Motivo, @Codigo);";
 		}
 
 
 		public static string GetUpdateQuery() {
-			return "UPDATE Incidencias " +
-				   "SET Codigo=@Codigo, Texto=@Texto, Tipo=@Tipo, Notas=@Notas " +
+			return "UPDATE HorasAjenas " +
+				   "SET Fecha=@Fecha, Horas=@Horas, Motivo=@Motivo, Codigo=@Codigo " +
 				   "WHERE _id=@Id;";
 		}
 
 
 		public static string GetDeleteQuery() {
-			return "DELETE FROM Incidencias " +
+			return "DELETE FROM HorasAjenas " +
 				   "WHERE _id=@Id;";
 		}
 
@@ -158,6 +161,42 @@ namespace Models {
 		}
 
 
+		private DateTime fecha;
+		public DateTime Fecha {
+			get { return fecha; }
+			set {
+				if (fecha != value) {
+					fecha = value;
+					PropiedadCambiada();
+				}
+			}
+		}
+
+
+		private decimal horas;
+		public decimal Horas {
+			get { return horas; }
+			set {
+				if (horas != value) {
+					horas = value;
+					PropiedadCambiada();
+				}
+			}
+		}
+
+
+		private string motivo;
+		public string Motivo {
+			get { return motivo; }
+			set {
+				if (motivo != value) {
+					motivo = value;
+					PropiedadCambiada();
+				}
+			}
+		}
+
+
 		private int codigo;
 		public int Codigo {
 			get { return codigo; }
@@ -170,45 +209,9 @@ namespace Models {
 		}
 
 
-		private string texto;
-		public string Texto {
-			get { return texto; }
-			set {
-				if (texto != value) {
-					texto = value;
-					PropiedadCambiada();
-				}
-			}
-		}
-
-
-		private int tipo;
-		public int Tipo {
-			get { return tipo; }
-			set {
-				if (tipo != value) {
-					tipo = value;
-					PropiedadCambiada();
-				}
-			}
-		}
-
-
-		private string notas;
-		public string Notas {
-			get { return notas; }
-			set {
-				if (notas != value) {
-					notas = value;
-					PropiedadCambiada();
-				}
-			}
-		}
-
-
-
 		#endregion
 		// ====================================================================================================
+
 
 
 

@@ -10,7 +10,7 @@ using System.Collections.Generic;
 using System.Data.Common;
 using Quattro;
 
-namespace Models {
+namespace Quattro.Models {
 
     class Servicio : ServicioBase {
 

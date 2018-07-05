@@ -5,22 +5,21 @@
 //  Vea el archivo Licencia.txt para más detalles 
 // ===============================================
 #endregion
-using System;
 using System.Data.Common;
 using Quattro;
 
-namespace Models {
+namespace Quattro.Models {
 
-    class ServicioBase : NotifyBase {
+	class Compañero : NotifyBase {
 
 		// ====================================================================================================
 		#region CONSTRUCTORES
 		// ====================================================================================================
 
-		public ServicioBase() { }
+		public Compañero() { }
 
 
-		public ServicioBase(DbDataReader lector) {
+		public Compañero(DbDataReader lector) {
 			FromReader(lector);
 		}
 
@@ -34,53 +33,47 @@ namespace Models {
 
 		public void FromReader(DbDataReader lector) {
 			id = lector.ToInt32("_id");
-			idLinea = lector.ToInt32("IdLinea");
-			servicio = lector.ToString("Servicio");
-			turno = lector.ToInt32("Turno");
-			inicio = lector.ToTimeSpanNulable("Inicio");
-			lugarInicio = lector.ToString("LugarInicio");
-			final = lector.ToTimeSpanNulable("Final");
-			lugarFinal = lector.ToString("LugarFinal");
+			matricula = lector.ToInt32("Matricula");
+			nombre = lector.ToString("Nombre");
+			apellidos = lector.ToString("Apellidos");
+			telefono = lector.ToString("Telefono");
+			clasificacion = lector.ToInt32("Clasificacion");
+			deuda = lector.ToInt32("Deuda");
 			notas = lector.ToString("Notas");
 		}
 
 
 		public void ToCommand(ref DbCommand comando) {
-			// IdLinea
+			// Matricula
 			DbParameter parametro = comando.CreateParameter();
 			parametro.DbType = System.Data.DbType.Int32;
-			parametro.ParameterName = "@IdLinea";
-			parametro.Value = idLinea;
-			// Servicio
+			parametro.ParameterName = "@Matricula";
+			parametro.Value = matricula;
+			// Nombre
 			parametro = comando.CreateParameter();
 			parametro.DbType = System.Data.DbType.String;
-			parametro.ParameterName = "@Servicio";
-			parametro.Value = servicio;
-			// Turno
+			parametro.ParameterName = "@Nombre";
+			parametro.Value = nombre;
+			// Apellidos
+			parametro = comando.CreateParameter();
+			parametro.DbType = System.Data.DbType.String;
+			parametro.ParameterName = "@Apellidos";
+			parametro.Value = apellidos;
+			// Telefono
+			parametro = comando.CreateParameter();
+			parametro.DbType = System.Data.DbType.String;
+			parametro.ParameterName = "@Telefono";
+			parametro.Value = telefono;
+			// Clasificacion
 			parametro = comando.CreateParameter();
 			parametro.DbType = System.Data.DbType.Int32;
-			parametro.ParameterName = "@Turno";
-			parametro.Value = turno;
-			// Inicio
+			parametro.ParameterName = "@Clasificacion";
+			parametro.Value = clasificacion;
+			// Deuda
 			parametro = comando.CreateParameter();
-			parametro.DbType = System.Data.DbType.Time;
-			parametro.ParameterName = "@Inicio";
-			parametro.Value = inicio;
-			// Lugar Inicio
-			parametro = comando.CreateParameter();
-			parametro.DbType = System.Data.DbType.String;
-			parametro.ParameterName = "@LugarInicio";
-			parametro.Value = lugarInicio;
-			// Final
-			parametro = comando.CreateParameter();
-			parametro.DbType = System.Data.DbType.Time;
-			parametro.ParameterName = "@Final";
-			parametro.Value = final;
-			// Lugar Final
-			parametro = comando.CreateParameter();
-			parametro.DbType = System.Data.DbType.String;
-			parametro.ParameterName = "@LugarFinal";
-			parametro.Value = lugarFinal;
+			parametro.DbType = System.Data.DbType.Int32;
+			parametro.ParameterName = "@Deuda";
+			parametro.Value = deuda;
 			// Notas
 			parametro = comando.CreateParameter();
 			parametro.DbType = System.Data.DbType.String;
@@ -105,23 +98,21 @@ namespace Models {
 		// ====================================================================================================
 
 		public override string ToString() {
-			return $"{Servicio}/{Turno}: {Inicio} - {Final}";
+			return $"{Matricula:00}: {Nombre} {Apellidos}";
 		}
 
 
 		public override bool Equals(object obj) {
-			var serviciobase = obj as ServicioBase;
-			if (serviciobase == null) return false;
-			return IdLinea == serviciobase.IdLinea && Servicio == serviciobase.Servicio && Turno == serviciobase.Turno;
+			var compañero = obj as Compañero;
+			if (compañero == null) return false;
+			return Matricula == compañero.Matricula;
 		}
 
 
 		public override int GetHashCode() {
 			unchecked {
 				int hash = 5060;
-				hash = hash * idLinea.GetHashCode();
-				hash = hash * servicio?.GetHashCode() ?? 1234;
-				hash = hash * turno.GetHashCode();
+				hash = hash * matricula.GetHashCode();
 				return hash;
 			}
 		}
@@ -137,29 +128,29 @@ namespace Models {
 
 		public static string GetSelectQuery() {
 			return "SELECT * " +
-				   "FROM Servicios " +
-				   "ORDER BY Servicio, Turno;";
+				   "FROM Compañeros " +
+				   "ORDER BY Matricula;";
 		}
 
 
 		public static string GetInsertQuery() {
-			return "INSERT INTO Servicios " +
-				   "   (IdLinea, Servicio, Turno, Inicio, LugarInicio, Final, LugarFinal, Notas) " +
+			return "INSERT INTO Compañeros " +
+				   "   (Matricula, Nombre, Apellidos, Telefono, Clasificacion, Deuda, Notas) " +
 				   "VALUES " +
-				   "   (@IdLinea, @Servicio, @Turno, @Inicio, @LugarInicio, @Final, @LugarFinal, @Notas);";
+				   "   (@Matricula, @Nombre, @Apellidos, @Telefono, @Clasificacion, @Deuda, @Notas);";
 		}
 
 
 		public static string GetUpdateQuery() {
-			return "UPDATE Servicios " +
-				   "SET IdLinea=@IdLinea, Servicio=@Servicio, Turno=@Turno, Inicio=@Inicio, LugarInicio=@LugarInicio " +
-				   "Final=@Final, LugarFinal=@LugarFinal, Notas=@Notas " +
+			return "UPDATE Compañeros " +
+				   "SET Matricula=@Matricula, Nombre=@Nombre, Apellidos=@Apellidos, Telefono=@Telefono, " +
+				   "Clasificacion=@Clasificacion, Deuda=@Deuda, Notas=@Notas " +
 				   "WHERE _id=@Id;";
 		}
 
 
 		public static string GetDeleteQuery() {
-			return "DELETE FROM Servicios " +
+			return "DELETE FROM Compañeros " +
 				   "WHERE _id=@Id;";
 		}
 
@@ -185,84 +176,72 @@ namespace Models {
 		}
 
 
-		private int idLinea;
-		public int IdLinea {
-			get { return idLinea; }
+		private int matricula;
+		public int Matricula {
+			get { return matricula; }
 			set {
-				if (idLinea != value) {
-					idLinea = value;
+				if (matricula != value) {
+					matricula = value;
 					PropiedadCambiada();
 				}
 			}
 		}
 
 
-		private string servicio;
-		public string Servicio {
-			get { return servicio; }
+		private string nombre;
+		public string Nombre {
+			get { return nombre; }
 			set {
-				if (servicio != value) {
-					servicio = value;
+				if (nombre != value) {
+					nombre = value;
 					PropiedadCambiada();
 				}
 			}
 		}
 
 
-		private int turno;
-		public int Turno {
-			get { return turno; }
+		private string apellidos;
+		public string Apellidos {
+			get { return apellidos; }
 			set {
-				if (turno != value) {
-					turno = value;
+				if (apellidos != value) {
+					apellidos = value;
 					PropiedadCambiada();
 				}
 			}
 		}
 
 
-		private TimeSpan? inicio;
-		public TimeSpan? Inicio {
-			get { return inicio; }
+		private string telefono;
+		public string Telefono {
+			get { return telefono; }
 			set {
-				if (inicio != value) {
-					inicio = value;
+				if (telefono != value) {
+					telefono = value;
 					PropiedadCambiada();
 				}
 			}
 		}
 
 
-		private string lugarInicio;
-		public string LugarInicio {
-			get { return lugarInicio; }
+		private int clasificacion;
+		public int Clasificacion {
+			get { return clasificacion; }
 			set {
-				if (lugarInicio != value) {
-					lugarInicio = value;
+				if (clasificacion != value) {
+					clasificacion = value;
 					PropiedadCambiada();
 				}
 			}
 		}
 
 
-		private TimeSpan? final;
-		public TimeSpan? Final {
-			get { return final; }
+		private int deuda;
+		public int Deuda {
+			get { return deuda; }
 			set {
-				if (final != value) {
-					final = value;
-					PropiedadCambiada();
-				}
-			}
-		}
-
-
-		private string lugarFinal;
-		public string LugarFinal {
-			get { return lugarFinal; }
-			set {
-				if (lugarFinal != value) {
-					lugarFinal = value;
+				if (deuda != value) {
+					deuda = value;
 					PropiedadCambiada();
 				}
 			}
@@ -280,8 +259,12 @@ namespace Models {
 			}
 		}
 
+
+
 		#endregion
 		// ====================================================================================================
+
+
 
 	}
 }

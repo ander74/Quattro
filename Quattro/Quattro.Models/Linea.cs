@@ -8,20 +8,21 @@
 using System.Data.Common;
 using Quattro;
 
-namespace Models {
+namespace Quattro.Models {
 
-	class Compañero : NotifyBase {
+	public class Linea : NotifyBase {
 
 		// ====================================================================================================
 		#region CONSTRUCTORES
 		// ====================================================================================================
 
-		public Compañero() { }
+		public Linea () { }
 
 
-		public Compañero(DbDataReader lector) {
+		public Linea(DbDataReader lector) {
 			FromReader(lector);
 		}
+
 
 		#endregion
 		// ====================================================================================================
@@ -33,47 +34,23 @@ namespace Models {
 
 		public void FromReader(DbDataReader lector) {
 			id = lector.ToInt32("_id");
-			matricula = lector.ToInt32("Matricula");
-			nombre = lector.ToString("Nombre");
-			apellidos = lector.ToString("Apellidos");
-			telefono = lector.ToString("Telefono");
-			clasificacion = lector.ToInt32("Clasificacion");
-			deuda = lector.ToInt32("Deuda");
+			numero = lector.ToString("Numero");
+			texto = lector.ToString("Texto");
 			notas = lector.ToString("Notas");
 		}
 
 
 		public void ToCommand(ref DbCommand comando) {
-			// Matricula
+			// Numero
 			DbParameter parametro = comando.CreateParameter();
-			parametro.DbType = System.Data.DbType.Int32;
-			parametro.ParameterName = "@Matricula";
-			parametro.Value = matricula;
-			// Nombre
+			parametro.DbType = System.Data.DbType.String;
+			parametro.ParameterName = "@Numero";
+			parametro.Value = numero;
+			// Texto
 			parametro = comando.CreateParameter();
 			parametro.DbType = System.Data.DbType.String;
-			parametro.ParameterName = "@Nombre";
-			parametro.Value = nombre;
-			// Apellidos
-			parametro = comando.CreateParameter();
-			parametro.DbType = System.Data.DbType.String;
-			parametro.ParameterName = "@Apellidos";
-			parametro.Value = apellidos;
-			// Telefono
-			parametro = comando.CreateParameter();
-			parametro.DbType = System.Data.DbType.String;
-			parametro.ParameterName = "@Telefono";
-			parametro.Value = telefono;
-			// Clasificacion
-			parametro = comando.CreateParameter();
-			parametro.DbType = System.Data.DbType.Int32;
-			parametro.ParameterName = "@Clasificacion";
-			parametro.Value = clasificacion;
-			// Deuda
-			parametro = comando.CreateParameter();
-			parametro.DbType = System.Data.DbType.Int32;
-			parametro.ParameterName = "@Deuda";
-			parametro.Value = deuda;
+			parametro.ParameterName = "@Texto";
+			parametro.Value = texto;
 			// Notas
 			parametro = comando.CreateParameter();
 			parametro.DbType = System.Data.DbType.String;
@@ -87,8 +64,6 @@ namespace Models {
 		}
 
 
-
-
 		#endregion
 		// ====================================================================================================
 
@@ -98,21 +73,21 @@ namespace Models {
 		// ====================================================================================================
 
 		public override string ToString() {
-			return $"{Matricula:00}: {Nombre} {Apellidos}";
+			return $"{Numero}: {Texto}";
 		}
 
 
 		public override bool Equals(object obj) {
-			var compañero = obj as Compañero;
-			if (compañero == null) return false;
-			return Matricula == compañero.Matricula;
+			var linea = obj as Linea;
+			if (linea == null) return false;
+			return Numero == linea.Numero;
 		}
 
 
 		public override int GetHashCode() {
 			unchecked {
 				int hash = 5060;
-				hash = hash * matricula.GetHashCode();
+				hash = hash * numero?.GetHashCode() ?? 1234;
 				return hash;
 			}
 		}
@@ -128,29 +103,28 @@ namespace Models {
 
 		public static string GetSelectQuery() {
 			return "SELECT * " +
-				   "FROM Compañeros " +
-				   "ORDER BY Matricula;";
+				   "FROM Lineas " +
+				   "ORDER BY Numero;";
 		}
 
 
 		public static string GetInsertQuery() {
-			return "INSERT INTO Compañeros " +
-				   "   (Matricula, Nombre, Apellidos, Telefono, Clasificacion, Deuda, Notas) " +
+			return "INSERT INTO Lineas " +
+				   "   (Numero, Texto, Notas) " +
 				   "VALUES " +
-				   "   (@Matricula, @Nombre, @Apellidos, @Telefono, @Clasificacion, @Deuda, @Notas);";
+				   "   (@Numero, @Texto, @Notas);";
 		}
 
 
 		public static string GetUpdateQuery() {
-			return "UPDATE Compañeros " +
-				   "SET Matricula=@Matricula, Nombre=@Nombre, Apellidos=@Apellidos, Telefono=@Telefono, " +
-				   "Clasificacion=@Clasificacion, Deuda=@Deuda, Notas=@Notas " +
+			return "UPDATE Lineas " +
+				   "SET Numero=@Numero, Texto=@Texto, Notas=@Notas " +
 				   "WHERE _id=@Id;";
 		}
 
 
 		public static string GetDeleteQuery() {
-			return "DELETE FROM Compañeros " +
+			return "DELETE FROM Lineas " +
 				   "WHERE _id=@Id;";
 		}
 
@@ -162,7 +136,6 @@ namespace Models {
 		// ====================================================================================================
 		#region PROPIEDADES
 		// ====================================================================================================
-
 
 		private int id;
 		public int Id {
@@ -176,72 +149,24 @@ namespace Models {
 		}
 
 
-		private int matricula;
-		public int Matricula {
-			get { return matricula; }
+		private string numero;
+		public string Numero {
+			get { return numero; }
 			set {
-				if (matricula != value) {
-					matricula = value;
+				if (numero != value) {
+					numero = value;
 					PropiedadCambiada();
 				}
 			}
 		}
 
 
-		private string nombre;
-		public string Nombre {
-			get { return nombre; }
+		private string texto;
+		public string Texto {
+			get { return texto; }
 			set {
-				if (nombre != value) {
-					nombre = value;
-					PropiedadCambiada();
-				}
-			}
-		}
-
-
-		private string apellidos;
-		public string Apellidos {
-			get { return apellidos; }
-			set {
-				if (apellidos != value) {
-					apellidos = value;
-					PropiedadCambiada();
-				}
-			}
-		}
-
-
-		private string telefono;
-		public string Telefono {
-			get { return telefono; }
-			set {
-				if (telefono != value) {
-					telefono = value;
-					PropiedadCambiada();
-				}
-			}
-		}
-
-
-		private int clasificacion;
-		public int Clasificacion {
-			get { return clasificacion; }
-			set {
-				if (clasificacion != value) {
-					clasificacion = value;
-					PropiedadCambiada();
-				}
-			}
-		}
-
-
-		private int deuda;
-		public int Deuda {
-			get { return deuda; }
-			set {
-				if (deuda != value) {
-					deuda = value;
+				if (texto != value) {
+					texto = value;
 					PropiedadCambiada();
 				}
 			}
@@ -263,7 +188,6 @@ namespace Models {
 
 		#endregion
 		// ====================================================================================================
-
 
 
 	}
