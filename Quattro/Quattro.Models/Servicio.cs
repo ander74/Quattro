@@ -22,7 +22,7 @@ namespace Quattro.Models {
 
 
 		public Servicio(DbDataReader lector) : base(lector) {
-			//TODO: Añadir el método.
+			FromReader(lector);
 		}
 
 		#endregion

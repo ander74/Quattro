@@ -24,7 +24,7 @@ namespace Quattro {
 	/// el evento CollectionChanged de la propia colección, mediante la llamada al OnCollectionChanged.
 	/// 
 	/// </summary>
-	public class NotifyCollection<T> : ObservableCollection<T> where T : INotifyPropertyChanged {
+	public class TrulyObservableCollection<T> : ObservableCollection<T> where T : INotifyPropertyChanged {
 
 		/// <summary>
 		/// Evento que se lanzará cuando cambia una propiedad dentro de un elemento de la colección.
@@ -36,15 +36,15 @@ namespace Quattro {
 		#region CONSTRUCTORES
 		// ====================================================================================================
 
-		public NotifyCollection() : base() { }
+		public TrulyObservableCollection() : base() { }
 
 
-		public NotifyCollection(List<T> list) : base(list) {
+		public TrulyObservableCollection(List<T> list) : base(list) {
 			ObserveAll();
 		}
 
 
-		public NotifyCollection(IEnumerable<T> enumerable) : base(enumerable) {
+		public TrulyObservableCollection(IEnumerable<T> enumerable) : base(enumerable) {
 			ObserveAll();
 		}
 

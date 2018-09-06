@@ -6,7 +6,9 @@
 // ===============================================
 #endregion
 using System;
+using System.ComponentModel;
 using System.Data.Common;
+using System.Runtime.CompilerServices;
 using Quattro;
 
 namespace Quattro.Models {
@@ -161,6 +163,28 @@ namespace Quattro.Models {
 		public static string GetDeleteQuery() {
 			return "DELETE FROM Servicios " +
 				   "WHERE _id=@Id;";
+		}
+
+
+		#endregion
+		// ====================================================================================================
+
+
+		// ====================================================================================================
+		#region EVENTOS
+		// ====================================================================================================
+
+		public event EventHandler CalculateChanged;
+
+		public void PropiedadCambiada([CallerMemberName] string prop = "") {
+			switch (prop){
+				case "Turno": break;
+				case "Inicio": 
+				case "Final":
+					CalculateChanged?.Invoke(this, new EventArgs());
+					break;
+			}
+			base.PropiedadCambiada(prop);
 		}
 
 

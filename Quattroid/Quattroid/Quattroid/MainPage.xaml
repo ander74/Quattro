@@ -1,0 +1,45 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:Quattroid"
+             x:Class="Quattroid.MainPage">
+
+    <StackLayout Padding="10">
+        <!-- Place new controls here -->
+    	<Label 
+			FontSize="32"
+			HorizontalOptions="Center"
+			Text="Quattroid 2.0" 
+			VerticalOptions="Start" />
+		
+		<StackLayout Orientation="Horizontal" Margin="0,10">
+			<Label 
+				FontSize="Large"
+				Text="Usuario: "
+				VerticalOptions="Center"/>
+			<Entry
+				FontSize="Large"
+				HorizontalOptions="FillAndExpand"
+				Placeholder="Nombre de usuario"/>
+		</StackLayout>
+		
+		<StackLayout Orientation="Horizontal" Margin="0,10">
+			<Label 
+				FontSize="Large"
+				Text="Password: "
+				VerticalOptions="Center"/>
+			<Entry
+				FontSize="Large"
+				HorizontalOptions="FillAndExpand"
+				Placeholder="Contraseña"/>
+		</StackLayout>
+
+		<Button 
+			CornerRadius="2"
+			HorizontalOptions="Fill"
+			Margin="20,0"
+			Text="Login"/>
+
+	</StackLayout>
+
+</ContentPage>
