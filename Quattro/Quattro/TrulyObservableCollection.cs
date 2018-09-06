@@ -29,7 +29,7 @@ namespace Quattro {
 		/// <summary>
 		/// Evento que se lanzará cuando cambia una propiedad dentro de un elemento de la colección.
 		/// </summary>
-		public event EventHandler ItemPropertyChanged;
+		public event EventHandler<ItemChangedEventArgs<T>> ItemPropertyChanged;
 
 
 		// ====================================================================================================
@@ -93,12 +93,34 @@ namespace Quattro {
 
 		/// <summary>
 		/// Método que se ejecuta cuando se dispara el evento PropertyChanged de un elemento.
+		/// Este método, lanza el evento ItemPropertyChanged, enviando como argumentos el elemento de la
+		/// colección en el que ha cambiado alguna propiedad y el nombre de la propiedad.
 		/// </summary>
 		private void ChildPropertyChanged(object sender, PropertyChangedEventArgs e) {
 			T typedSender = (T)sender;
-			ItemPropertyChanged?.Invoke(this, e);
+			var args = new ItemChangedEventArgs<T>(typedSender, e.PropertyName);
+			ItemPropertyChanged?.Invoke(this, args);	
 		}
 	}
 
+
+	/// <summary>
+	/// Clase que encapsula un Item T y el nombre de la propiedad que ha cambiado en T para devolverlo en el
+	/// evento ItemPropertyChanged de la clase TrulyObservableCollection.
+	/// </summary>
+	/// <typeparam name="T">Tipo del item cambiado.</typeparam>
+	public class ItemChangedEventArgs<T> {
+
+		public T ChangedItem { get; }
+		public string PropertyName { get; }
+
+
+		public ItemChangedEventArgs(T item, string propertyName) {
+			ChangedItem = item;
+			PropertyName = propertyName;
+		}
+
+
+	}
 
 }
