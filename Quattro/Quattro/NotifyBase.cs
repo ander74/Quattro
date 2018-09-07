@@ -25,7 +25,7 @@ namespace Quattro {
 		/// <summary>
 		/// Establece el objeto como modificado e invoca el evento 'PropertyChanged'.
 		/// </summary>
-		public void PropiedadCambiada([CallerMemberName] string prop = "") {
+		public void OnPropertyChanged([CallerMemberName] string prop = "") {
 			PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(prop));
 		}
 
@@ -39,7 +39,7 @@ namespace Quattro {
 			set {
 				if (_modificado != value) {
 					_modificado = value;
-					PropiedadCambiada();
+					OnPropertyChanged();
 				}
 			}
 		}
@@ -48,7 +48,7 @@ namespace Quattro {
 		/// <summary>
 		/// Indica si el objeto es nuevo.
 		/// </summary>
-		public bool Nuevo { get; set; }
+		public bool Nuevo { get; set; } = true;
 
 	}
 

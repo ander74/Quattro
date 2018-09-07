@@ -155,7 +155,7 @@ namespace Quattro.Models {
 			set {
 				if (id != value) {
 					id = value;
-					PropiedadCambiada();
+					OnPropertyChanged();
 				}
 			}
 		}
@@ -167,7 +167,7 @@ namespace Quattro.Models {
 			set {
 				if (fecha != value) {
 					fecha = value;
-					PropiedadCambiada();
+					OnPropertyChanged();
 				}
 			}
 		}
@@ -179,7 +179,7 @@ namespace Quattro.Models {
 			set {
 				if (horas != value) {
 					horas = value;
-					PropiedadCambiada();
+					OnPropertyChanged();
 				}
 			}
 		}
@@ -191,7 +191,7 @@ namespace Quattro.Models {
 			set {
 				if (motivo != value) {
 					motivo = value;
-					PropiedadCambiada();
+					OnPropertyChanged();
 				}
 			}
 		}
@@ -203,7 +203,7 @@ namespace Quattro.Models {
 			set {
 				if (codigo != value) {
 					codigo = value;
-					PropiedadCambiada();
+					OnPropertyChanged();
 				}
 			}
 		}

@@ -96,7 +96,7 @@ namespace Quattro.Models {
 			set {
 				if (tomaDeje != value) {
 					tomaDeje = value;
-					PropiedadCambiada();
+					OnPropertyChanged();
 				}
 			}
 		}
@@ -108,7 +108,7 @@ namespace Quattro.Models {
 			set {
 				if (euros != value) {
 					euros = value;
-					PropiedadCambiada();
+					OnPropertyChanged();
 				}
 			}
 		}
@@ -120,7 +120,7 @@ namespace Quattro.Models {
 			set {
 				if (serviciosAuxiliares != value) {
 					serviciosAuxiliares = value;
-					PropiedadCambiada();
+					OnPropertyChanged();
 				}
 			}
 		}

@@ -152,7 +152,7 @@ namespace Quattro.Models {
 			set {
 				if (id != value) {
 					id = value;
-					PropiedadCambiada();
+					OnPropertyChanged();
 				}
 			}
 		}
@@ -164,7 +164,7 @@ namespace Quattro.Models {
 			set {
 				if (codigo != value) {
 					codigo = value;
-					PropiedadCambiada();
+					OnPropertyChanged();
 				}
 			}
 		}
@@ -176,7 +176,7 @@ namespace Quattro.Models {
 			set {
 				if (texto != value) {
 					texto = value;
-					PropiedadCambiada();
+					OnPropertyChanged();
 				}
 			}
 		}
@@ -188,7 +188,7 @@ namespace Quattro.Models {
 			set {
 				if (tipo != value) {
 					tipo = value;
-					PropiedadCambiada();
+					OnPropertyChanged();
 				}
 			}
 		}
@@ -200,7 +200,7 @@ namespace Quattro.Models {
 			set {
 				if (notas != value) {
 					notas = value;
-					PropiedadCambiada();
+					OnPropertyChanged();
 				}
 			}
 		}

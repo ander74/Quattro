@@ -174,17 +174,15 @@ namespace Quattro.Models {
 		#region EVENTOS
 		// ====================================================================================================
 
-		public event EventHandler CalculateChanged;
+		public event EventHandler JornadaChanged;//TODO: Cambiar por un EventHandler<T> con los EventArgs necesarios.
+		public event EventHandler FirmaChanged;//TODO: Cambiar por un EventHandler<T> con los EventArgs necesarios.
 
-		public void PropiedadCambiada([CallerMemberName] string prop = "") {
-			switch (prop){
-				case "Turno": break;
-				case "Inicio": 
-				case "Final":
-					CalculateChanged?.Invoke(this, new EventArgs());
-					break;
-			}
-			base.PropiedadCambiada(prop);
+		public void OnJornadaChanged() {
+			JornadaChanged?.Invoke(this, new EventArgs());
+		}
+
+		public void OnFirmaChanged() {
+			FirmaChanged?.Invoke(this, new EventArgs());
 		}
 
 
@@ -196,14 +194,13 @@ namespace Quattro.Models {
 		#region PROPIEDADES
 		// ====================================================================================================
 
-
 		private int id;
 		public int Id {
 			get { return id; }
 			set {
 				if (id != value) {
 					id = value;
-					PropiedadCambiada();
+					OnPropertyChanged();
 				}
 			}
 		}
@@ -215,7 +212,8 @@ namespace Quattro.Models {
 			set {
 				if (idLinea != value) {
 					idLinea = value;
-					PropiedadCambiada();
+					OnFirmaChanged();
+					OnPropertyChanged();
 				}
 			}
 		}
@@ -227,7 +225,8 @@ namespace Quattro.Models {
 			set {
 				if (servicio != value) {
 					servicio = value;
-					PropiedadCambiada();
+					OnFirmaChanged();
+					OnPropertyChanged();
 				}
 			}
 		}
@@ -239,7 +238,8 @@ namespace Quattro.Models {
 			set {
 				if (turno != value) {
 					turno = value;
-					PropiedadCambiada();
+					OnFirmaChanged();
+					OnPropertyChanged();
 				}
 			}
 		}
@@ -251,7 +251,8 @@ namespace Quattro.Models {
 			set {
 				if (inicio != value) {
 					inicio = value;
-					PropiedadCambiada();
+					OnJornadaChanged();
+					OnPropertyChanged();
 				}
 			}
 		}
@@ -263,7 +264,7 @@ namespace Quattro.Models {
 			set {
 				if (lugarInicio != value) {
 					lugarInicio = value;
-					PropiedadCambiada();
+					OnPropertyChanged();
 				}
 			}
 		}
@@ -275,7 +276,8 @@ namespace Quattro.Models {
 			set {
 				if (final != value) {
 					final = value;
-					PropiedadCambiada();
+					OnJornadaChanged();
+					OnPropertyChanged();
 				}
 			}
 		}
@@ -287,7 +289,7 @@ namespace Quattro.Models {
 			set {
 				if (lugarFinal != value) {
 					lugarFinal = value;
-					PropiedadCambiada();
+					OnPropertyChanged();
 				}
 			}
 		}
@@ -299,7 +301,7 @@ namespace Quattro.Models {
 			set {
 				if (notas != value) {
 					notas = value;
-					PropiedadCambiada();
+					OnPropertyChanged();
 				}
 			}
 		}

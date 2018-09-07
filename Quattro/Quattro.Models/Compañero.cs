@@ -170,7 +170,7 @@ namespace Quattro.Models {
 			set {
 				if (id != value) {
 					id = value;
-					PropiedadCambiada();
+					OnPropertyChanged();
 				}
 			}
 		}
@@ -182,7 +182,7 @@ namespace Quattro.Models {
 			set {
 				if (matricula != value) {
 					matricula = value;
-					PropiedadCambiada();
+					OnPropertyChanged();
 				}
 			}
 		}
@@ -194,7 +194,7 @@ namespace Quattro.Models {
 			set {
 				if (nombre != value) {
 					nombre = value;
-					PropiedadCambiada();
+					OnPropertyChanged();
 				}
 			}
 		}
@@ -206,7 +206,7 @@ namespace Quattro.Models {
 			set {
 				if (apellidos != value) {
 					apellidos = value;
-					PropiedadCambiada();
+					OnPropertyChanged();
 				}
 			}
 		}
@@ -218,7 +218,7 @@ namespace Quattro.Models {
 			set {
 				if (telefono != value) {
 					telefono = value;
-					PropiedadCambiada();
+					OnPropertyChanged();
 				}
 			}
 		}
@@ -230,7 +230,7 @@ namespace Quattro.Models {
 			set {
 				if (clasificacion != value) {
 					clasificacion = value;
-					PropiedadCambiada();
+					OnPropertyChanged();
 				}
 			}
 		}
@@ -242,7 +242,7 @@ namespace Quattro.Models {
 			set {
 				if (deuda != value) {
 					deuda = value;
-					PropiedadCambiada();
+					OnPropertyChanged();
 				}
 			}
 		}
@@ -254,7 +254,7 @@ namespace Quattro.Models {
 			set {
 				if (notas != value) {
 					notas = value;
-					PropiedadCambiada();
+					OnPropertyChanged();
 				}
 			}
 		}
