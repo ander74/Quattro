@@ -6,8 +6,7 @@
 // ===============================================
 #endregion
 using System;
-using System.Data.Common;
-using Quattro;
+using Quattro.Notify;
 
 namespace Quattro.Models {
 
@@ -18,59 +17,6 @@ namespace Quattro.Models {
 		// ====================================================================================================
 
 		public HoraAjena() { }
-
-
-		public HoraAjena(DbDataReader lector) {
-			FromReader(lector);
-		}
-
-		#endregion
-		// ====================================================================================================
-
-
-		// ====================================================================================================
-		#region MÉTODOS PÚBLICOS
-		// ====================================================================================================
-
-		public void FromReader(DbDataReader lector) {
-			id = lector.ToInt32("_id");
-			fecha = lector.ToDateTime("Fecha");
-			horas = lector.ToDecimal("Horas");
-			motivo = lector.ToString("Motivo");
-			codigo = lector.ToInt32("Codigo");
-		}
-
-
-		public void ToCommand(ref DbCommand comando) {
-			// Fecha
-			DbParameter parametro = comando.CreateParameter();
-			parametro.DbType = System.Data.DbType.DateTime;
-			parametro.ParameterName = "@Fecha";
-			parametro.Value = fecha;
-			// Horas
-			parametro = comando.CreateParameter();
-			parametro.DbType = System.Data.DbType.Decimal;
-			parametro.ParameterName = "@Horas";
-			parametro.Value = horas;
-			// Motivo
-			parametro = comando.CreateParameter();
-			parametro.DbType = System.Data.DbType.String;
-			parametro.ParameterName = "@Motivo";
-			parametro.Value = motivo;
-			// Codigo
-			parametro = comando.CreateParameter();
-			parametro.DbType = System.Data.DbType.Int32;
-			parametro.ParameterName = "@Codigo";
-			parametro.Value = codigo;
-			// Id
-			parametro = comando.CreateParameter();
-			parametro.DbType = System.Data.DbType.Int32;
-			parametro.ParameterName = "@Id";
-			parametro.Value = id;
-		}
-
-
-
 
 		#endregion
 		// ====================================================================================================
@@ -101,42 +47,6 @@ namespace Quattro.Models {
 				hash = hash * codigo.GetHashCode();
 				return hash;
 			}
-		}
-
-
-		#endregion
-		// ====================================================================================================
-
-
-		// ====================================================================================================
-		#region MÉTODOS ESTÁTICOS
-		// ====================================================================================================
-
-		public static string GetSelectQuery() {
-			return "SELECT * " +
-				   "FROM HorasAjenas " +
-				   "ORDER BY Fecha;";
-		}
-
-
-		public static string GetInsertQuery() {
-			return "INSERT INTO HorasAjenas " +
-				   "   (Fecha, Horas, Mofivo, Codigo) " +
-				   "VALUES " +
-				   "   (@Fecha, @Horas, @Motivo, @Codigo);";
-		}
-
-
-		public static string GetUpdateQuery() {
-			return "UPDATE HorasAjenas " +
-				   "SET Fecha=@Fecha, Horas=@Horas, Motivo=@Motivo, Codigo=@Codigo " +
-				   "WHERE _id=@Id;";
-		}
-
-
-		public static string GetDeleteQuery() {
-			return "DELETE FROM HorasAjenas " +
-				   "WHERE _id=@Id;";
 		}
 
 

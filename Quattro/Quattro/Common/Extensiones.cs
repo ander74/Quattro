@@ -8,7 +8,7 @@
 using System;
 using System.Data.Common;
 
-namespace Quattro {
+namespace Quattro.Common {
 
 
 	public static class Extensiones {
@@ -234,7 +234,6 @@ namespace Quattro {
 
 		#endregion
 		// ====================================================================================================
-
 
 
 		// ====================================================================================================

@@ -8,7 +8,7 @@
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
-namespace Quattro {
+namespace Quattro.Notify {
 
 	/// <summary>
 	/// Clase que encapsula la interfaz INotifyPropertyChanged para ser heredada por los objetos que

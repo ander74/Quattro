@@ -5,17 +5,20 @@
 //  Vea el archivo Licencia.txt para más detalles 
 // ===============================================
 #endregion
-using Quattro.Notify;
+using System;
+using Quattro.Common;
 
 namespace Quattro.Models {
 
-	class Compañero : NotifyBase {
+    public class DiaCalendario : Servicio {
+
 
 		// ====================================================================================================
 		#region CONSTRUCTORES
 		// ====================================================================================================
 
-		public Compañero() { }
+		public DiaCalendario() : base() { }
+
 
 		#endregion
 		// ====================================================================================================
@@ -26,21 +29,23 @@ namespace Quattro.Models {
 		// ====================================================================================================
 
 		public override string ToString() {
-			return $"{Matricula:00}: {Nombre} {Apellidos}";
+			return $"{Fecha.ToString("dd-MM-yyyy")}: {NumeroLinea} - {Servicio}/{Turno} ({Inicio.ToTexto()} - {Final.ToTexto()})";
 		}
 
 
 		public override bool Equals(object obj) {
-			var compañero = obj as Compañero;
-			if (compañero == null) return false;
-			return Matricula == compañero.Matricula;
+			if (obj is DiaCalendario diaCalendario)
+				return NumeroLinea == diaCalendario.NumeroLinea && Servicio == diaCalendario.Servicio && Turno == diaCalendario.Turno;
+			return false;
 		}
 
 
 		public override int GetHashCode() {
 			unchecked {
 				int hash = 5060;
-				hash = hash * matricula.GetHashCode();
+				hash = (hash * 7) + NumeroLinea?.GetHashCode() ?? 1234;
+				hash = (hash * 7) + Servicio?.GetHashCode() ?? 1234;
+				hash = (hash * 7) + Turno.GetHashCode();
 				return hash;
 			}
 		}
@@ -54,106 +59,117 @@ namespace Quattro.Models {
 		#region PROPIEDADES
 		// ====================================================================================================
 
-
-		private int id;
-		public int Id {
-			get { return id; }
+		private DateTime fecha;
+		public DateTime Fecha {
+			get { return fecha; }
 			set {
-				if (id != value) {
-					id = value;
+				if (fecha != value) {
+					fecha = value;
 					OnPropertyChanged();
 				}
 			}
 		}
 
 
-		private int matricula;
-		public int Matricula {
-			get { return matricula; }
+		private bool esFranqueo;
+		public bool EsFranqueo {
+			get { return esFranqueo; }
 			set {
-				if (matricula != value) {
-					matricula = value;
+				if (esFranqueo != value) {
+					esFranqueo = value;
 					OnPropertyChanged();
 				}
 			}
 		}
 
 
-		private string nombre;
-		public string Nombre {
-			get { return nombre; }
+		private bool esFestivo;
+		public bool EsFestivo {
+			get { return esFestivo; }
 			set {
-				if (nombre != value) {
-					nombre = value;
+				if (esFestivo != value) {
+					esFestivo = value;
 					OnPropertyChanged();
 				}
 			}
 		}
 
 
-		private string apellidos;
-		public string Apellidos {
-			get { return apellidos; }
+		private int codigoIncidencia;
+		public int CodigoIncidencia {
+			get { return codigoIncidencia; }
 			set {
-				if (apellidos != value) {
-					apellidos = value;
+				if (codigoIncidencia != value) {
+					codigoIncidencia = value;
 					OnPropertyChanged();
 				}
 			}
 		}
 
 
-		private string telefono;
-		public string Telefono {
-			get { return telefono; }
+		private bool huelgaParcial;
+		public bool HuelgaParcial {
+			get { return huelgaParcial; }
 			set {
-				if (telefono != value) {
-					telefono = value;
+				if (huelgaParcial != value) {
+					huelgaParcial = value;
 					OnPropertyChanged();
 				}
 			}
 		}
 
 
-		private int clasificacion;
-		public int Clasificacion {
-			get { return clasificacion; }
+		private decimal horasHuelga;
+		public decimal HorasHuelga {
+			get { return horasHuelga; }
 			set {
-				if (clasificacion != value) {
-					clasificacion = value;
+				if (horasHuelga != value) {
+					horasHuelga = value;
 					OnPropertyChanged();
 				}
 			}
 		}
 
 
-		private int deuda;
-		public int Deuda {
-			get { return deuda; }
+		private int relevo;
+		public int Relevo {
+			get { return relevo; }
 			set {
-				if (deuda != value) {
-					deuda = value;
+				if (relevo != value) {
+					relevo = value;
 					OnPropertyChanged();
 				}
 			}
 		}
 
 
-		private string notas;
-		public string Notas {
-			get { return notas; }
+		private int susti;
+		public int Susti {
+			get { return susti; }
 			set {
-				if (notas != value) {
-					notas = value;
+				if (susti != value) {
+					susti = value;
 					OnPropertyChanged();
 				}
 			}
 		}
 
+
+		private string bus;
+		public string Bus {
+			get { return bus; }
+			set {
+				if (bus != value) {
+					bus = value;
+					OnPropertyChanged();
+				}
+			}
+		}
 
 
 		#endregion
 		// ====================================================================================================
+
 
 
 

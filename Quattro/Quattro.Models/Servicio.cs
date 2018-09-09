@@ -6,13 +6,11 @@
 // ===============================================
 #endregion
 using System;
-using System.Collections.Generic;
-using System.Data.Common;
-using Quattro;
+using Quattro.Notify;
 
 namespace Quattro.Models {
 
-    class Servicio : ServicioBase {
+    public class Servicio : ServicioBase {
 
 		// ====================================================================================================
 		#region CONSTRUCTORES
@@ -21,63 +19,29 @@ namespace Quattro.Models {
 		public Servicio() : base() { }
 
 
-		public Servicio(DbDataReader lector) : base(lector) {
-			FromReader(lector);
-		}
-
 		#endregion
 		// ====================================================================================================
 
 
 		// ====================================================================================================
-		#region MÉTODOS PÚBLICOS
+		#region MÉTODOS OVERRIDE
 		// ====================================================================================================
 
-		public void FromReader(DbDataReader lector) {
-			base.FromReader(lector);
-			tomaDeje = lector.ToTimeSpan("TomaDeje");
-			euros = lector.ToDecimal("Euros");
+		public override bool Equals(object obj) {
+			if (obj is Servicio servicio)
+				return NumeroLinea == servicio.NumeroLinea && Servicio == servicio.Servicio && Turno == servicio.Turno;
+			return false;
 		}
 
 
-		public void ToCommand(ref DbCommand comando) {
-			base.ToCommand(ref comando);
-			// TomaDeje
-			DbParameter parametro = comando.CreateParameter();
-			parametro.DbType = System.Data.DbType.Time;
-			parametro.ParameterName = "@TomaDeje";
-			parametro.Value = tomaDeje;
-			// Euros
-			parametro = comando.CreateParameter();
-			parametro.DbType = System.Data.DbType.Decimal;
-			parametro.ParameterName = "@Euros";
-			parametro.Value = euros;
-		}
-
-
-
-
-		#endregion
-		// ====================================================================================================
-
-
-		// ====================================================================================================
-		#region MÉTODOS ESTÁTICOS
-		// ====================================================================================================
-
-		public static string GetInsertQuery() {
-			return "INSERT INTO Servicios " +
-				   "   (IdLinea, Servicio, Turno, Inicio, LugarInicio, Final, LugarFinal, TomaDeje, Euros, Notas) " +
-				   "VALUES " +
-				   "   (@IdLinea, @Servicio, @Turno, @Inicio, @LugarInicio, @Final, @LugarFinal, @TomaDeje, @Euros, @Notas);";
-		}
-
-
-		public static string GetUpdateQuery() {
-			return "UPDATE Servicios " +
-				   "SET IdLinea=@IdLinea, Servicio=@Servicio, Turno=@Turno, Inicio=@Inicio, LugarInicio=@LugarInicio " +
-				   "Final=@Final, LugarFinal=@LugarFinal, TomaDeje=@TomaDeje, Euros=@Euros, Notas=@Notas " +
-				   "WHERE _id=@Id;";
+		public override int GetHashCode() {
+			unchecked {
+				int hash = 5060;
+				hash = (hash * 7) + NumeroLinea?.GetHashCode() ?? 1234;
+				hash = (hash * 7) + Servicio?.GetHashCode() ?? 1234;
+				hash = (hash * 7) + Turno.GetHashCode();
+				return hash;
+			}
 		}
 
 
@@ -88,6 +52,78 @@ namespace Quattro.Models {
 		// ====================================================================================================
 		#region PROPIEDADES
 		// ====================================================================================================
+
+
+		private decimal trabajadas;
+		public decimal Trabajadas {
+			get { return trabajadas; }
+			set {
+				if (trabajadas != value) {
+					trabajadas = value;
+					OnPropertyChanged();
+				}
+			}
+		}
+
+
+		private decimal acumuladas;
+		public decimal Acumuladas {
+			get { return acumuladas; }
+			set {
+				if (acumuladas != value) {
+					acumuladas = value;
+					OnPropertyChanged();
+				}
+			}
+		}
+
+
+		private decimal nocturnas;
+		public decimal Nocturnas {
+			get { return nocturnas; }
+			set {
+				if (nocturnas != value) {
+					nocturnas = value;
+					OnPropertyChanged();
+				}
+			}
+		}
+
+
+		private bool desayuno;
+		public bool Desayuno {
+			get { return desayuno; }
+			set {
+				if (desayuno != value) {
+					desayuno = value;
+					OnPropertyChanged();
+				}
+			}
+		}
+
+
+		private bool comida;
+		public bool Comida {
+			get { return comida; }
+			set {
+				if (comida != value) {
+					comida = value;
+					OnPropertyChanged();
+				}
+			}
+		}
+
+
+		private bool cena;
+		public bool Cena {
+			get { return cena; }
+			set {
+				if (cena != value) {
+					cena = value;
+					OnPropertyChanged();
+				}
+			}
+		}
 
 
 		private TimeSpan tomaDeje;
@@ -114,8 +150,8 @@ namespace Quattro.Models {
 		}
 
 
-		private List<ServicioBase> serviciosAuxiliares;
-		public List<ServicioBase> ServiciosAuxiliares {
+		private NotifyCollection<ServicioBase> serviciosAuxiliares;
+		public NotifyCollection<ServicioBase> ServiciosAuxiliares {
 			get { return serviciosAuxiliares; }
 			set {
 				if (serviciosAuxiliares != value) {
@@ -124,6 +160,19 @@ namespace Quattro.Models {
 				}
 			}
 		}
+
+
+		private string notas;
+		public string Notas {
+			get { return notas; }
+			set {
+				if (notas != value) {
+					notas = value;
+					OnPropertyChanged();
+				}
+			}
+		}
+
 
 		#endregion
 		// ====================================================================================================

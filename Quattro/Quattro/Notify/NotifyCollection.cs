@@ -10,8 +10,9 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
+using Quattro.Common;
 
-namespace Quattro {
+namespace Quattro.Notify {
 
 	/// <summary>
 	/// Esta clase añade la notificación de cambios en las propiedades de los elementos dentro de la colección.
@@ -104,23 +105,5 @@ namespace Quattro {
 	}
 
 
-	/// <summary>
-	/// Clase que encapsula un Item T y el nombre de la propiedad que ha cambiado en T para devolverlo en el
-	/// evento ItemPropertyChanged de la clase TrulyObservableCollection.
-	/// </summary>
-	/// <typeparam name="T">Tipo del item cambiado.</typeparam>
-	public class ItemChangedEventArgs<T> {
-
-		public T ChangedItem { get; }
-		public string PropertyName { get; }
-
-
-		public ItemChangedEventArgs(T item, string propertyName) {
-			ChangedItem = item;
-			PropertyName = propertyName;
-		}
-
-
-	}
 
 }

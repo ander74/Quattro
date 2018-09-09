@@ -5,8 +5,7 @@
 //  Vea el archivo Licencia.txt para más detalles 
 // ===============================================
 #endregion
-using System.Data.Common;
-using Quattro;
+using Quattro.Notify;
 
 namespace Quattro.Models {
 
@@ -19,59 +18,6 @@ namespace Quattro.Models {
 
 		public Incidencia() { }
 
-
-		public Incidencia(DbDataReader lector) {
-			FromReader(lector);
-		}
-
-		#endregion
-		// ====================================================================================================
-
-
-		// ====================================================================================================
-		#region MÉTODOS PÚBLICOS
-		// ====================================================================================================
-
-		public void FromReader(DbDataReader lector) {
-			id = lector.ToInt32("_id");
-			codigo = lector.ToInt32("Codigo");
-			texto = lector.ToString("Texto");
-			tipo = lector.ToInt32("Tipo");
-			notas = lector.ToString("Notas");
-		}
-
-
-		public void ToCommand(ref DbCommand comando) {
-			// Codigo
-			DbParameter parametro = comando.CreateParameter();
-			parametro.DbType = System.Data.DbType.Int32;
-			parametro.ParameterName = "@Codigo";
-			parametro.Value = codigo;
-			// Texto
-			parametro = comando.CreateParameter();
-			parametro.DbType = System.Data.DbType.String;
-			parametro.ParameterName = "@Texto";
-			parametro.Value = texto;
-			// Tipo
-			parametro = comando.CreateParameter();
-			parametro.DbType = System.Data.DbType.Int32;
-			parametro.ParameterName = "@Tipo";
-			parametro.Value = tipo;
-			// Notas
-			parametro = comando.CreateParameter();
-			parametro.DbType = System.Data.DbType.String;
-			parametro.ParameterName = "@Notas";
-			parametro.Value = notas;
-			// Id
-			parametro = comando.CreateParameter();
-			parametro.DbType = System.Data.DbType.Int32;
-			parametro.ParameterName = "@Id";
-			parametro.Value = id;
-		}
-
-
-
-
 		#endregion
 		// ====================================================================================================
 
@@ -81,7 +27,7 @@ namespace Quattro.Models {
 		// ====================================================================================================
 
 		public override string ToString() {
-			return $"{codigo:00}: {Texto}";
+			return $"{codigo:00}: {TextoIncidencia}";
 		}
 
 
@@ -98,42 +44,6 @@ namespace Quattro.Models {
 				hash = hash * codigo.GetHashCode();
 				return hash;
 			}
-		}
-
-
-		#endregion
-		// ====================================================================================================
-
-
-		// ====================================================================================================
-		#region MÉTODOS ESTÁTICOS
-		// ====================================================================================================
-
-		public static string GetSelectQuery() {
-			return "SELECT * " +
-				   "FROM Incidencias " +
-				   "ORDER BY Codigo;";
-		}
-
-
-		public static string GetInsertQuery() {
-			return "INSERT INTO Incidencias " +
-				   "   (Codigo, Texto, Tipo, Notas) " +
-				   "VALUES " +
-				   "   (@Codigo, @Texto, @Tipo, @Notas);";
-		}
-
-
-		public static string GetUpdateQuery() {
-			return "UPDATE Incidencias " +
-				   "SET Codigo=@Codigo, Texto=@Texto, Tipo=@Tipo, Notas=@Notas " +
-				   "WHERE _id=@Id;";
-		}
-
-
-		public static string GetDeleteQuery() {
-			return "DELETE FROM Incidencias " +
-				   "WHERE _id=@Id;";
 		}
 
 
@@ -170,12 +80,12 @@ namespace Quattro.Models {
 		}
 
 
-		private string texto;
-		public string Texto {
-			get { return texto; }
+		private string textoIncidencia;
+		public string TextoIncidencia {
+			get { return textoIncidencia; }
 			set {
-				if (texto != value) {
-					texto = value;
+				if (textoIncidencia != value) {
+					textoIncidencia = value;
 					OnPropertyChanged();
 				}
 			}

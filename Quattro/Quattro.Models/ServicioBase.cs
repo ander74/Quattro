@@ -6,97 +6,21 @@
 // ===============================================
 #endregion
 using System;
-using System.ComponentModel;
 using System.Data.Common;
 using System.Runtime.CompilerServices;
-using Quattro;
+using System.Text.RegularExpressions;
+using Quattro.Common;
+using Quattro.Notify;
 
 namespace Quattro.Models {
 
-    class ServicioBase : NotifyBase {
+	public class ServicioBase : NotifyBase {
 
 		// ====================================================================================================
 		#region CONSTRUCTORES
 		// ====================================================================================================
 
 		public ServicioBase() { }
-
-
-		public ServicioBase(DbDataReader lector) {
-			FromReader(lector);
-		}
-
-		#endregion
-		// ====================================================================================================
-
-
-		// ====================================================================================================
-		#region MÉTODOS PÚBLICOS
-		// ====================================================================================================
-
-		public void FromReader(DbDataReader lector) {
-			id = lector.ToInt32("_id");
-			idLinea = lector.ToInt32("IdLinea");
-			servicio = lector.ToString("Servicio");
-			turno = lector.ToInt32("Turno");
-			inicio = lector.ToTimeSpanNulable("Inicio");
-			lugarInicio = lector.ToString("LugarInicio");
-			final = lector.ToTimeSpanNulable("Final");
-			lugarFinal = lector.ToString("LugarFinal");
-			notas = lector.ToString("Notas");
-		}
-
-
-		public void ToCommand(ref DbCommand comando) {
-			// IdLinea
-			DbParameter parametro = comando.CreateParameter();
-			parametro.DbType = System.Data.DbType.Int32;
-			parametro.ParameterName = "@IdLinea";
-			parametro.Value = idLinea;
-			// Servicio
-			parametro = comando.CreateParameter();
-			parametro.DbType = System.Data.DbType.String;
-			parametro.ParameterName = "@Servicio";
-			parametro.Value = servicio;
-			// Turno
-			parametro = comando.CreateParameter();
-			parametro.DbType = System.Data.DbType.Int32;
-			parametro.ParameterName = "@Turno";
-			parametro.Value = turno;
-			// Inicio
-			parametro = comando.CreateParameter();
-			parametro.DbType = System.Data.DbType.Time;
-			parametro.ParameterName = "@Inicio";
-			parametro.Value = inicio;
-			// Lugar Inicio
-			parametro = comando.CreateParameter();
-			parametro.DbType = System.Data.DbType.String;
-			parametro.ParameterName = "@LugarInicio";
-			parametro.Value = lugarInicio;
-			// Final
-			parametro = comando.CreateParameter();
-			parametro.DbType = System.Data.DbType.Time;
-			parametro.ParameterName = "@Final";
-			parametro.Value = final;
-			// Lugar Final
-			parametro = comando.CreateParameter();
-			parametro.DbType = System.Data.DbType.String;
-			parametro.ParameterName = "@LugarFinal";
-			parametro.Value = lugarFinal;
-			// Notas
-			parametro = comando.CreateParameter();
-			parametro.DbType = System.Data.DbType.String;
-			parametro.ParameterName = "@Notas";
-			parametro.Value = notas;
-			// Id
-			parametro = comando.CreateParameter();
-			parametro.DbType = System.Data.DbType.Int32;
-			parametro.ParameterName = "@Id";
-			parametro.Value = id;
-		}
-
-
-
 
 		#endregion
 		// ====================================================================================================
@@ -107,62 +31,26 @@ namespace Quattro.Models {
 		// ====================================================================================================
 
 		public override string ToString() {
-			return $"{Servicio}/{Turno}: {Inicio} - {Final}";
+			return $"{NumeroLinea} - {Servicio}/{Turno}: {Inicio.ToTexto()} - {Final.ToTexto()}";
 		}
 
 
+		//TODO: Determinar si eliminamos la sobrecarga de estos métodos o no.
 		public override bool Equals(object obj) {
-			var serviciobase = obj as ServicioBase;
-			if (serviciobase == null) return false;
-			return IdLinea == serviciobase.IdLinea && Servicio == serviciobase.Servicio && Turno == serviciobase.Turno;
+			if (obj is ServicioBase serviciobase)
+				return NumeroLinea == serviciobase.NumeroLinea && Servicio == serviciobase.Servicio && Turno == serviciobase.Turno;
+			return false;
 		}
 
 
 		public override int GetHashCode() {
 			unchecked {
 				int hash = 5060;
-				hash = hash * idLinea.GetHashCode();
-				hash = hash * servicio?.GetHashCode() ?? 1234;
-				hash = hash * turno.GetHashCode();
+				hash = (hash * 7) + NumeroLinea?.GetHashCode() ?? 1234;
+				hash = (hash * 7) + Servicio?.GetHashCode() ?? 1234;
+				hash = (hash * 7) + Turno.GetHashCode();
 				return hash;
 			}
-		}
-
-
-		#endregion
-		// ====================================================================================================
-
-
-		// ====================================================================================================
-		#region MÉTODOS ESTÁTICOS
-		// ====================================================================================================
-
-		public static string GetSelectQuery() {
-			return "SELECT * " +
-				   "FROM Servicios " +
-				   "ORDER BY Servicio, Turno;";
-		}
-
-
-		public static string GetInsertQuery() {
-			return "INSERT INTO Servicios " +
-				   "   (IdLinea, Servicio, Turno, Inicio, LugarInicio, Final, LugarFinal, Notas) " +
-				   "VALUES " +
-				   "   (@IdLinea, @Servicio, @Turno, @Inicio, @LugarInicio, @Final, @LugarFinal, @Notas);";
-		}
-
-
-		public static string GetUpdateQuery() {
-			return "UPDATE Servicios " +
-				   "SET IdLinea=@IdLinea, Servicio=@Servicio, Turno=@Turno, Inicio=@Inicio, LugarInicio=@LugarInicio " +
-				   "Final=@Final, LugarFinal=@LugarFinal, Notas=@Notas " +
-				   "WHERE _id=@Id;";
-		}
-
-
-		public static string GetDeleteQuery() {
-			return "DELETE FROM Servicios " +
-				   "WHERE _id=@Id;";
 		}
 
 
@@ -174,15 +62,32 @@ namespace Quattro.Models {
 		#region EVENTOS
 		// ====================================================================================================
 
-		public event EventHandler JornadaChanged;//TODO: Cambiar por un EventHandler<T> con los EventArgs necesarios.
-		public event EventHandler FirmaChanged;//TODO: Cambiar por un EventHandler<T> con los EventArgs necesarios.
+		/// <summary>
+		/// La jornada es el conjunto de la hora de inicio y la de final.
+		/// El evento JornadaChanged se dispara cuando uno de los dos valores ha cambiado.
+		/// </summary>
+		public event ServicioChangedEventHandler JornadaChanged;
 
-		public void OnJornadaChanged() {
-			JornadaChanged?.Invoke(this, new EventArgs());
+		/// <summary>
+		/// La firma es el conjunto de la línea, el servicio y el turno.
+		/// El evento FirmaChanged se dispara cuando uno de los tres valores ha cambiado.
+		/// </summary>
+		public event ServicioChangedEventHandler FirmaChanged;
+
+		/// <summary>
+		/// Dispara el evento JornadaChanged.
+		/// </summary>
+		public void OnJornadaChanged([CallerMemberName] string prop = "") {
+			var args = new ServicioChangedEventArgs(prop);
+			JornadaChanged?.Invoke(this, args);
 		}
 
-		public void OnFirmaChanged() {
-			FirmaChanged?.Invoke(this, new EventArgs());
+		/// <summary>
+		/// Dispara el evento FirmaChanged.
+		/// </summary>
+		public void OnFirmaChanged([CallerMemberName] string prop = "") {
+			var args = new ServicioChangedEventArgs(prop);
+			FirmaChanged?.Invoke(this, args);
 		}
 
 
@@ -206,13 +111,25 @@ namespace Quattro.Models {
 		}
 
 
-		private int idLinea;
-		public int IdLinea {
-			get { return idLinea; }
+		private string numeroLinea;
+		public string NumeroLinea {
+			get { return numeroLinea; }
 			set {
-				if (idLinea != value) {
-					idLinea = value;
+				if (numeroLinea != value) {
+					numeroLinea = value;
 					OnFirmaChanged();
+					OnPropertyChanged();
+				}
+			}
+		}
+
+
+		private string textoLinea;
+		public string TextoLinea {
+			get { return textoLinea; }
+			set {
+				if (textoLinea != value) {
+					textoLinea = value;
 					OnPropertyChanged();
 				}
 			}
@@ -224,7 +141,8 @@ namespace Quattro.Models {
 			get { return servicio; }
 			set {
 				if (servicio != value) {
-					servicio = value;
+					servicio = value.ToUpper();
+					if (Regex.IsMatch(servicio, "^[0 - 9]{ 1}\\D *")) servicio += "0";
 					OnFirmaChanged();
 					OnPropertyChanged();
 				}
@@ -251,6 +169,8 @@ namespace Quattro.Models {
 			set {
 				if (inicio != value) {
 					inicio = value;
+					while (inicio.HasValue && inicio.Value.TotalHours >= 24)
+						inicio = inicio.Value.Subtract(new TimeSpan(24, 0, 0));
 					OnJornadaChanged();
 					OnPropertyChanged();
 				}
@@ -276,6 +196,8 @@ namespace Quattro.Models {
 			set {
 				if (final != value) {
 					final = value;
+					while (final.HasValue && final.Value.TotalHours >= 24)
+						final = final.Value.Subtract(new TimeSpan(24, 0, 0));
 					OnJornadaChanged();
 					OnPropertyChanged();
 				}
@@ -295,19 +217,44 @@ namespace Quattro.Models {
 		}
 
 
-		private string notas;
-		public string Notas {
-			get { return notas; }
-			set {
-				if (notas != value) {
-					notas = value;
-					OnPropertyChanged();
-				}
-			}
-		}
 
 		#endregion
 		// ====================================================================================================
+
+	}
+
+	public static class Extensiones {
+
+		public static void FromReader(this ServicioBase s, DbDataReader lector) {
+			s.Id = lector.ToInt32("_id");
+			s.NumeroLinea = lector.ToString("Linea");
+			s.TextoLinea = lector.ToString("TextoLinea");
+			s.Servicio = lector.ToString("Servicio");
+			s.Turno = lector.ToInt32("Turno");
+			s.Inicio = lector.ToTimeSpanNulable("Inicio");
+			s.LugarInicio = lector.ToString("LugarInicio");
+			s.Final = lector.ToTimeSpanNulable("Final");
+			s.LugarFinal = lector.ToString("LugarFinal");
+		}
+
+		// También se puede hacer creando métodos en el servicio de base de datos.
+		public static ServicioBase ServicioFromReader(DbDataReader lector) {
+			ServicioBase s = new ServicioBase();
+			s.Id = lector.ToInt32("_id");
+			s.NumeroLinea = lector.ToString("Linea");
+			s.TextoLinea = lector.ToString("TextoLinea");
+			s.Servicio = lector.ToString("Servicio");
+			s.Turno = lector.ToInt32("Turno");
+			s.Inicio = lector.ToTimeSpanNulable("Inicio");
+			s.LugarInicio = lector.ToString("LugarInicio");
+			s.Final = lector.ToTimeSpanNulable("Final");
+			s.LugarFinal = lector.ToString("LugarFinal");
+			return s;
+		}
+
+
+
+
 
 	}
 }
