@@ -5,6 +5,8 @@
 //  Vea el archivo Licencia.txt para más detalles 
 // ===============================================
 #endregion
+using System.Data.Common;
+using Quattro.Common;
 using Quattro.Notify;
 
 namespace Quattro.Models {
@@ -16,6 +18,50 @@ namespace Quattro.Models {
 		// ====================================================================================================
 
 		public Linea () { }
+
+
+		#endregion
+		// ====================================================================================================
+
+
+		// ====================================================================================================
+		#region MÉTODOS PÚBLICOS
+		// ====================================================================================================
+
+		public virtual void FromReader(DbDataReader lector) {
+			id = lector.ToInt32("Id");
+			numeroLinea = lector.ToString("NumeroLinea");
+			textoLinea = lector.ToString("TextoLinea");
+			notas = lector.ToString("Notas");
+		}
+
+
+		public virtual void ToCommand(ref DbCommand comando) {
+			// NumeroLinea
+			DbParameter parametro = comando.CreateParameter();
+			parametro.DbType = System.Data.DbType.String;
+			parametro.ParameterName = "@NumeroLinea";
+			parametro.Value = NumeroLinea;
+			comando.Parameters.Add(parametro);
+			// TextoLinea
+			parametro = comando.CreateParameter();
+			parametro.DbType = System.Data.DbType.String;
+			parametro.ParameterName = "@TextoLinea";
+			parametro.Value = TextoLinea;
+			comando.Parameters.Add(parametro);
+			// Notas
+			parametro = comando.CreateParameter();
+			parametro.DbType = System.Data.DbType.String;
+			parametro.ParameterName = "@Notas";
+			parametro.Value = Notas;
+			comando.Parameters.Add(parametro);
+			// Id
+			parametro = comando.CreateParameter();
+			parametro.DbType = System.Data.DbType.Int32;
+			parametro.ParameterName = "@Id";
+			parametro.Value = Id;
+			comando.Parameters.Add(parametro);
+		}
 
 
 		#endregion

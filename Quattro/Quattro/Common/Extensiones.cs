@@ -68,6 +68,18 @@ namespace Quattro.Common {
 		}
 
 
+		/// <summary>
+		/// Devuelve los Ticks de la hora de un TimeSpan? o DbNull si no contiene un valor (es nulo).
+		/// </summary>
+		/// <param name="hora">Hora de la que devolver los ticks</param>
+		/// <returns>Número de ticks que representa el TimeSpan? o DbNull, si no contiene un valor.</returns>
+		public static object ToTicksOrDbNull(this TimeSpan? hora) {
+			if (!hora.HasValue) return DBNull.Value;
+			return hora.Value.Ticks;
+		}
+
+
+
 		#endregion
 		// ====================================================================================================
 
@@ -240,6 +252,7 @@ namespace Quattro.Common {
 		#region MÉTODOS DE EXTENSIÓN PARA ...
 		// ====================================================================================================
 
+		
 
 
 		#endregion

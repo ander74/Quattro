@@ -6,6 +6,8 @@
 // ===============================================
 #endregion
 using System;
+using System.Data.Common;
+using Quattro.Common;
 using Quattro.Notify;
 
 namespace Quattro.Models {
@@ -17,6 +19,57 @@ namespace Quattro.Models {
 		// ====================================================================================================
 
 		public HoraAjena() { }
+
+		#endregion
+		// ====================================================================================================
+
+
+		// ====================================================================================================
+		#region MÉTODOS PÚBLICOS
+		// ====================================================================================================
+
+		public virtual void FromReader(DbDataReader lector) {
+			id = lector.ToInt32("Id");
+			fecha = lector.ToDateTime("Fecha");
+			horas = lector.ToDecimal("Horas");
+			motivo = lector.ToString("Motivo");
+			codigo = lector.ToInt32("Codigo");
+		}
+
+
+		public virtual void ToCommand(ref DbCommand comando) {
+			// Fecha
+			DbParameter parametro = comando.CreateParameter();
+			parametro.DbType = System.Data.DbType.DateTime;
+			parametro.ParameterName = "@Fecha";
+			parametro.Value = Fecha.ToString("yyyy-MM-dd");
+			comando.Parameters.Add(parametro);
+			// Horas
+			parametro = comando.CreateParameter();
+			parametro.DbType = System.Data.DbType.Decimal;
+			parametro.ParameterName = "@Horas";
+			parametro.Value = Horas;
+			comando.Parameters.Add(parametro);
+			// Motivo
+			parametro = comando.CreateParameter();
+			parametro.DbType = System.Data.DbType.String;
+			parametro.ParameterName = "@Motivo";
+			parametro.Value = Motivo;
+			comando.Parameters.Add(parametro);
+			//Codigo
+			parametro = comando.CreateParameter();
+			parametro.DbType = System.Data.DbType.Int32;
+			parametro.ParameterName = "@Codigo";
+			parametro.Value = Codigo;
+			comando.Parameters.Add(parametro);
+			// Id
+			parametro = comando.CreateParameter();
+			parametro.DbType = System.Data.DbType.Int32;
+			parametro.ParameterName = "@Id";
+			parametro.Value = Id;
+			comando.Parameters.Add(parametro);
+		}
+
 
 		#endregion
 		// ====================================================================================================

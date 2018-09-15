@@ -14,6 +14,7 @@ using Quattro.Notify;
 
 namespace Quattro.Models {
 
+
 	public class ServicioBase : NotifyBase {
 
 		// ====================================================================================================
@@ -21,6 +22,90 @@ namespace Quattro.Models {
 		// ====================================================================================================
 
 		public ServicioBase() { }
+
+
+		public ServicioBase(DbDataReader lector) {
+			FromReader(lector);
+		}
+
+		#endregion
+		// ====================================================================================================
+
+
+		// ====================================================================================================
+		#region MÉTODOS PÚBLICOS
+		// ====================================================================================================
+
+		public virtual void FromReader(DbDataReader lector) {
+			id = lector.ToInt32("Id");
+			numeroLinea = lector.ToString("NumeroLinea");
+			textoLinea = lector.ToString("TextoLinea");
+			servicio = lector.ToString("Servicio");
+			turno = lector.ToInt32("Turno");
+			inicio = lector.ToTimeSpanNulable("Inicio");
+			lugarInicio = lector.ToString("LugarInicio");
+			final = lector.ToTimeSpanNulable("Final");
+			lugarFinal = lector.ToString("LugarFinal");
+		}
+
+
+		public virtual void ToCommand(ref DbCommand comando) {
+			// NumeroLinea
+			DbParameter parametro = comando.CreateParameter();
+			parametro.DbType = System.Data.DbType.String;
+			parametro.ParameterName = "@NumeroLinea";
+			parametro.Value = NumeroLinea;
+			comando.Parameters.Add(parametro);
+			// TextoLinea
+			parametro = comando.CreateParameter();
+			parametro.DbType = System.Data.DbType.String;
+			parametro.ParameterName = "@TextoLinea";
+			parametro.Value = TextoLinea;
+			comando.Parameters.Add(parametro);
+			// Servicio
+			parametro = comando.CreateParameter();
+			parametro.DbType = System.Data.DbType.String;
+			parametro.ParameterName = "@Servicio";
+			parametro.Value = Servicio;
+			comando.Parameters.Add(parametro);
+			// Turno
+			parametro = comando.CreateParameter();
+			parametro.DbType = System.Data.DbType.Int32;
+			parametro.ParameterName = "@Turno";
+			parametro.Value = Turno;
+			comando.Parameters.Add(parametro);
+			// Inicio
+			parametro = comando.CreateParameter();
+			parametro.DbType = System.Data.DbType.Int64;
+			parametro.ParameterName = "@Inicio";
+			parametro.Value = Inicio.ToTicksOrDbNull();
+			comando.Parameters.Add(parametro);
+			// LugarInicio
+			parametro = comando.CreateParameter();
+			parametro.DbType = System.Data.DbType.String;
+			parametro.ParameterName = "@LugarInicio";
+			parametro.Value = LugarInicio;
+			comando.Parameters.Add(parametro);
+			// Final
+			parametro = comando.CreateParameter();
+			parametro.DbType = System.Data.DbType.Int64;
+			parametro.ParameterName = "@Final";
+			parametro.Value = Final.ToTicksOrDbNull();
+			comando.Parameters.Add(parametro);
+			// LugarFinal
+			parametro = comando.CreateParameter();
+			parametro.DbType = System.Data.DbType.String;
+			parametro.ParameterName = "@LugarFinal";
+			parametro.Value = LugarFinal;
+			comando.Parameters.Add(parametro);
+			// Id
+			parametro = comando.CreateParameter();
+			parametro.DbType = System.Data.DbType.Int32;
+			parametro.ParameterName = "@Id";
+			parametro.Value = Id;
+			comando.Parameters.Add(parametro);
+		}
+
 
 		#endregion
 		// ====================================================================================================
@@ -223,38 +308,4 @@ namespace Quattro.Models {
 
 	}
 
-	public static class Extensiones {
-
-		public static void FromReader(this ServicioBase s, DbDataReader lector) {
-			s.Id = lector.ToInt32("_id");
-			s.NumeroLinea = lector.ToString("Linea");
-			s.TextoLinea = lector.ToString("TextoLinea");
-			s.Servicio = lector.ToString("Servicio");
-			s.Turno = lector.ToInt32("Turno");
-			s.Inicio = lector.ToTimeSpanNulable("Inicio");
-			s.LugarInicio = lector.ToString("LugarInicio");
-			s.Final = lector.ToTimeSpanNulable("Final");
-			s.LugarFinal = lector.ToString("LugarFinal");
-		}
-
-		// También se puede hacer creando métodos en el servicio de base de datos.
-		public static ServicioBase ServicioFromReader(DbDataReader lector) {
-			ServicioBase s = new ServicioBase();
-			s.Id = lector.ToInt32("_id");
-			s.NumeroLinea = lector.ToString("Linea");
-			s.TextoLinea = lector.ToString("TextoLinea");
-			s.Servicio = lector.ToString("Servicio");
-			s.Turno = lector.ToInt32("Turno");
-			s.Inicio = lector.ToTimeSpanNulable("Inicio");
-			s.LugarInicio = lector.ToString("LugarInicio");
-			s.Final = lector.ToTimeSpanNulable("Final");
-			s.LugarFinal = lector.ToString("LugarFinal");
-			return s;
-		}
-
-
-
-
-
-	}
 }

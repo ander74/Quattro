@@ -6,6 +6,7 @@
 // ===============================================
 #endregion
 using System;
+using System.Data.Common;
 using Quattro.Common;
 
 namespace Quattro.Models {
@@ -19,6 +20,90 @@ namespace Quattro.Models {
 
 		public DiaCalendario() : base() { }
 
+
+		public DiaCalendario(DbDataReader lector) {
+			FromReader(lector);
+		}
+
+		#endregion
+		// ====================================================================================================
+
+
+		// ====================================================================================================
+		#region MÉTODOS PÚBLICOS
+		// ====================================================================================================
+
+		public override void FromReader(DbDataReader lector) {
+			base.FromReader(lector);
+			fecha = lector.ToDateTime("Fecha");
+			EsFranqueo = lector.ToBool("EsFranqueo");
+			EsFestivo = lector.ToBool("EsFestivo");
+			codigoIncidencia = lector.ToInt32("CodigoIncidencia");
+			huelgaParcial = lector.ToBool("HuelgaParcial");
+			horasHuelga = lector.ToDecimal("HorasHuelga");
+			relevo = lector.ToInt32("Relevo");
+			susti = lector.ToInt32("Susti");
+			bus = lector.ToString("Bus");
+		}
+
+
+		public override void ToCommand(ref DbCommand comando) {
+			base.ToCommand(ref comando);
+			//Fecha
+			DbParameter parametro = comando.CreateParameter();
+			parametro.DbType = System.Data.DbType.Int32;
+			parametro.ParameterName = "@Fecha";
+			parametro.Value = Fecha.ToString("yyyy-MM-dd");
+			comando.Parameters.Add(parametro);
+			//EsFranqueo
+			parametro = comando.CreateParameter();
+			parametro.DbType = System.Data.DbType.Boolean;
+			parametro.ParameterName = "@EsFranqueo";
+			parametro.Value = EsFranqueo;
+			comando.Parameters.Add(parametro);
+			//EsFestivo
+			parametro = comando.CreateParameter();
+			parametro.DbType = System.Data.DbType.Boolean;
+			parametro.ParameterName = "@EsFestivo";
+			parametro.Value = EsFestivo;
+			comando.Parameters.Add(parametro);
+			//CodigoIncidencia
+			parametro = comando.CreateParameter();
+			parametro.DbType = System.Data.DbType.Int32;
+			parametro.ParameterName = "@CodigoIncidencia";
+			parametro.Value = CodigoIncidencia;
+			comando.Parameters.Add(parametro);
+			//HuelgaParcial
+			parametro = comando.CreateParameter();
+			parametro.DbType = System.Data.DbType.Boolean;
+			parametro.ParameterName = "@HuelgaParcial";
+			parametro.Value = HuelgaParcial;
+			comando.Parameters.Add(parametro);
+			//HorasHuelga
+			parametro = comando.CreateParameter();
+			parametro.DbType = System.Data.DbType.Decimal;
+			parametro.ParameterName = "@HorasHuelga";
+			parametro.Value = HorasHuelga;
+			comando.Parameters.Add(parametro);
+			//Relevo
+			parametro = comando.CreateParameter();
+			parametro.DbType = System.Data.DbType.Int32;
+			parametro.ParameterName = "@Relevo";
+			parametro.Value = Relevo;
+			comando.Parameters.Add(parametro);
+			//Susti
+			parametro = comando.CreateParameter();
+			parametro.DbType = System.Data.DbType.Int32;
+			parametro.ParameterName = "@Susti";
+			parametro.Value = Susti;
+			comando.Parameters.Add(parametro);
+			//Bus
+			parametro = comando.CreateParameter();
+			parametro.DbType = System.Data.DbType.String;
+			parametro.ParameterName = "@Bus";
+			parametro.Value = Bus;
+			comando.Parameters.Add(parametro);
+		}
 
 		#endregion
 		// ====================================================================================================

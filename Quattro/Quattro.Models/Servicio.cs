@@ -6,6 +6,8 @@
 // ===============================================
 #endregion
 using System;
+using System.Data.Common;
+using Quattro.Common;
 using Quattro.Notify;
 
 namespace Quattro.Models {
@@ -18,6 +20,90 @@ namespace Quattro.Models {
 
 		public Servicio() : base() { }
 
+
+		public Servicio(DbDataReader lector) {
+			FromReader(lector);
+		}
+
+		#endregion
+		// ====================================================================================================
+
+
+		// ====================================================================================================
+		#region MÉTODOS PÚBLICOS
+		// ====================================================================================================
+
+		public override void FromReader(DbDataReader lector) {
+			base.FromReader(lector);
+			trabajadas = lector.ToDecimal("Trabajadas");
+			acumuladas = lector.ToDecimal("Acumuladas");
+			nocturnas = lector.ToDecimal("Nocturnas");
+			desayuno = lector.ToBool("Desayuno");
+			comida = lector.ToBool("Comida");
+			cena = lector.ToBool("Cena");
+			tomaDeje = lector.ToTimeSpan("TomaDeje");
+			euros = lector.ToDecimal("Euros");
+			notas = lector.ToString("Notas");
+		}
+
+
+		public override void ToCommand(ref DbCommand comando) {
+			base.ToCommand(ref comando);
+			//Trabajadas
+			DbParameter parametro = comando.CreateParameter();
+			parametro.DbType = System.Data.DbType.Decimal;
+			parametro.ParameterName = "@Trabajadas";
+			parametro.Value = Trabajadas;
+			comando.Parameters.Add(parametro);
+			//Acumuladas
+			parametro = comando.CreateParameter();
+			parametro.DbType = System.Data.DbType.Decimal;
+			parametro.ParameterName = "@Acumuladas";
+			parametro.Value = Acumuladas;
+			comando.Parameters.Add(parametro);
+			//Nocturnas
+			parametro = comando.CreateParameter();
+			parametro.DbType = System.Data.DbType.Decimal;
+			parametro.ParameterName = "@Nocturnas";
+			parametro.Value = Nocturnas;
+			comando.Parameters.Add(parametro);
+			//Desayuno
+			parametro = comando.CreateParameter();
+			parametro.DbType = System.Data.DbType.Boolean;
+			parametro.ParameterName = "@Desayuno";
+			parametro.Value = Desayuno;
+			comando.Parameters.Add(parametro);
+			//Comida
+			parametro = comando.CreateParameter();
+			parametro.DbType = System.Data.DbType.Boolean;
+			parametro.ParameterName = "@Comida";
+			parametro.Value = Comida;
+			comando.Parameters.Add(parametro);
+			//Cena
+			parametro = comando.CreateParameter();
+			parametro.DbType = System.Data.DbType.Boolean;
+			parametro.ParameterName = "@Cena";
+			parametro.Value = Cena;
+			comando.Parameters.Add(parametro);
+			//TomaDeje
+			parametro = comando.CreateParameter();
+			parametro.DbType = System.Data.DbType.Int64;
+			parametro.ParameterName = "@TomaDeje";
+			parametro.Value = TomaDeje.Ticks;
+			comando.Parameters.Add(parametro);
+			//Euros
+			parametro = comando.CreateParameter();
+			parametro.DbType = System.Data.DbType.Decimal;
+			parametro.ParameterName = "@Euros";
+			parametro.Value = Euros;
+			comando.Parameters.Add(parametro);
+			//Notas
+			parametro = comando.CreateParameter();
+			parametro.DbType = System.Data.DbType.String;
+			parametro.ParameterName = "@Notas";
+			parametro.Value = Notas;
+			comando.Parameters.Add(parametro);
+		}
 
 		#endregion
 		// ====================================================================================================

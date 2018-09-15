@@ -5,6 +5,8 @@
 //  Vea el archivo Licencia.txt para más detalles 
 // ===============================================
 #endregion
+using System.Data.Common;
+using Quattro.Common;
 using Quattro.Notify;
 
 namespace Quattro.Models {
@@ -16,6 +18,78 @@ namespace Quattro.Models {
 		// ====================================================================================================
 
 		public Compañero() { }
+
+		#endregion
+		// ====================================================================================================
+
+
+		// ====================================================================================================
+		#region MÉTODOS PÚBLICOS
+		// ====================================================================================================
+
+		public virtual void FromReader(DbDataReader lector) {
+			id = lector.ToInt32("Id");
+			matricula = lector.ToInt32("Matricula");
+			nombre = lector.ToString("Nombre");
+			apellidos = lector.ToString("Apellidos");
+			telefono = lector.ToString("Telefono");
+			calificacion = lector.ToInt32("Calificacion");
+			deuda = lector.ToInt32("Deuda");
+			notas = lector.ToString("Notas");
+		}
+
+
+		public virtual void ToCommand(ref DbCommand comando) {
+			// Matricula
+			DbParameter parametro = comando.CreateParameter();
+			parametro.DbType = System.Data.DbType.Int32;
+			parametro.ParameterName = "@Matricula";
+			parametro.Value = Matricula;
+			comando.Parameters.Add(parametro);
+			//Nombre
+			parametro = comando.CreateParameter();
+			parametro.DbType = System.Data.DbType.String;
+			parametro.ParameterName = "@Nombre";
+			parametro.Value = Nombre;
+			comando.Parameters.Add(parametro);
+			//Apellidos
+			parametro = comando.CreateParameter();
+			parametro.DbType = System.Data.DbType.String;
+			parametro.ParameterName = "@Apellidos";
+			parametro.Value = Apellidos;
+			comando.Parameters.Add(parametro);
+			//Telefono
+			parametro = comando.CreateParameter();
+			parametro.DbType = System.Data.DbType.String;
+			parametro.ParameterName = "@Telefono";
+			parametro.Value = Telefono;
+			comando.Parameters.Add(parametro);
+			//Calificacion
+			parametro = comando.CreateParameter();
+			parametro.DbType = System.Data.DbType.Int32;
+			parametro.ParameterName = "@Calificacion";
+			parametro.Value = Calificacion;
+			comando.Parameters.Add(parametro);
+			//Deuda
+			parametro = comando.CreateParameter();
+			parametro.DbType = System.Data.DbType.Int32;
+			parametro.ParameterName = "@Deuda";
+			parametro.Value = Deuda;
+			comando.Parameters.Add(parametro);
+			// Notas
+			parametro = comando.CreateParameter();
+			parametro.DbType = System.Data.DbType.String;
+			parametro.ParameterName = "@Notas";
+			parametro.Value = Notas;
+			comando.Parameters.Add(parametro);
+			// Id
+			parametro = comando.CreateParameter();
+			parametro.DbType = System.Data.DbType.Int32;
+			parametro.ParameterName = "@Id";
+			parametro.Value = Id;
+			comando.Parameters.Add(parametro);
+		}
+
 
 		#endregion
 		// ====================================================================================================
@@ -115,12 +189,12 @@ namespace Quattro.Models {
 		}
 
 
-		private int clasificacion;
-		public int Clasificacion {
-			get { return clasificacion; }
+		private int calificacion;
+		public int Calificacion {
+			get { return calificacion; }
 			set {
-				if (clasificacion != value) {
-					clasificacion = value;
+				if (calificacion != value) {
+					calificacion = value;
 					OnPropertyChanged();
 				}
 			}
