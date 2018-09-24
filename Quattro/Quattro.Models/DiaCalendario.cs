@@ -51,21 +51,21 @@ namespace Quattro.Models {
 			base.ToCommand(ref comando);
 			//Fecha
 			DbParameter parametro = comando.CreateParameter();
-			parametro.DbType = System.Data.DbType.Int32;
+			parametro.DbType = System.Data.DbType.String;
 			parametro.ParameterName = "@Fecha";
 			parametro.Value = Fecha.ToString("yyyy-MM-dd");
 			comando.Parameters.Add(parametro);
 			//EsFranqueo
 			parametro = comando.CreateParameter();
-			parametro.DbType = System.Data.DbType.Boolean;
+			parametro.DbType = System.Data.DbType.Int32;
 			parametro.ParameterName = "@EsFranqueo";
-			parametro.Value = EsFranqueo;
+			parametro.Value = EsFranqueo ? 1 : 0;
 			comando.Parameters.Add(parametro);
 			//EsFestivo
 			parametro = comando.CreateParameter();
-			parametro.DbType = System.Data.DbType.Boolean;
+			parametro.DbType = System.Data.DbType.Int32;
 			parametro.ParameterName = "@EsFestivo";
-			parametro.Value = EsFestivo;
+			parametro.Value = EsFestivo ? 1 : 0;
 			comando.Parameters.Add(parametro);
 			//CodigoIncidencia
 			parametro = comando.CreateParameter();
@@ -75,9 +75,9 @@ namespace Quattro.Models {
 			comando.Parameters.Add(parametro);
 			//HuelgaParcial
 			parametro = comando.CreateParameter();
-			parametro.DbType = System.Data.DbType.Boolean;
+			parametro.DbType = System.Data.DbType.Int32;
 			parametro.ParameterName = "@HuelgaParcial";
-			parametro.Value = HuelgaParcial;
+			parametro.Value = HuelgaParcial ? 1 : 0;
 			comando.Parameters.Add(parametro);
 			//HorasHuelga
 			parametro = comando.CreateParameter();
@@ -114,7 +114,7 @@ namespace Quattro.Models {
 		// ====================================================================================================
 
 		public override string ToString() {
-			return $"{Fecha.ToString("dd-MM-yyyy")}: {NumeroLinea} - {Servicio}/{Turno} ({Inicio.ToTexto()} - {Final.ToTexto()})";
+			return $"{Fecha.ToString("dd-MM-yyyy")}: {NumeroLinea} - {Servicio}/{Turno} ({Inicio} - {Final})";
 		}
 
 

@@ -19,6 +19,11 @@ namespace Quattro.Models {
 
 		public Compañero() { }
 
+
+		public Compañero(DbDataReader lector) {
+			FromReader(lector);
+		}
+
 		#endregion
 		// ====================================================================================================
 
@@ -33,7 +38,7 @@ namespace Quattro.Models {
 			nombre = lector.ToString("Nombre");
 			apellidos = lector.ToString("Apellidos");
 			telefono = lector.ToString("Telefono");
-			calificacion = lector.ToInt32("Calificacion");
+			calificacion = (CalificacionCompañero)lector.ToInt32("Calificacion");
 			deuda = lector.ToInt32("Deuda");
 			notas = lector.ToString("Notas");
 		}
@@ -189,8 +194,8 @@ namespace Quattro.Models {
 		}
 
 
-		private int calificacion;
-		public int Calificacion {
+		private CalificacionCompañero calificacion;
+		public CalificacionCompañero Calificacion {
 			get { return calificacion; }
 			set {
 				if (calificacion != value) {

@@ -21,11 +21,11 @@ namespace Quattro.SQLite {
 
 		private const string COMANDO_CREAR_CALENDARIO = 
 			"CREATE TABLE Calendario (Id INTEGER PRIMARY KEY AUTOINCREMENT UNIQUE, " +
-				"Fecha             STRING   DEFAULT ''  UNIQUE, " +
-				"EsFranqueo        BOOL     , " +
-				"EsFestivo         BOOL     , " +
+				"Fecha             TEXT     DEFAULT ''  UNIQUE, " +
+				"EsFranqueo        INTEGER  , " +
+				"EsFestivo         INTEGER  , " +
 				"CodigoIncidencia  INTEGER  , " +
-				"HuelgaParcial     BOOL     , " +
+				"HuelgaParcial     INTEGER  , " +
 				"HorasHuelga       REAL     , " +
 				"Servicio          TEXT     DEFAULT '', " +
 				"Turno             INTEGER  , " +
@@ -38,9 +38,9 @@ namespace Quattro.SQLite {
 				"Trabajadas        REAL     , " +
 				"Acumuladas        REAL     , " +
 				"Nocturnas         REAL     , " +
-				"Desayuno          BOOL     , " +
-				"Comida            BOOL     , " +
-				"Cena              BOOL     , " +
+				"Desayuno          INTEGER  , " +
+				"Comida            INTEGER  , " +
+				"Cena              INTEGER  , " +
 				"TomaDeje          INTEGER  , " +
 				"Euros             REAL     , " +
 				"Relevo            INTEGER  , " +
@@ -51,7 +51,7 @@ namespace Quattro.SQLite {
 
 		private const string COMANDO_CREAR_SERVICIOS_CALENDARIO = 
 			"CREATE TABLE ServiciosCalendario (Id INTEGER PRIMARY KEY AUTOINCREMENT UNIQUE, " +
-				"IdCalendario  INTEGER  , " +
+				"Fecha         TEXT     DEFAULT '', " +
 				"Servicio      TEXT     DEFAULT '', " +
 				"Turno         INTEGER  , " +
 				"NumeroLinea   TEXT     DEFAULT '', " +
@@ -72,7 +72,7 @@ namespace Quattro.SQLite {
 
 		private const string COMANDO_CREAR_INCIDENCIAS = 
 			"CREATE TABLE Incidencias (Id INTEGER PRIMARY KEY AUTOINCREMENT UNIQUE, " +
-				"Codigo           INTEGER  , " +
+				"Codigo           INTEGER  UNIQUE, " +
 				"TextoIncidencia  TEXT     DEFAULT '', " +
 				"Tipo             INTEGER  , " +
 				"Notas            TEXT     DEFAULT '' " +
@@ -91,14 +91,16 @@ namespace Quattro.SQLite {
 
 		private const string COMANDO_CREAR_LINEAS = 
 			"CREATE TABLE Lineas (Id INTEGER PRIMARY KEY AUTOINCREMENT UNIQUE, " +
-				"NumeroLinea  TEXT     DEFAULT '', " +
+				"NumeroLinea  TEXT     UNIQUE  DEFAULT '', " +
 				"TextoLinea   TEXT     DEFAULT '', " +
 				"Notas        TEXT     DEFAULT '' " +
 			");";
 		
 		private const string COMANDO_CREAR_SERVICIOS = 
 			"CREATE TABLE Servicios (Id INTEGER PRIMARY KEY AUTOINCREMENT UNIQUE, " +
-				"NumeroLinea   TEXT     DEFAULT '', " +
+				"NumeroLinea   TEXT     DEFAULT '' " +
+				"                       REFERENCES Lineas (NumeroLinea) ON DELETE CASCADE " +
+				"                                                       ON UPDATE CASCADE, " +
 				"Servicio      TEXT     DEFAULT '', " +
 				"Turno         INTEGER  , " +
 				"Inicio        INTEGER  , " +
@@ -112,8 +114,11 @@ namespace Quattro.SQLite {
 
 		private const string COMANDO_CREAR_SERVICIOS_AUXILIARES = 
 			"CREATE TABLE ServiciosAuxiliares (Id INTEGER PRIMARY KEY AUTOINCREMENT UNIQUE, " +
-				"IdServicio    INTEGER  , " +
-				"NumeroLinea   TEXT     DEFAULT '', " +
+				"IdServicio    INTEGER  REFERENCES Servicios (Id) ON DELETE CASCADE " +
+				"                                                 ON UPDATE CASCADE, " +
+				"NumeroLinea   TEXT     DEFAULT '' " +
+				"                       REFERENCES Lineas (NumeroLinea) ON DELETE CASCADE " +
+				"                                                       ON UPDATE CASCADE, " +
 				"Servicio      TEXT     DEFAULT '', " +
 				"Turno         INTEGER  , " +
 				"Inicio        INTEGER  , " +
@@ -167,12 +172,12 @@ namespace Quattro.SQLite {
 
 		string COMANDO_COPIAR_SERVICIOS_CALENDARIO_V4To5 =
 			"INSERT INTO ServiciosCalendario " +
-				"(IdCalendario, Servicio, Turno, NumeroLinea, TextoLinea, Inicio, LugarInicio, Final, LugarFinal) " +
+				"(Fecha, Servicio, Turno, NumeroLinea, TextoLinea, Inicio, LugarInicio, Final, LugarFinal) " +
 			"SELECT " +
-				"(SELECT Id FROM Calendario " +
-				"		    WHERE Calendario.Fecha = ((ServiciosCalendarioOLD.Año || '-' || " +
-				"									   substr('0' || ServiciosCalendarioOLD.Mes, -2, 2) || '-' || " +
-				"									   substr('0' || ServiciosCalendarioOLD.Dia, -2, 2)))) As IdCalendario, " +
+				"(SELECT Fecha FROM Calendario " + //TODO: Modificar esta para poner la fecha directamente.
+				"   		   WHERE Calendario.Fecha = ((ServiciosCalendarioOLD.Año || '-' || " +
+				"   			 						  substr('0' || ServiciosCalendarioOLD.Mes, -2, 2) || '-' || " +
+				"   			  						  substr('0' || ServiciosCalendarioOLD.Dia, -2, 2)))) As IdCalendario, " +
 				"Servicio, " +
 				"Turno, " +
 				"Linea, " +
@@ -272,7 +277,7 @@ namespace Quattro.SQLite {
 
 		string COMANDO_COPIAR_SERVICIOS_CALENDARIO_V5To6 =
 			"INSERT INTO ServiciosCalendario (" +
-				"IdCalendario, Servicio, Turno, NumeroLinea, TextoLinea, Inicio, LugarInicio, Final, LugarFinal) " +
+				"Fecha, Servicio, Turno, NumeroLinea, TextoLinea, Inicio, LugarInicio, Final, LugarFinal) " +
 			"SELECT " +
 			//TODO: Falta parsear los campos antiguos en los nuevos.
 			"FROM ServiciosCalendarioOLD;";
@@ -358,6 +363,8 @@ namespace Quattro.SQLite {
 				using (SQLiteTransaction transaccion = conexion.BeginTransaction()) {
 					using (SQLiteCommand comando = conexion.CreateCommand()) {
 						comando.Transaction = transaccion;
+						comando.CommandText = "PRAGMA foreign_keys = 0;";
+						comando.ExecuteNonQuery();
 						comando.CommandText = sqlRenombrar;
 						comando.ExecuteNonQuery();
 						comando.CommandText = sqlCrear;
@@ -365,6 +372,8 @@ namespace Quattro.SQLite {
 						comando.CommandText = sqlCopiar;
 						comando.ExecuteNonQuery();
 						comando.CommandText = sqlBorrar;
+						comando.ExecuteNonQuery();
+						comando.CommandText = "PRAGMA foreign_keys = 1;";
 						comando.ExecuteNonQuery();
 					}
 					transaccion.Commit();
@@ -382,42 +391,58 @@ namespace Quattro.SQLite {
 		// ====================================================================================================
 
 		public void CrearTablaCalendario(string cadenaConexion) {
+			EjecutarComandoSQL("PRAGMA foreign_keys = 0;", cadenaConexion);
 			EjecutarComandoSQL(COMANDO_CREAR_CALENDARIO, cadenaConexion);
+			EjecutarComandoSQL("PRAGMA foreign_keys = 1;", cadenaConexion);
 		}
 
 
 		public void CrearTablaServiciosCalendario(string cadenaConexion) {
+			EjecutarComandoSQL("PRAGMA foreign_keys = 0;", cadenaConexion);
 			EjecutarComandoSQL(COMANDO_CREAR_SERVICIOS_CALENDARIO, cadenaConexion);
+			EjecutarComandoSQL("PRAGMA foreign_keys = 1;", cadenaConexion);
 		}
 
 
 		public void CrearTablaHorasAjenas(string cadenaConexion) {
+			EjecutarComandoSQL("PRAGMA foreign_keys = 0;", cadenaConexion);
 			EjecutarComandoSQL(COMANDO_CREAR_HORAS_AJENAS, cadenaConexion);
+			EjecutarComandoSQL("PRAGMA foreign_keys = 1;", cadenaConexion);
 		}
 
 
 		public void CrearTablaIncidencias(string cadenaConexion) {
+			EjecutarComandoSQL("PRAGMA foreign_keys = 0;", cadenaConexion);
 			EjecutarComandoSQL(COMANDO_CREAR_INCIDENCIAS, cadenaConexion);
+			EjecutarComandoSQL("PRAGMA foreign_keys = 1;", cadenaConexion);
 		}
 
 
 		public void CrearTablaCompañeros(string cadenaConexion) {
+			EjecutarComandoSQL("PRAGMA foreign_keys = 0;", cadenaConexion);
 			EjecutarComandoSQL(COMANDO_CREAR_COMPAÑEROS, cadenaConexion);
+			EjecutarComandoSQL("PRAGMA foreign_keys = 1;", cadenaConexion);
 		}
 
 
 		public void CrearTablaLineas(string cadenaConexion) {
+			EjecutarComandoSQL("PRAGMA foreign_keys = 0;", cadenaConexion);
 			EjecutarComandoSQL(COMANDO_CREAR_LINEAS, cadenaConexion);
+			EjecutarComandoSQL("PRAGMA foreign_keys = 1;", cadenaConexion);
 		}
 
 
 		public void CrearTablaServicios(string cadenaConexion) {
+			EjecutarComandoSQL("PRAGMA foreign_keys = 0;", cadenaConexion);
 			EjecutarComandoSQL(COMANDO_CREAR_SERVICIOS, cadenaConexion);
+			EjecutarComandoSQL("PRAGMA foreign_keys = 1;", cadenaConexion);
 		}
 
 
 		public void CrearTablaServiciosAuxiliares(string cadenaConexion) {
+			EjecutarComandoSQL("PRAGMA foreign_keys = 0;", cadenaConexion);
 			EjecutarComandoSQL(COMANDO_CREAR_SERVICIOS_AUXILIARES, cadenaConexion);
+			EjecutarComandoSQL("PRAGMA foreign_keys = 1;", cadenaConexion);
 		}
 
 

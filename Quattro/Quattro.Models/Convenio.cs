@@ -30,16 +30,16 @@ namespace Quattro.Models {
 			// Definimos los inicios y finales
 			List<(int inicio, int final)> horas = new List<(int inicio, int final)>();
 
-			int inicioTemporal = (int)servicio.Inicio.Value.TotalMinutes;
-			int finalTemporal = (int)servicio.Final.Value.TotalMinutes;
+			int inicioTemporal = servicio.Inicio.TotalMinutos;
+			int finalTemporal = servicio.Final.TotalMinutos;
 			if (finalTemporal < inicioTemporal) finalTemporal += 1440;
 			horas.Add((inicioTemporal, finalTemporal));
 
 			// Recorremos los servicios auxiliares y añadimos el inicio y final.
 			foreach (ServicioBase serv in servicio.ServiciosAuxiliares) {
 				if (serv.Inicio != null && serv.Final != null) {
-					inicioTemporal = (int)serv.Inicio.Value.TotalMinutes;
-					finalTemporal = (int)serv.Final.Value.TotalMinutes;
+					inicioTemporal = serv.Inicio.TotalMinutos;
+					finalTemporal = serv.Final.TotalMinutos;
 					if (finalTemporal < inicioTemporal) finalTemporal += 1440;
 					horas.Add((inicioTemporal, finalTemporal));
 				}
@@ -78,21 +78,21 @@ namespace Quattro.Models {
 							// Evaluamos si hay alguna dieta...
 							switch (servicio.Turno) {
 								case 1:
-									if (minutoActual < (int)LimiteDesayuno.TotalMinutes) dietaDesayuno = true;
-									if (minutoActual > (int)LimiteComidaTurno1.TotalMinutes) dietaComida = true;
+									if (minutoActual < LimiteDesayuno.TotalMinutos) dietaDesayuno = true;
+									if (minutoActual > LimiteComidaTurno1.TotalMinutos) dietaComida = true;
 									break;
 								case 2:
-									if (minutoActual <= (int)LimiteComidaTurno2.TotalMinutes) dietaComida = true;
-									int cena = (int)LimiteCena.TotalMinutes;
-									if (cena < (int)LimiteDesayuno.TotalMinutes) cena += 1440;
+									if (minutoActual <= LimiteComidaTurno2.TotalMinutos) dietaComida = true;
+									int cena = LimiteCena.TotalMinutos;
+									if (cena < LimiteDesayuno.TotalMinutos) cena += 1440;
 									if (minutoActual > cena) dietaCena = true;
 									break;
 							}
 							// Evaluamos si es un minuto nocturno.
-							if ((minutoActual -1 > 0 && minutoActual -1 < (int)FinalNocturnas.TotalMinutes ||
-								(minutoActual > (int)InicioNocturnas.TotalMinutes && minutoActual < (int)FinalNocturnas.TotalMinutes + 1440))) {
+							if ((minutoActual -1 > 0 && minutoActual -1 < FinalNocturnas.TotalMinutos ||
+								(minutoActual > InicioNocturnas.TotalMinutos && minutoActual < FinalNocturnas.TotalMinutos + 1440))) {
 								minutosNocturnos++;
-								if (intermedioNocturnoParcial > 0 && intermedioNocturnoParcial < (int)LimiteEntreServicios.TotalMinutes) {
+								if (intermedioNocturnoParcial > 0 && intermedioNocturnoParcial < LimiteEntreServicios.TotalMinutos) {
 									intermedioNocturno += intermedioNocturnoParcial;
 								}
 								esNocturno = true;
@@ -100,7 +100,7 @@ namespace Quattro.Models {
 								esNocturno = false;
 							}
 							// Si el tiempo parcial no supera el límite, se suma al tiempo intermedio.
-							if (intermedioParcial > 0 && intermedioParcial < (int)LimiteEntreServicios.TotalMinutes) {
+							if (intermedioParcial > 0 && intermedioParcial < LimiteEntreServicios.TotalMinutos) {
 								intermedio += intermedioParcial;
 							}
 							//Ponemos los parciales a cero.
@@ -179,16 +179,16 @@ namespace Quattro.Models {
 			// Definimos los inicios y finales
 			List<(Tiempo inicio, Tiempo final)> horas = new List<(Tiempo inicio, Tiempo final)>();
 
-			Tiempo inicioTemporal = (Tiempo)servicio.Inicio;
-			Tiempo finalTemporal = (Tiempo)servicio.Final;
+			Tiempo inicioTemporal = servicio.Inicio;
+			Tiempo finalTemporal = servicio.Final;
 			if (finalTemporal < inicioTemporal) finalTemporal.SumaDias(1);
 			horas.Add((inicioTemporal, finalTemporal));
 
 			// Recorremos los servicios auxiliares y añadimos el inicio y final.
 			foreach (ServicioBase serv in servicio.ServiciosAuxiliares) {
 				if (serv.Inicio != null && serv.Final != null) {
-					inicioTemporal = (Tiempo)serv.Inicio;
-					finalTemporal = (Tiempo)serv.Final;
+					inicioTemporal = serv.Inicio;
+					finalTemporal = serv.Final;
 					if (finalTemporal < inicioTemporal) finalTemporal.SumaDias(1);
 					horas.Add((inicioTemporal, finalTemporal));
 				}
@@ -214,7 +214,7 @@ namespace Quattro.Models {
 			bool esNocturno = false;
 
 			// Iniciamos el primer bucle: Paso minuto a minuto por el tiempo total.
-			for (int m = 1; m <= (int)minutosTotales.TotalMinutos; m++) {
+			for (int m = 1; m <= minutosTotales.TotalMinutos; m++) {
 				bool salirBucle = false;
 				minutoActual = primerInicio.Add(0, m, 0);
 				// Iniciamos el segundo bucle: Recorrido por las horas de los servicios.
@@ -227,20 +227,20 @@ namespace Quattro.Models {
 							// Evaluamos si hay alguna dieta...
 							switch (servicio.Turno) {
 								case 1:
-									if (minutoActual < (Tiempo)LimiteDesayuno) dietaDesayuno = true;
-									if (minutoActual > (Tiempo)LimiteComidaTurno1) dietaComida = true;
+									if (minutoActual < LimiteDesayuno) dietaDesayuno = true;
+									if (minutoActual > LimiteComidaTurno1) dietaComida = true;
 									break;
 								case 2:
-									if (minutoActual <= (Tiempo)LimiteComidaTurno2) dietaComida = true;
-									Tiempo cena = (Tiempo)LimiteCena < (Tiempo)LimiteDesayuno ? ((Tiempo)LimiteCena).Add(1, 0, 0) : (Tiempo)LimiteCena;
+									if (minutoActual <= LimiteComidaTurno2) dietaComida = true;
+									Tiempo cena = LimiteCena < LimiteDesayuno ? (LimiteCena).Add(1, 0, 0) : LimiteCena;
 									if (minutoActual > cena) dietaCena = true;
 									break;
 							}
 							// Evaluamos si es un minuto nocturno.
-							if ((minutoActual.Subtract(0,1,0) > Tiempo.Zero && minutoActual.Subtract(0,1,0) < (Tiempo)FinalNocturnas) ||
-								(minutoActual > (Tiempo)InicioNocturnas && minutoActual < ((Tiempo)FinalNocturnas).Add(1,0,0))) {
+							if ((minutoActual.Subtract(0,1,0) > Tiempo.Zero && minutoActual.Subtract(0,1,0) < FinalNocturnas) ||
+								(minutoActual > InicioNocturnas && minutoActual < (FinalNocturnas).Add(1,0,0))) {
 								minutosNocturnos.SumaMinutos(1);
-								if (intermedioNocturnoParcial > Tiempo.Zero && intermedioNocturnoParcial < (Tiempo)LimiteEntreServicios) {
+								if (intermedioNocturnoParcial > Tiempo.Zero && intermedioNocturnoParcial < LimiteEntreServicios) {
 									intermedioNocturno += intermedioNocturnoParcial;
 								}
 								esNocturno = true;
@@ -248,7 +248,7 @@ namespace Quattro.Models {
 								esNocturno = false;
 							}
 							// Si el tiempo parcial no supera el límite, se suma al tiempo intermedio.
-							if (intermedioParcial > Tiempo.Zero && intermedioParcial < (Tiempo)LimiteEntreServicios) {
+							if (intermedioParcial > Tiempo.Zero && intermedioParcial < LimiteEntreServicios) {
 								intermedio += intermedioParcial;
 							}
 							//Ponemos los parciales a cero.
@@ -376,8 +376,8 @@ namespace Quattro.Models {
 		}
 
 
-		private TimeSpan limiteEntreServicios = new TimeSpan(1, 0, 0);
-		public TimeSpan LimiteEntreServicios {
+		private Tiempo limiteEntreServicios = new Tiempo(1, 0);
+		public Tiempo LimiteEntreServicios {
 			get { return limiteEntreServicios; }
 			set {
 				if (limiteEntreServicios != value) {
@@ -388,8 +388,8 @@ namespace Quattro.Models {
 		}
 
 
-		private TimeSpan inicioNocturnas = new TimeSpan(22, 0, 0);
-		public TimeSpan InicioNocturnas {
+		private Tiempo inicioNocturnas = new Tiempo(22, 0);
+		public Tiempo InicioNocturnas {
 			get { return inicioNocturnas; }
 			set {
 				if (inicioNocturnas != value) {
@@ -400,8 +400,8 @@ namespace Quattro.Models {
 		}
 
 
-		private TimeSpan finalNocturnas = new TimeSpan(6, 30, 0);
-		public TimeSpan FinalNocturnas {
+		private Tiempo finalNocturnas = new Tiempo(6, 30);
+		public Tiempo FinalNocturnas {
 			get { return finalNocturnas; }
 			set {
 				if (finalNocturnas != value) {
@@ -412,8 +412,8 @@ namespace Quattro.Models {
 		}
 
 
-		private TimeSpan limiteDesayuno = new TimeSpan(4, 30, 0);
-		public TimeSpan LimiteDesayuno {
+		private Tiempo limiteDesayuno = new Tiempo(4, 30);
+		public Tiempo LimiteDesayuno {
 			get { return limiteDesayuno; }
 			set {
 				if (limiteDesayuno != value) {
@@ -424,8 +424,8 @@ namespace Quattro.Models {
 		}
 
 
-		private TimeSpan limiteComidaTurno1 = new TimeSpan(15, 30, 0);
-		public TimeSpan LimiteComidaTurno1 {
+		private Tiempo limiteComidaTurno1 = new Tiempo(15, 30);
+		public Tiempo LimiteComidaTurno1 {
 			get { return limiteComidaTurno1; }
 			set {
 				if (limiteComidaTurno1 != value) {
@@ -436,8 +436,8 @@ namespace Quattro.Models {
 		}
 
 
-		private TimeSpan limiteComidaTurno2 = new TimeSpan(13, 30, 0);
-		public TimeSpan LimiteComidaTurno2 {
+		private Tiempo limiteComidaTurno2 = new Tiempo(13, 30);
+		public Tiempo LimiteComidaTurno2 {
 			get { return limiteComidaTurno2; }
 			set {
 				if (limiteComidaTurno2 != value) {
@@ -448,8 +448,8 @@ namespace Quattro.Models {
 		}
 
 
-		private TimeSpan limiteCena = new TimeSpan(0, 30, 0);
-		public TimeSpan LimiteCena {
+		private Tiempo limiteCena = new Tiempo(0, 30);
+		public Tiempo LimiteCena {
 			get { return limiteCena; }
 			set {
 				if (limiteCena != value) {

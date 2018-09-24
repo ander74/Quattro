@@ -41,7 +41,7 @@ namespace Quattro.Models {
 			desayuno = lector.ToBool("Desayuno");
 			comida = lector.ToBool("Comida");
 			cena = lector.ToBool("Cena");
-			tomaDeje = lector.ToTimeSpan("TomaDeje");
+			tomaDeje = lector.ToTiempo("TomaDeje");
 			euros = lector.ToDecimal("Euros");
 			notas = lector.ToString("Notas");
 		}
@@ -69,27 +69,27 @@ namespace Quattro.Models {
 			comando.Parameters.Add(parametro);
 			//Desayuno
 			parametro = comando.CreateParameter();
-			parametro.DbType = System.Data.DbType.Boolean;
+			parametro.DbType = System.Data.DbType.Int32;
 			parametro.ParameterName = "@Desayuno";
-			parametro.Value = Desayuno;
+			parametro.Value = Desayuno ? 1 : 0;
 			comando.Parameters.Add(parametro);
 			//Comida
 			parametro = comando.CreateParameter();
-			parametro.DbType = System.Data.DbType.Boolean;
+			parametro.DbType = System.Data.DbType.Int32;
 			parametro.ParameterName = "@Comida";
-			parametro.Value = Comida;
+			parametro.Value = Comida ? 1 : 0;
 			comando.Parameters.Add(parametro);
 			//Cena
 			parametro = comando.CreateParameter();
-			parametro.DbType = System.Data.DbType.Boolean;
+			parametro.DbType = System.Data.DbType.Int32;
 			parametro.ParameterName = "@Cena";
-			parametro.Value = Cena;
+			parametro.Value = Cena ? 1 : 0;
 			comando.Parameters.Add(parametro);
 			//TomaDeje
 			parametro = comando.CreateParameter();
-			parametro.DbType = System.Data.DbType.Int64;
+			parametro.DbType = System.Data.DbType.Int32;
 			parametro.ParameterName = "@TomaDeje";
-			parametro.Value = TomaDeje.Ticks;
+			parametro.Value = TomaDeje.TotalMinutos;
 			comando.Parameters.Add(parametro);
 			//Euros
 			parametro = comando.CreateParameter();
@@ -212,8 +212,8 @@ namespace Quattro.Models {
 		}
 
 
-		private TimeSpan tomaDeje;
-		public TimeSpan TomaDeje {
+		private Tiempo tomaDeje;
+		public Tiempo TomaDeje {
 			get { return tomaDeje; }
 			set {
 				if (tomaDeje != value) {

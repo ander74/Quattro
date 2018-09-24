@@ -42,9 +42,9 @@ namespace Quattro.Models {
 			textoLinea = lector.ToString("TextoLinea");
 			servicio = lector.ToString("Servicio");
 			turno = lector.ToInt32("Turno");
-			inicio = lector.ToTimeSpanNulable("Inicio");
+			inicio = lector.ToTiempo("Inicio"); 
 			lugarInicio = lector.ToString("LugarInicio");
-			final = lector.ToTimeSpanNulable("Final");
+			final = lector.ToTiempo("Final"); 
 			lugarFinal = lector.ToString("LugarFinal");
 		}
 
@@ -76,9 +76,9 @@ namespace Quattro.Models {
 			comando.Parameters.Add(parametro);
 			// Inicio
 			parametro = comando.CreateParameter();
-			parametro.DbType = System.Data.DbType.Int64;
+			parametro.DbType = System.Data.DbType.Int32;
 			parametro.ParameterName = "@Inicio";
-			parametro.Value = Inicio.ToTicksOrDbNull();
+			parametro.Value = Inicio.ToMinutosOrDbNull(); 
 			comando.Parameters.Add(parametro);
 			// LugarInicio
 			parametro = comando.CreateParameter();
@@ -88,9 +88,9 @@ namespace Quattro.Models {
 			comando.Parameters.Add(parametro);
 			// Final
 			parametro = comando.CreateParameter();
-			parametro.DbType = System.Data.DbType.Int64;
+			parametro.DbType = System.Data.DbType.Int32;
 			parametro.ParameterName = "@Final";
-			parametro.Value = Final.ToTicksOrDbNull();
+			parametro.Value = Final.ToMinutosOrDbNull();
 			comando.Parameters.Add(parametro);
 			// LugarFinal
 			parametro = comando.CreateParameter();
@@ -116,7 +116,7 @@ namespace Quattro.Models {
 		// ====================================================================================================
 
 		public override string ToString() {
-			return $"{NumeroLinea} - {Servicio}/{Turno}: {Inicio.ToTexto()} - {Final.ToTexto()}";
+			return $"{NumeroLinea} - {Servicio}/{Turno}: {Inicio} - {Final}";
 		}
 
 
@@ -248,14 +248,13 @@ namespace Quattro.Models {
 		}
 
 
-		private TimeSpan? inicio;
-		public TimeSpan? Inicio {
+		private Tiempo inicio;
+		public Tiempo Inicio {
 			get { return inicio; }
 			set {
 				if (inicio != value) {
 					inicio = value;
-					while (inicio.HasValue && inicio.Value.TotalHours >= 24)
-						inicio = inicio.Value.Subtract(new TimeSpan(24, 0, 0));
+					if (inicio != null && inicio.TotalHoras >= 24) inicio.RestaDias(1);
 					OnJornadaChanged();
 					OnPropertyChanged();
 				}
@@ -275,14 +274,13 @@ namespace Quattro.Models {
 		}
 
 
-		private TimeSpan? final;
-		public TimeSpan? Final {
+		private Tiempo final;
+		public Tiempo Final {
 			get { return final; }
 			set {
 				if (final != value) {
 					final = value;
-					while (final.HasValue && final.Value.TotalHours >= 24)
-						final = final.Value.Subtract(new TimeSpan(24, 0, 0));
+					if (final != null && final.TotalHoras >= 24) final.RestaDias(1);
 					OnJornadaChanged();
 					OnPropertyChanged();
 				}

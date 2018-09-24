@@ -85,6 +85,25 @@ namespace Quattro.Common {
 
 
 		// ====================================================================================================
+		#region MÉTODOS DE EXTENSIÓN PARA TIEMPO
+		// ====================================================================================================
+
+		/// <summary>
+		/// Devuelve los minutos de la hora de un objeto Tiempo o DbNull si hora es nulo.
+		/// </summary>
+		/// <param name="hora">Hora de la que devolver los minutos</param>
+		/// <returns>Número de minutos que representa el objeto Tiempo o DbNull, si es nulo.</returns>
+		public static object ToMinutosOrDbNull(this Tiempo hora) {
+			if (hora == null) return DBNull.Value;
+			return hora.TotalMinutos;
+		}
+
+
+		#endregion
+		// ====================================================================================================
+
+
+		// ====================================================================================================
 		#region MÉTODOS DE EXTENSION PARA OLEDBDATAREADER
 		// ====================================================================================================
 
@@ -109,6 +128,18 @@ namespace Quattro.Common {
 		public static TimeSpan? ToTimeSpanNulable(this DbDataReader lector, string campo) {
 			if (lector == null || lector[campo] is DBNull) return null;
 			return TimeSpan.FromTicks(Convert.ToInt64(lector[campo]));
+		}
+
+
+		/// <summary>
+		/// Extrae un campo de tipo Tiempo del lector.
+		/// </summary>
+		/// <param name="lector">Lector del que se extraerá el campo.</param>
+		/// <param name="campo">Campo que se va a extraer</param>
+		/// <returns>Un objeto Tiempo con el valor almacenado en el campo.</returns>
+		public static Tiempo ToTiempo(this DbDataReader lector, string campo) {
+			if (lector == null || lector[campo] is DBNull) return Tiempo.Zero;
+			return Tiempo.FromMinutos(Convert.ToInt32(lector[campo]));
 		}
 
 

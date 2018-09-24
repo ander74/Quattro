@@ -658,10 +658,8 @@ namespace Quattro.Common {
 			switch (formato.ToUpperInvariant()) {
 				case "DHM":
 					return $"{Dias}.{Horas:00}:{Minutos:00}";
-				case "HMS":
-					return $"{Horas:00}:{Minutos:00}:{Segundos:00}";
 				case "HM":
-					return $"{Horas}:{Minutos:00}";
+					return $"{Horas:00}:{Minutos:00}";
 				default:
 					throw new FormatException($"El formato '{formato}' no está soportado.");
 			}
@@ -744,7 +742,7 @@ namespace Quattro.Common {
 
 
 		/// <summary>
-		/// Devuelve el total de días del intervalo, expresado con una parte fraccional del mismo.
+		/// Devuelve el total de días del intervalo, expresado con una parte fraccional del mismo redondeada a 6 decimales.
 		/// </summary>
 		public double TotalDias {
 			get {
@@ -754,7 +752,7 @@ namespace Quattro.Common {
 
 
 		/// <summary>
-		/// Devuelve el total de horas del intervalo, expresado con una parte fraccional del mismo.
+		/// Devuelve el total de horas del intervalo, expresado con una parte fraccional del mismo redondeada a 6 decimales.
 		/// </summary>
 		public double TotalHoras {
 			get {
