@@ -12,13 +12,28 @@ using Quattro.Notify;
 
 namespace Quattro.Models {
 
-	class HoraAjena : NotifyBase {
+
+	/// <summary>
+	/// 
+	/// HORA AJENA
+	/// ==========
+	/// 
+	///		Se pueden cargar los datos desde un DataReader y se pueden introducir los datos como parámetros de 
+	///		un Command que se pase por referencia.
+	///		
+	/// </summary>
+	public class HoraAjena : NotifyBase {
 
 		// ====================================================================================================
 		#region CONSTRUCTORES
 		// ====================================================================================================
 
 		public HoraAjena() { }
+
+
+		public HoraAjena(DbDataReader lector) {
+			FromReader(lector);
+		}
 
 		#endregion
 		// ====================================================================================================
@@ -37,9 +52,15 @@ namespace Quattro.Models {
 		}
 
 
-		public virtual void ToCommand(ref DbCommand comando) {
-			// Fecha
+		public virtual void ToCommand(DbCommand comando) { //TODO: Comprobar que esto se puede (quitar el ref).
+			// Id
 			DbParameter parametro = comando.CreateParameter();
+			parametro.DbType = System.Data.DbType.Int32;
+			parametro.ParameterName = "@Id";
+			parametro.Value = Id;
+			comando.Parameters.Add(parametro);
+			// Fecha
+			parametro = comando.CreateParameter();
 			parametro.DbType = System.Data.DbType.DateTime;
 			parametro.ParameterName = "@Fecha";
 			parametro.Value = Fecha.ToString("yyyy-MM-dd");
@@ -61,12 +82,6 @@ namespace Quattro.Models {
 			parametro.DbType = System.Data.DbType.Int32;
 			parametro.ParameterName = "@Codigo";
 			parametro.Value = Codigo;
-			comando.Parameters.Add(parametro);
-			// Id
-			parametro = comando.CreateParameter();
-			parametro.DbType = System.Data.DbType.Int32;
-			parametro.ParameterName = "@Id";
-			parametro.Value = Id;
 			comando.Parameters.Add(parametro);
 		}
 

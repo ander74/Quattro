@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Data.SQLite;
 using System.Text;
+using Quattro.Models;
 
 namespace Quattro.SQLite {
 
@@ -135,7 +136,7 @@ namespace Quattro.SQLite {
 		#region COMANDOS COPIAR TABLAS V4 a V5
 		// ====================================================================================================
 
-		string COMANDO_COPIAR_CALENDARIO_V4To5 =
+		string COMANDO_COPIAR_CALENDARIO_v4_TO_v5 =
 			"INSERT INTO Calendario " +
 				"(Fecha, EsFranqueo, EsFestivo, CodigoIncidencia, HuelgaParcial, HorasHuelga, Servicio, " +
 				"Turno, NumeroLinea, TextoLinea, Inicio, LugarInicio, Final, LugarFinal, Trabajadas, " +
@@ -170,7 +171,7 @@ namespace Quattro.SQLite {
 			"FROM CalendarioOLD; ";
 
 
-		string COMANDO_COPIAR_SERVICIOS_CALENDARIO_V4To5 =
+		string COMANDO_COPIAR_SERVICIOS_CALENDARIO_v4_TO_v5 =
 			"INSERT INTO ServiciosCalendario " +
 				"(Fecha, Servicio, Turno, NumeroLinea, TextoLinea, Inicio, LugarInicio, Final, LugarFinal) " +
 			"SELECT " +
@@ -189,7 +190,7 @@ namespace Quattro.SQLite {
 			"FROM ServiciosCalendarioOLD LEFT JOIN Lineas ON ServiciosCalendarioOLD.Linea = Lineas.NumeroLinea; ";
 
 
-		string COMANDO_COPIAR_HORAS_AJENAS_V4To5 =
+		string COMANDO_COPIAR_HORAS_AJENAS_v4_TO_v5 =
 			"INSERT INTO HorasAjenas " +
 				"(Fecha, Horas, Motivo, Codigo) " +
 			"SELECT " +
@@ -200,7 +201,7 @@ namespace Quattro.SQLite {
 			"FROM HorasAjenasOLD; ";
 
 
-		string COMANDO_COPIAR_INCIDENCIAS_V4To5 =
+		string COMANDO_COPIAR_INCIDENCIAS_v4_TO_v5 =
 			"INSERT INTO Incidencias " +
 				"(Codigo, TextoIncidencia, Tipo, Notas) " +
 			"SELECT " +
@@ -208,7 +209,7 @@ namespace Quattro.SQLite {
 			"FROM IncidenciasOLD; ";
 
 
-		string COMANDO_COPIAR_COMPAÑEROS_V4To5 =
+		string COMANDO_COPIAR_COMPAÑEROS_v4_TO_v5 =
 			"INSERT INTO Compañeros " +
 				"(Matricula, Nombre, Apellidos, Telefono, Calificacion, Deuda, Notas) " +
 			"SELECT " +
@@ -216,7 +217,7 @@ namespace Quattro.SQLite {
 			"FROM Relevos;";
 
 
-		string COMANDO_COPIAR_LINEAS_V4To5 =
+		string COMANDO_COPIAR_LINEAS_v4_TO_v5 =
 			"INSERT INTO Lineas " +
 				"(NumeroLinea, TextoLinea, Notas) " +
 			"SELECT " +
@@ -224,7 +225,7 @@ namespace Quattro.SQLite {
 			"FROM LineasOLD; ";
 
 
-		string COMANDO_COPIAR_SERVICIOS_V4To5 =
+		string COMANDO_COPIAR_SERVICIOS_v4_TO_v5 =
 			"INSERT INTO Servicios " +
 				"(NumeroLinea, Servicio, Turno, Inicio, LugarInicio, Final, LugarFinal, TomaDeje, Euros, Notas) " +
 			"SELECT " +
@@ -241,7 +242,7 @@ namespace Quattro.SQLite {
 			"FROM ServiciosOLD; ";
 
 
-		string COMANDO_COPIAR_SERVICIOS_AUXILIARES_V4To5 =
+		string COMANDO_COPIAR_SERVICIOS_AUXILIARES_v4_TO_v5 =
 			"INSERT INTO ServiciosAuxiliares " +
 			"(IdServicio, NumeroLinea, Servicio, Turno, Inicio, LugarInicio, Final, LugarFinal) " +
 			"SELECT " +
@@ -265,7 +266,7 @@ namespace Quattro.SQLite {
 		// ====================================================================================================
 		#region COMANDOS SQL COPIAR TABLAS V5 a V6
 		// ====================================================================================================
-		string COMANDO_COPIAR_CALENDARIO_V5To6 =
+		string COMANDO_COPIAR_CALENDARIO_v5_TO_v6 =
 			"INSERT INTO Calendario (" +
 				"Fecha, EsFranqueo, EsFestivo, CodigoIncidencia, HuelgaParcial, HorasHuelga, Servicio, " +
 				"Turno, NumeroLinea, TextoLinea, Inicio, LugarInicio, Final, LugarFinal, Trabajadas, " +
@@ -275,7 +276,7 @@ namespace Quattro.SQLite {
 			"FROM CalendarioOLD;";
 
 
-		string COMANDO_COPIAR_SERVICIOS_CALENDARIO_V5To6 =
+		string COMANDO_COPIAR_SERVICIOS_CALENDARIO_v5_TO_v6 =
 			"INSERT INTO ServiciosCalendario (" +
 				"Fecha, Servicio, Turno, NumeroLinea, TextoLinea, Inicio, LugarInicio, Final, LugarFinal) " +
 			"SELECT " +
@@ -283,7 +284,7 @@ namespace Quattro.SQLite {
 			"FROM ServiciosCalendarioOLD;";
 
 
-		string COMANDO_COPIAR_HORAS_AJENAS_V5To6 =
+		string COMANDO_COPIAR_HORAS_AJENAS_v5_TO_v6 =
 			"INSERT INTO HorasAjenas (" +
 				"Fecha, Horas, Motivo, Codigo) " +
 			"SELECT " +
@@ -291,7 +292,7 @@ namespace Quattro.SQLite {
 			"FROM HorasAjenasOLD;";
 
 
-		string COMANDO_COPIAR_INCIDENCIAS_V5To6 =
+		string COMANDO_COPIAR_INCIDENCIAS_v5_TO_v6 =
 			"INSERT INTO Incidencias (" +
 				"Codigo, TextoIncidencia, Tipo, Notas) " +
 			"SELECT " +
@@ -299,7 +300,7 @@ namespace Quattro.SQLite {
 			"FROM IncidenciasOLD;";
 
 
-		string COMANDO_COPIAR_COMPAÑEROS_V5To6 =
+		string COMANDO_COPIAR_COMPAÑEROS_v5_TO_v6 =
 			"INSERT INTO Compañeros (" +
 				"Matricula, Nombre, Apellidos, Telefono, Calificacion, Deuda, Notas) " +
 			"SELECT " +
@@ -307,7 +308,7 @@ namespace Quattro.SQLite {
 			"FROM CompañerosOLD;";
 
 
-		string COMANDO_COPIAR_LINEAS_V5To6 =
+		string COMANDO_COPIAR_LINEAS_v5_TO_v6 =
 			"INSERT INTO Lineas (" +
 				"NumeroLinea, TextoLinea, Notas) " +
 			"SELECT " +
@@ -315,7 +316,7 @@ namespace Quattro.SQLite {
 			"FROM LineasOLD;";
 
 
-		string COMANDO_COPIAR_SERVICIOS_V5To6 =
+		string COMANDO_COPIAR_SERVICIOS_v5_TO_v6 =
 			"INSERT INTO Servicios (" +
 				"NumeroLinea, Servicio, Turno, Inicio, LugarInicio, Final, LugarFinal, TomaDeje, Euros, Notas) " +
 			"SELECT " +
@@ -323,7 +324,7 @@ namespace Quattro.SQLite {
 			"FROM ServiciosOLD;";
 
 
-		string COMANDO_COPIAR_SERVICIOS_AUXILIARES_V5To6 =
+		string COMANDO_COPIAR_SERVICIOS_AUXILIARES_v5_TO_v6 =
 			"INSERT INTO ServiciosAuxiliares (" +
 				"IdServicio, NumeroLinea, Servicio, Turno, Inicio, LugarInicio, Final, LugarFinal) " +
 			"SELECT " +
@@ -380,6 +381,17 @@ namespace Quattro.SQLite {
 				}
 			}
 		}
+
+
+		#endregion
+		// ====================================================================================================
+
+
+		// ====================================================================================================
+		#region MÉTODOS PÚBLICOS
+		// ====================================================================================================
+
+
 
 
 		#endregion
@@ -481,24 +493,24 @@ namespace Quattro.SQLite {
 		public void ActualizarTablas(int oldVersion, string cadenaConexion) {
 			switch (oldVersion) {
 				case 4:
-					ActualizarTabla("Calendario", COMANDO_CREAR_CALENDARIO, COMANDO_COPIAR_CALENDARIO_V4To5, cadenaConexion);
-					ActualizarTabla("ServiciosCalendario", COMANDO_CREAR_CALENDARIO, COMANDO_COPIAR_SERVICIOS_CALENDARIO_V4To5, cadenaConexion);
-					ActualizarTabla("HorasAjenas", COMANDO_CREAR_CALENDARIO, COMANDO_COPIAR_HORAS_AJENAS_V4To5, cadenaConexion);
-					ActualizarTabla("Incidencias", COMANDO_CREAR_CALENDARIO, COMANDO_COPIAR_INCIDENCIAS_V4To5, cadenaConexion);
-					ActualizarTabla("Compañeros", COMANDO_CREAR_CALENDARIO, COMANDO_COPIAR_COMPAÑEROS_V4To5, cadenaConexion);
-					ActualizarTabla("Lineas", COMANDO_CREAR_CALENDARIO, COMANDO_COPIAR_LINEAS_V4To5, cadenaConexion);
-					ActualizarTabla("Servicios", COMANDO_CREAR_CALENDARIO, COMANDO_COPIAR_SERVICIOS_V4To5, cadenaConexion);
-					ActualizarTabla("ServiciosAuxiliares", COMANDO_CREAR_CALENDARIO, COMANDO_COPIAR_SERVICIOS_AUXILIARES_V4To5, cadenaConexion);
+					ActualizarTabla("Calendario", COMANDO_CREAR_CALENDARIO, COMANDO_COPIAR_CALENDARIO_v4_TO_v5, cadenaConexion);
+					ActualizarTabla("ServiciosCalendario", COMANDO_CREAR_CALENDARIO, COMANDO_COPIAR_SERVICIOS_CALENDARIO_v4_TO_v5, cadenaConexion);
+					ActualizarTabla("HorasAjenas", COMANDO_CREAR_CALENDARIO, COMANDO_COPIAR_HORAS_AJENAS_v4_TO_v5, cadenaConexion);
+					ActualizarTabla("Incidencias", COMANDO_CREAR_CALENDARIO, COMANDO_COPIAR_INCIDENCIAS_v4_TO_v5, cadenaConexion);
+					ActualizarTabla("Compañeros", COMANDO_CREAR_CALENDARIO, COMANDO_COPIAR_COMPAÑEROS_v4_TO_v5, cadenaConexion);
+					ActualizarTabla("Lineas", COMANDO_CREAR_CALENDARIO, COMANDO_COPIAR_LINEAS_v4_TO_v5, cadenaConexion);
+					ActualizarTabla("Servicios", COMANDO_CREAR_CALENDARIO, COMANDO_COPIAR_SERVICIOS_v4_TO_v5, cadenaConexion);
+					ActualizarTabla("ServiciosAuxiliares", COMANDO_CREAR_CALENDARIO, COMANDO_COPIAR_SERVICIOS_AUXILIARES_v4_TO_v5, cadenaConexion);
 					break;
 				case 5:
-					ActualizarTabla("Calendario", COMANDO_CREAR_CALENDARIO, COMANDO_COPIAR_CALENDARIO_V5To6, cadenaConexion);
-					ActualizarTabla("ServiciosCalendario", COMANDO_CREAR_CALENDARIO, COMANDO_COPIAR_SERVICIOS_CALENDARIO_V5To6, cadenaConexion);
-					ActualizarTabla("HorasAjenas", COMANDO_CREAR_CALENDARIO, COMANDO_COPIAR_HORAS_AJENAS_V5To6, cadenaConexion);
-					ActualizarTabla("Incidencias", COMANDO_CREAR_CALENDARIO, COMANDO_COPIAR_INCIDENCIAS_V5To6, cadenaConexion);
-					ActualizarTabla("Compañeros", COMANDO_CREAR_CALENDARIO, COMANDO_COPIAR_COMPAÑEROS_V5To6, cadenaConexion);
-					ActualizarTabla("Lineas", COMANDO_CREAR_CALENDARIO, COMANDO_COPIAR_LINEAS_V5To6, cadenaConexion);
-					ActualizarTabla("Servicios", COMANDO_CREAR_CALENDARIO, COMANDO_COPIAR_SERVICIOS_V5To6, cadenaConexion);
-					ActualizarTabla("ServiciosAuxiliares", COMANDO_CREAR_CALENDARIO, COMANDO_COPIAR_SERVICIOS_AUXILIARES_V5To6, cadenaConexion);
+					ActualizarTabla("Calendario", COMANDO_CREAR_CALENDARIO, COMANDO_COPIAR_CALENDARIO_v5_TO_v6, cadenaConexion);
+					ActualizarTabla("ServiciosCalendario", COMANDO_CREAR_CALENDARIO, COMANDO_COPIAR_SERVICIOS_CALENDARIO_v5_TO_v6, cadenaConexion);
+					ActualizarTabla("HorasAjenas", COMANDO_CREAR_CALENDARIO, COMANDO_COPIAR_HORAS_AJENAS_v5_TO_v6, cadenaConexion);
+					ActualizarTabla("Incidencias", COMANDO_CREAR_CALENDARIO, COMANDO_COPIAR_INCIDENCIAS_v5_TO_v6, cadenaConexion);
+					ActualizarTabla("Compañeros", COMANDO_CREAR_CALENDARIO, COMANDO_COPIAR_COMPAÑEROS_v5_TO_v6, cadenaConexion);
+					ActualizarTabla("Lineas", COMANDO_CREAR_CALENDARIO, COMANDO_COPIAR_LINEAS_v5_TO_v6, cadenaConexion);
+					ActualizarTabla("Servicios", COMANDO_CREAR_CALENDARIO, COMANDO_COPIAR_SERVICIOS_v5_TO_v6, cadenaConexion);
+					ActualizarTabla("ServiciosAuxiliares", COMANDO_CREAR_CALENDARIO, COMANDO_COPIAR_SERVICIOS_AUXILIARES_v5_TO_v6, cadenaConexion);
 					break;
 			}
 		}

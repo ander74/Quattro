@@ -11,7 +11,17 @@ using Quattro.Notify;
 
 namespace Quattro.Models {
 
-	class Compañero : NotifyBase {
+
+	/// <summary>
+	/// 
+	/// COMPAÑERO
+	/// =========
+	/// 
+	///		Se pueden cargar los datos desde un DataReader y se pueden introducir los datos como parámetros de 
+	///		un Command que se pase por referencia.
+	///		
+	/// </summary>
+	public class Compañero : NotifyBase {
 
 		// ====================================================================================================
 		#region CONSTRUCTORES
@@ -44,9 +54,15 @@ namespace Quattro.Models {
 		}
 
 
-		public virtual void ToCommand(ref DbCommand comando) {
-			// Matricula
+		public virtual void ToCommand(DbCommand comando) { //TODO: Comprobar que esto se puede (quitar el ref).
+			// Id
 			DbParameter parametro = comando.CreateParameter();
+			parametro.DbType = System.Data.DbType.Int32;
+			parametro.ParameterName = "@Id";
+			parametro.Value = Id;
+			comando.Parameters.Add(parametro);
+			// Matricula
+			parametro = comando.CreateParameter();
 			parametro.DbType = System.Data.DbType.Int32;
 			parametro.ParameterName = "@Matricula";
 			parametro.Value = Matricula;
@@ -86,12 +102,6 @@ namespace Quattro.Models {
 			parametro.DbType = System.Data.DbType.String;
 			parametro.ParameterName = "@Notas";
 			parametro.Value = Notas;
-			comando.Parameters.Add(parametro);
-			// Id
-			parametro = comando.CreateParameter();
-			parametro.DbType = System.Data.DbType.Int32;
-			parametro.ParameterName = "@Id";
-			parametro.Value = Id;
 			comando.Parameters.Add(parametro);
 		}
 

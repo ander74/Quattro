@@ -14,7 +14,32 @@ using Quattro.Notify;
 
 namespace Quattro.Models {
 
-
+	/// <summary>
+	/// 
+	/// SERVICIO BASE
+	/// =============
+	/// 
+	///		Contiene los datos básicos de un servicio.
+	///		
+	///		Se pueden cargar los datos desde un DataReader y se pueden introducir los datos como parámetros de 
+	///		un Command que se pase por referencia.
+	///		
+	///		La propiedad Servicio se formateará de acuerdo a los servicios típicos (mayusculas y números de
+	///		dos cifras).
+	///		
+	///		Tanto la propiedad Inicio, como la propiedad Final aceptarán valores de más de 24h, pero se ajustarán
+	///		automáticamente reflejando su valor real (si ponemos 24:00 se convierte en 00:00).
+	///		
+	///		
+	///		Evento FirmaChanged
+	///		-------------------
+	///			Se dispara al cambiar el número de línea, el servicio o el turno.
+	///			
+	///		Evento JornadaChanged
+	///		---------------------
+	///			Se dispara al cambiar el inicio o el final.
+	/// 
+	/// </summary>
 	public class ServicioBase : NotifyBase {
 
 		// ====================================================================================================
@@ -49,9 +74,15 @@ namespace Quattro.Models {
 		}
 
 
-		public virtual void ToCommand(ref DbCommand comando) {
-			// NumeroLinea
+		public virtual void ToCommand(DbCommand comando) {
+			// Id
 			DbParameter parametro = comando.CreateParameter();
+			parametro.DbType = System.Data.DbType.Int32;
+			parametro.ParameterName = "@Id";
+			parametro.Value = Id;
+			comando.Parameters.Add(parametro);
+			// NumeroLinea
+			parametro = comando.CreateParameter();
 			parametro.DbType = System.Data.DbType.String;
 			parametro.ParameterName = "@NumeroLinea";
 			parametro.Value = NumeroLinea;
@@ -97,12 +128,6 @@ namespace Quattro.Models {
 			parametro.DbType = System.Data.DbType.String;
 			parametro.ParameterName = "@LugarFinal";
 			parametro.Value = LugarFinal;
-			comando.Parameters.Add(parametro);
-			// Id
-			parametro = comando.CreateParameter();
-			parametro.DbType = System.Data.DbType.Int32;
-			parametro.ParameterName = "@Id";
-			parametro.Value = Id;
 			comando.Parameters.Add(parametro);
 		}
 

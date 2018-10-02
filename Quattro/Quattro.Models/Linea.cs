@@ -11,6 +11,17 @@ using Quattro.Notify;
 
 namespace Quattro.Models {
 
+
+	/// <summary>
+	/// 
+	/// LÍNEA
+	/// =====
+	/// 
+	///		Se pueden cargar los datos desde un DataReader y se pueden introducir los datos como parámetros de 
+	///		un Command que se pase por referencia.
+	///		
+	///		
+	/// </summary>
 	public class Linea : NotifyBase {
 
 		// ====================================================================================================
@@ -19,6 +30,10 @@ namespace Quattro.Models {
 
 		public Linea () { }
 
+
+		public Linea(DbDataReader lector) {
+			FromReader(lector);
+		}
 
 		#endregion
 		// ====================================================================================================
@@ -36,9 +51,15 @@ namespace Quattro.Models {
 		}
 
 
-		public virtual void ToCommand(ref DbCommand comando) {
-			// NumeroLinea
+		public virtual void ToCommand(DbCommand comando) { //TODO: Comprobar que esto se puede (quitar el ref).
+			// Id
 			DbParameter parametro = comando.CreateParameter();
+			parametro.DbType = System.Data.DbType.Int32;
+			parametro.ParameterName = "@Id";
+			parametro.Value = Id;
+			comando.Parameters.Add(parametro);
+			// NumeroLinea
+			parametro = comando.CreateParameter();
 			parametro.DbType = System.Data.DbType.String;
 			parametro.ParameterName = "@NumeroLinea";
 			parametro.Value = NumeroLinea;
@@ -54,12 +75,6 @@ namespace Quattro.Models {
 			parametro.DbType = System.Data.DbType.String;
 			parametro.ParameterName = "@Notas";
 			parametro.Value = Notas;
-			comando.Parameters.Add(parametro);
-			// Id
-			parametro = comando.CreateParameter();
-			parametro.DbType = System.Data.DbType.Int32;
-			parametro.ParameterName = "@Id";
-			parametro.Value = Id;
 			comando.Parameters.Add(parametro);
 		}
 
@@ -131,6 +146,18 @@ namespace Quattro.Models {
 			set {
 				if (textoLinea != value) {
 					textoLinea = value;
+					OnPropertyChanged();
+				}
+			}
+		}
+
+
+		private NotifyCollection<Servicio> servicios;
+		public NotifyCollection<Servicio> Servicios {
+			get { return servicios; }
+			set {
+				if (servicios != value) {
+					servicios = value;
 					OnPropertyChanged();
 				}
 			}

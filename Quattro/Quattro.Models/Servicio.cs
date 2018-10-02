@@ -12,7 +12,19 @@ using Quattro.Notify;
 
 namespace Quattro.Models {
 
-    public class Servicio : ServicioBase {
+
+	/// <summary>
+	/// 
+	/// SERVICIO
+	/// ========
+	/// 
+	///		Hereda de la calse ServicioBase.
+	///		
+	///		Se pueden cargar los datos desde un DataReader y se pueden introducir los datos como parámetros de 
+	///		un Command que se pase por referencia.
+	///		
+	/// </summary>
+	public class Servicio : ServicioBase {
 
 		// ====================================================================================================
 		#region CONSTRUCTORES
@@ -47,8 +59,8 @@ namespace Quattro.Models {
 		}
 
 
-		public override void ToCommand(ref DbCommand comando) {
-			base.ToCommand(ref comando);
+		public override void ToCommand(DbCommand comando) {
+			base.ToCommand(comando);
 			//Trabajadas
 			DbParameter parametro = comando.CreateParameter();
 			parametro.DbType = System.Data.DbType.Decimal;

@@ -14,6 +14,13 @@ using Quattro.Notify;
 namespace Quattro.Models {
 
 
+	/// <summary>
+	/// 
+	/// CONVENIO
+	/// ========
+	/// 
+	///		
+	/// </summary>
 	public class Convenio : NotifyBase {
 
 

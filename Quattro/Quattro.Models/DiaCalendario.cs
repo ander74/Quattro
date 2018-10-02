@@ -11,7 +11,19 @@ using Quattro.Common;
 
 namespace Quattro.Models {
 
-    public class DiaCalendario : Servicio {
+
+	/// <summary>
+	/// 
+	/// DÍA CALENDARIO
+	/// ==============
+	/// 
+	///		Hereda de la calse Servicio.
+	///		
+	///		Se pueden cargar los datos desde un DataReader y se pueden introducir los datos como parámetros de 
+	///		un Command que se pase por referencia.
+	///		
+	/// </summary>
+	public class DiaCalendario : Servicio {
 
 
 		// ====================================================================================================
@@ -47,8 +59,8 @@ namespace Quattro.Models {
 		}
 
 
-		public override void ToCommand(ref DbCommand comando) {
-			base.ToCommand(ref comando);
+		public override void ToCommand(DbCommand comando) {
+			base.ToCommand(comando);
 			//Fecha
 			DbParameter parametro = comando.CreateParameter();
 			parametro.DbType = System.Data.DbType.String;
