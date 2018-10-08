@@ -9,8 +9,8 @@ namespace Quattro.Models {
 
 	using System.Runtime.CompilerServices;
 	using System.Text.RegularExpressions;
-	using Quattro.Common;
-	using Quattro.Notify;
+	using Common;
+	using Notify;
 
 	/// <summary>
 	/// 

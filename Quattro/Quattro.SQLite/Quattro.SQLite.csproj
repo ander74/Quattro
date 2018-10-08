@@ -10,7 +10,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Quattro.Models\Quattro.Models.csproj" />
+    <ProjectReference Include="..\Quattro.Models2\Quattro.Models2.csproj" />
+    <ProjectReference Include="..\Quattro.Models\Quattro.Models2.csproj" />
+    <ProjectReference Include="..\Quattro\Quattro.csproj" />
   </ItemGroup>
 
 </Project>

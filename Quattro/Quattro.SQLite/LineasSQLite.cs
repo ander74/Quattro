@@ -9,7 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Data.SQLite;
 using System.Text;
-using Quattro.Models;
+using Quattro.Models2;
 using Quattro.Notify;
 
 namespace Quattro.SQLite {
@@ -131,46 +131,44 @@ namespace Quattro.SQLite {
 			// Conexión a la base de datos.
 			using (SQLiteConnection conexion = new SQLiteConnection(CadenaConexion)) {
 				conexion.Open();
-				// Transacción.
-				using (SQLiteTransaction transaccion = conexion.BeginTransaction()) {
-					// Comando para extraer las líneas
-					using (SQLiteCommand comandoLineas = new SQLiteCommand(COMANDO_GET_LINEAS, conexion, transaccion)) {
-						// Reader para extraer las lineas
-						using (SQLiteDataReader lectorLineas = comandoLineas.ExecuteReader()) {
-							while (lectorLineas.Read()) {
-								Linea linea = new Linea(lectorLineas);
-								linea.Servicios = new NotifyCollection<Servicio>();
-								// Comando para extraer los servicios de cada línea.
-								using (SQLiteCommand comandoServicios = new SQLiteCommand(COMANDO_GET_SERVICIOS_POR_LINEA, conexion, transaccion)) {
-									comandoServicios.Parameters.AddWithValue("@NumeroLinea", linea.NumeroLinea);
-									// Reader para extraer los servicios de cada línea.
-									using (SQLiteDataReader lectorServicios = comandoServicios.ExecuteReader()) {
-										while (lectorServicios.Read()) {
-											Servicio servicio = new Servicio(lectorServicios);
-											servicio.ServiciosAuxiliares = new NotifyCollection<ServicioBase>();
-											// Comando para extraer los servicios auxiliares que tienen los servicios de cada línea.
-											using (SQLiteCommand comandoAuxiliares = new SQLiteCommand(COMANDO_GET_SERVICIOS_AUXILIARES_POR_SERVICIO, conexion, transaccion)) {
-												comandoAuxiliares.Parameters.AddWithValue("@IdServicio", servicio.Id);
-												// Reader para extraer los servicios auxiliares que tienen los servicios de cada línea.
-												using (SQLiteDataReader lectorAuxiliares = comandoAuxiliares.ExecuteReader()) {
-													while (lectorAuxiliares.Read()) {
-														ServicioBase servicioBase = new ServicioBase(lectorAuxiliares);
-														servicioBase.Nuevo = false;
-														servicio.ServiciosAuxiliares.Add(servicioBase);
-													}
+				// Comando para extraer las líneas
+				using (SQLiteCommand comandoLineas = new SQLiteCommand(COMANDO_GET_LINEAS, conexion)) {
+					// Reader para extraer las lineas
+					using (SQLiteDataReader lectorLineas = comandoLineas.ExecuteReader()) {
+						while (lectorLineas.Read()) {
+							Linea linea = new Linea(lectorLineas);
+							linea.Servicios = new NotifyCollection<Servicio>();
+							// Comando para extraer los servicios de cada línea.
+							using (SQLiteCommand comandoServicios = new SQLiteCommand(COMANDO_GET_SERVICIOS_POR_LINEA, conexion)) {
+								comandoServicios.Parameters.AddWithValue("@NumeroLinea", linea.NumeroLinea);
+								// Reader para extraer los servicios de cada línea.
+								using (SQLiteDataReader lectorServicios = comandoServicios.ExecuteReader()) {
+									while (lectorServicios.Read()) {
+										Servicio servicio = new Servicio(lectorServicios);
+										servicio.ServiciosAuxiliares = new NotifyCollection<ServicioBase>();
+										// Comando para extraer los servicios auxiliares que tienen los servicios de cada línea.
+										using (SQLiteCommand comandoAuxiliares = new SQLiteCommand(COMANDO_GET_SERVICIOS_AUXILIARES_POR_SERVICIO, conexion)) {
+											comandoAuxiliares.Parameters.AddWithValue("@IdServicio", servicio.Id);
+											// Reader para extraer los servicios auxiliares que tienen los servicios de cada línea.
+											using (SQLiteDataReader lectorAuxiliares = comandoAuxiliares.ExecuteReader()) {
+												while (lectorAuxiliares.Read()) {
+													ServicioBase servicioBase = new ServicioBase(lectorAuxiliares);
+													servicioBase.Nuevo = false;
+													servicio.ServiciosAuxiliares.Add(servicioBase);
 												}
 											}
-											servicio.Nuevo = false;
-											linea.Servicios.Add(servicio);
 										}
+										servicio.Nuevo = false;
+										linea.Servicios.Add(servicio);
 									}
 								}
-								linea.Nuevo = false;
-								lista.Add(linea);
 							}
+							linea.Nuevo = false;
+							lista.Add(linea);
 						}
 					}
 				}
+
 			}
 			return lista;
 		}
@@ -184,64 +182,67 @@ namespace Quattro.SQLite {
 			if (lista == null || lista.Count == 0) return;
 			using (SQLiteConnection conexion = new SQLiteConnection(CadenaConexion)) {
 				conexion.Open();
-				foreach (Linea linea in lista) {
-					if (linea.Nuevo) {
-						using (SQLiteCommand comando = new SQLiteCommand(COMANDO_INSERTAR_LINEA, conexion)) {
-							linea.ToCommand(comando);
-							comando.ExecuteNonQuery();
-							comando.CommandText = COMANDO_IDENTIDAD;
-							int id = Convert.ToInt32(comando.ExecuteScalar());
-							linea.Id = id;
-							linea.Nuevo = false;
-							linea.Modificado = false;
-						}
-					} else if (linea.Modificado) {
-						using (SQLiteCommand comando = new SQLiteCommand(COMANDO_ACTUALIZAR_LINEA, conexion)) {
-							linea.ToCommand(comando);
-							comando.ExecuteNonQuery();
-							linea.Modificado = false;
-						}
-					}
-					// Actualizamos los servicios de cada línea.
-					foreach (Servicio servicio in linea.Servicios) {
-						if (servicio.Nuevo) {
-							using (SQLiteCommand comando = new SQLiteCommand(COMANDO_INSERTAR_SERVICIO, conexion)) {
-								servicio.ToCommand(comando);
+				using (SQLiteTransaction transaccion = conexion.BeginTransaction()) {
+					foreach (Linea linea in lista) {
+						if (linea.Nuevo) {
+							using (SQLiteCommand comando = new SQLiteCommand(COMANDO_INSERTAR_LINEA, conexion, transaccion)) {
+								linea.ToCommand(comando);
 								comando.ExecuteNonQuery();
 								comando.CommandText = COMANDO_IDENTIDAD;
 								int id = Convert.ToInt32(comando.ExecuteScalar());
-								servicio.Id = id;
-								servicio.Nuevo = false;
-								servicio.Modificado = false;
+								linea.Id = id;
+								linea.Nuevo = false;
+								linea.Modificado = false;
 							}
-						} else if (servicio.Modificado) {
-							using (SQLiteCommand comando = new SQLiteCommand(COMANDO_ACTUALIZAR_SERVICIO, conexion)) {
-								servicio.ToCommand(comando);
+						} else if (linea.Modificado) {
+							using (SQLiteCommand comando = new SQLiteCommand(COMANDO_ACTUALIZAR_LINEA, conexion, transaccion)) {
+								linea.ToCommand(comando);
 								comando.ExecuteNonQuery();
-								servicio.Modificado = false;
+								linea.Modificado = false;
 							}
 						}
-						// Guardamos los servicios auxiliares de cada servicio de cada línea.
-						foreach (ServicioBase servicioAuxiliar in servicio.ServiciosAuxiliares) {
-							if (servicioAuxiliar.Nuevo) {
-								using (SQLiteCommand comando = new SQLiteCommand(COMANDO_INSERTAR_SERVICIO_AUXILIAR, conexion)) {
-									servicioAuxiliar.ToCommand(comando);
+						// Actualizamos los servicios de cada línea.
+						foreach (Servicio servicio in linea.Servicios) {
+							if (servicio.Nuevo) {
+								using (SQLiteCommand comando = new SQLiteCommand(COMANDO_INSERTAR_SERVICIO, conexion, transaccion)) {
+									servicio.ToCommand(comando);
 									comando.ExecuteNonQuery();
 									comando.CommandText = COMANDO_IDENTIDAD;
 									int id = Convert.ToInt32(comando.ExecuteScalar());
-									servicioAuxiliar.Id = id;
-									servicioAuxiliar.Nuevo = false;
-									servicioAuxiliar.Modificado = false;
+									servicio.Id = id;
+									servicio.Nuevo = false;
+									servicio.Modificado = false;
 								}
-							} else if (servicioAuxiliar.Modificado) {
-								using (SQLiteCommand comando = new SQLiteCommand(COMANDO_ACTUALIZAR_SERVICIO_AUXILIAR, conexion)) {
-									servicioAuxiliar.ToCommand(comando);
+							} else if (servicio.Modificado) {
+								using (SQLiteCommand comando = new SQLiteCommand(COMANDO_ACTUALIZAR_SERVICIO, conexion, transaccion)) {
+									servicio.ToCommand(comando);
 									comando.ExecuteNonQuery();
-									servicioAuxiliar.Modificado = false;
+									servicio.Modificado = false;
+								}
+							}
+							// Guardamos los servicios auxiliares de cada servicio de cada línea.
+							foreach (ServicioBase servicioAuxiliar in servicio.ServiciosAuxiliares) {
+								if (servicioAuxiliar.Nuevo) {
+									using (SQLiteCommand comando = new SQLiteCommand(COMANDO_INSERTAR_SERVICIO_AUXILIAR, conexion, transaccion)) {
+										servicioAuxiliar.ToCommand(comando);
+										comando.ExecuteNonQuery();
+										comando.CommandText = COMANDO_IDENTIDAD;
+										int id = Convert.ToInt32(comando.ExecuteScalar());
+										servicioAuxiliar.Id = id;
+										servicioAuxiliar.Nuevo = false;
+										servicioAuxiliar.Modificado = false;
+									}
+								} else if (servicioAuxiliar.Modificado) {
+									using (SQLiteCommand comando = new SQLiteCommand(COMANDO_ACTUALIZAR_SERVICIO_AUXILIAR, conexion, transaccion)) {
+										servicioAuxiliar.ToCommand(comando);
+										comando.ExecuteNonQuery();
+										servicioAuxiliar.Modificado = false;
+									}
 								}
 							}
 						}
 					}
+					transaccion.Commit();
 				}
 			}
 		}
@@ -255,13 +256,16 @@ namespace Quattro.SQLite {
 			if (lista == null || lista.Count == 0) return;
 			using (SQLiteConnection conexion = new SQLiteConnection(CadenaConexion)) {
 				conexion.Open();
-				foreach (Linea linea in lista) {
-					if (!linea.Nuevo) {
-						using (SQLiteCommand comando = new SQLiteCommand(COMANDO_BORRAR_LINEA, conexion)) {
-							comando.Parameters.AddWithValue("@Id", linea.Id);
-							comando.ExecuteNonQuery();
+				using (SQLiteTransaction transaccion = conexion.BeginTransaction()) {
+					foreach (Linea linea in lista) {
+						if (!linea.Nuevo) {
+							using (SQLiteCommand comando = new SQLiteCommand(COMANDO_BORRAR_LINEA, conexion, transaccion)) {
+								comando.Parameters.AddWithValue("@Id", linea.Id);
+								comando.ExecuteNonQuery();
+							}
 						}
 					}
+					transaccion.Commit();
 				}
 			}
 		}

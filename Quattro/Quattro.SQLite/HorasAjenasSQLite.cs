@@ -9,7 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Data.SQLite;
 using System.Text;
-using Quattro.Models;
+using Quattro.Models2;
 using Quattro.Notify;
 
 namespace Quattro.SQLite {
@@ -71,10 +71,10 @@ namespace Quattro.SQLite {
 
 
 		/// <summary>
-		/// Devuelve una NotifyCollection con todas las incidencias de la tabla.
+		/// Devuelve una NotifyCollection con todas las horas ajenas de la tabla.
 		/// </summary>
-		/// <returns>Todas las incidencias de la tabla.</returns>
-		public NotifyCollection<HoraAjena> GetIncidencias() {
+		/// <returns>Todas las horas ajenas de la tabla.</returns>
+		public NotifyCollection<HoraAjena> GetHorasAjenas() {
 			NotifyCollection<HoraAjena> lista = new NotifyCollection<HoraAjena>();
 			using (SQLiteConnection conexion = new SQLiteConnection(CadenaConexion)) {
 				conexion.Open();
@@ -93,51 +93,57 @@ namespace Quattro.SQLite {
 
 
 		/// <summary>
-		/// Inserta o actualiza las incidencias de la lista que sean nuevas o estén modificadas.
+		/// Inserta o actualiza las horas ajenas de la lista que sean nuevas o estén modificadas.
 		/// </summary>
-		/// <param name="lista">Lista de incidencias a actualizar.</param>
-		public void GuardarIncidencias(IList<HoraAjena> lista) {
+		/// <param name="lista">Lista de horas ajenas a actualizar.</param>
+		public void GuardarHorasAjenas(IList<HoraAjena> lista) {
 			if (lista == null || lista.Count == 0) return;
 			using (SQLiteConnection conexion = new SQLiteConnection(CadenaConexion)) {
 				conexion.Open();
-				foreach (HoraAjena horaAjena in lista) {
-					if (horaAjena.Nuevo) {
-						using (SQLiteCommand comando = new SQLiteCommand(COMANDO_INSERTAR, conexion)) {
-							horaAjena.ToCommand(comando);
-							comando.ExecuteNonQuery();
-							comando.CommandText = COMANDO_IDENTIDAD;
-							int id = Convert.ToInt32(comando.ExecuteScalar());
-							horaAjena.Id = id;
-							horaAjena.Nuevo = false;
-							horaAjena.Modificado = false;
-						}
-					} else if (horaAjena.Modificado) {
-						using (SQLiteCommand comando = new SQLiteCommand(COMANDO_ACTUALIZAR, conexion)) {
-							horaAjena.ToCommand(comando);
-							comando.ExecuteNonQuery();
-							horaAjena.Modificado = false;
+				using (SQLiteTransaction transaccion = conexion.BeginTransaction()) {
+					foreach (HoraAjena horaAjena in lista) {
+						if (horaAjena.Nuevo) {
+							using (SQLiteCommand comando = new SQLiteCommand(COMANDO_INSERTAR, conexion, transaccion)) {
+								horaAjena.ToCommand(comando);
+								comando.ExecuteNonQuery();
+								comando.CommandText = COMANDO_IDENTIDAD;
+								int id = Convert.ToInt32(comando.ExecuteScalar());
+								horaAjena.Id = id;
+								horaAjena.Nuevo = false;
+								horaAjena.Modificado = false;
+							}
+						} else if (horaAjena.Modificado) {
+							using (SQLiteCommand comando = new SQLiteCommand(COMANDO_ACTUALIZAR, conexion, transaccion)) {
+								horaAjena.ToCommand(comando);
+								comando.ExecuteNonQuery();
+								horaAjena.Modificado = false;
+							}
 						}
 					}
+					transaccion.Commit();
 				}
 			}
 		}
 
 
 		/// <summary>
-		/// Elimina de la tabla las incidencias que se encuentren en la lista.
+		/// Elimina de la tabla las horas ajenas que se encuentren en la lista.
 		/// </summary>
-		/// <param name="lista">Lista con las incidencias a eliminar.</param>
-		public void BorrarIncidencias(IList<HoraAjena> lista) {
+		/// <param name="lista">Lista con las horas ajenas a eliminar.</param>
+		public void BorrarHorasAjenas(IList<HoraAjena> lista) {
 			if (lista == null || lista.Count == 0) return;
 			using (SQLiteConnection conexion = new SQLiteConnection(CadenaConexion)) {
 				conexion.Open();
-				foreach (HoraAjena horaAjena in lista) {
-					if (!horaAjena.Nuevo) {
-						using (SQLiteCommand comando = new SQLiteCommand(COMANDO_BORRAR, conexion)) {
-							comando.Parameters.AddWithValue("@Id", horaAjena.Id);
-							comando.ExecuteNonQuery();
+				using (SQLiteTransaction transaccion = conexion.BeginTransaction()) {
+					foreach (HoraAjena horaAjena in lista) {
+						if (!horaAjena.Nuevo) {
+							using (SQLiteCommand comando = new SQLiteCommand(COMANDO_BORRAR, conexion, transaccion)) {
+								comando.Parameters.AddWithValue("@Id", horaAjena.Id);
+								comando.ExecuteNonQuery();
+							}
 						}
 					}
+					transaccion.Commit();
 				}
 			}
 		}

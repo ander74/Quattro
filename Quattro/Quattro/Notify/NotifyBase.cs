@@ -5,10 +5,11 @@
 //  Vea el archivo Licencia.txt para más detalles 
 // ===============================================
 #endregion
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
-
 namespace Quattro.Notify {
+
+	using System.Collections.Generic;
+	using System.ComponentModel;
+	using System.Runtime.CompilerServices;
 
 	/// <summary>
 	/// Clase que encapsula la interfaz INotifyPropertyChanged para ser heredada por los objetos que
@@ -23,34 +24,37 @@ namespace Quattro.Notify {
 
 
 		/// <summary>
-		/// Establece el objeto como modificado e invoca el evento 'PropertyChanged'.
+		/// Invoca el evento 'PropertyChanged' con la propiedad que ha cambiado.
 		/// </summary>
-		public void OnPropertyChanged([CallerMemberName] string prop = "") {
-			Modificado = true;
-			PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(prop));
+		public void OnPropertyChanged([CallerMemberName] string propertyName = null) {
+			//Modificado = true;
+			this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 		}
 
 
 		/// <summary>
+		/// Si el valor de la propiedad es diferente al que se quiere asignar, se cambia y se lanza el
+		/// evento PropertyChanged correspondiente a la propiedad. Para ello, hay que pasar el campo
+		/// privado por referencia.
+		/// </summary>
+		protected void SetValue<T>(ref T backingField, T value, [CallerMemberName] string propertyName = null) {
+			if (EqualityComparer<T>.Default.Equals(backingField, value)) {
+				return;
+			}
+			backingField = value;
+			this.OnPropertyChanged(propertyName);
+		}
+
+		/// <summary>
 		/// Indica si el objeto ha cambiado.
 		/// </summary>
-		//private bool _modificado;
-		//public bool Modificado {
-		//	get { return _modificado; }
-		//	set {
-		//		if (_modificado != value) {
-		//			_modificado = value;
-		//			OnPropertyChanged();
-		//		}
-		//	}
-		//}
-		public bool Modificado { get; set; }
+		//public bool Modificado { get; set; }
 
 
 		/// <summary>
 		/// Indica si el objeto es nuevo.
 		/// </summary>
-		public bool Nuevo { get; set; } = true;
+		//public bool Nuevo { get; set; } = true;
 
 	}
 

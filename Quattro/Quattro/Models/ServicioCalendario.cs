@@ -7,20 +7,14 @@
 #endregion
 namespace Quattro.Models {
 
-	using Quattro.Common;
+	using System;
+	using System.Collections.Generic;
+	using System.Text;
 
 	/// <summary>
 	/// 
-	/// SERVICIO
-	/// ========
-	/// 
-	///		Hereda de la calse ServicioBase.
-	///		
-	///		Se pueden cargar los datos desde un DataReader y se pueden introducir los datos como parámetros de 
-	///		un Command que se pase por referencia.
-	///		
 	/// </summary>
-	public class Servicio : ServicioBase {
+	public class ServicioCalendario : ServicioBase {
 
 
 		// ====================================================================================================
@@ -28,7 +22,7 @@ namespace Quattro.Models {
 		// ====================================================================================================
 
 		public override bool Equals(object obj) {
-			if (obj is Servicio servicio)
+			if (obj is ServicioCalendario servicio)
 				return NumeroLinea == servicio.NumeroLinea && Servicio == servicio.Servicio && Turno == servicio.Turno;
 			return false;
 		}
@@ -53,73 +47,12 @@ namespace Quattro.Models {
 		#region PROPIEDADES
 		// ====================================================================================================
 
+		public int DiaCalendarioId { get; set; } // Id del DiaCalendario al que pertenece el servicio.
 
-		private decimal trabajadas;
-		public decimal Trabajadas {
-			get { return trabajadas; }
-			set { SetValue(ref trabajadas, value); }
-		}
-
-
-		private decimal acumuladas;
-		public decimal Acumuladas {
-			get { return acumuladas; }
-			set { SetValue(ref acumuladas, value); }
-		}
-
-
-		private decimal nocturnas;
-		public decimal Nocturnas {
-			get { return nocturnas; }
-			set { SetValue(ref nocturnas, value); }
-		}
-
-
-		private bool desayuno;
-		public bool Desayuno {
-			get { return desayuno; }
-			set { SetValue(ref desayuno, value); }
-		}
-
-
-		private bool comida;
-		public bool Comida {
-			get { return comida; }
-			set { SetValue(ref comida, value); }
-		}
-
-
-		private bool cena;
-		public bool Cena {
-			get { return cena; }
-			set { SetValue(ref cena, value); }
-		}
-
-
-		private Tiempo tomaDeje;
-		public Tiempo TomaDeje {
-			get { return tomaDeje; }
-			set { SetValue(ref tomaDeje, value); }
-		}
-
-
-		private decimal euros;
-		public decimal Euros {
-			get { return euros; }
-			set { SetValue(ref euros, value); }
-		}
-
-
-		private string notas;
-		public string Notas {
-			get { return notas; }
-			set { SetValue(ref notas, value); }
-		}
-
+		public DiaCalendario DiaCalendario { get; set; } // DiaCalendario al que pertenece el servicio, según EFCore. Falta Anotación ForeignKey.
 
 		#endregion
 		// ====================================================================================================
-
 
 
 	}

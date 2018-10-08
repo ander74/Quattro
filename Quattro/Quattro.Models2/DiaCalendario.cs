@@ -5,9 +5,12 @@
 //  Vea el archivo Licencia.txt para más detalles 
 // ===============================================
 #endregion
-namespace Quattro.Models {
+using System;
+using System.Data.Common;
+using Quattro.Common;
 
-	using System;
+namespace Quattro.Models2 {
+
 
 	/// <summary>
 	/// 
@@ -21,6 +24,101 @@ namespace Quattro.Models {
 	///		
 	/// </summary>
 	public class DiaCalendario : Servicio {
+
+
+		// ====================================================================================================
+		#region CONSTRUCTORES
+		// ====================================================================================================
+
+		public DiaCalendario() : base() { }
+
+
+		public DiaCalendario(DbDataReader lector) {
+			FromReader(lector);
+		}
+
+		#endregion
+		// ====================================================================================================
+
+
+		// ====================================================================================================
+		#region MÉTODOS PÚBLICOS
+		// ====================================================================================================
+
+		public override void FromReader(DbDataReader lector) {
+			base.FromReader(lector);
+			fecha = lector.ToDateTime("Fecha");
+			EsFranqueo = lector.ToBool("EsFranqueo");
+			EsFestivo = lector.ToBool("EsFestivo");
+			codigoIncidencia = lector.ToInt32("CodigoIncidencia");
+			huelgaParcial = lector.ToBool("HuelgaParcial");
+			horasHuelga = lector.ToDecimal("HorasHuelga");
+			relevo = lector.ToInt32("Relevo");
+			susti = lector.ToInt32("Susti");
+			bus = lector.ToString("Bus");
+		}
+
+
+		public override void ToCommand(DbCommand comando) {
+			base.ToCommand(comando);
+			//Fecha
+			DbParameter parametro = comando.CreateParameter();
+			parametro.DbType = System.Data.DbType.String;
+			parametro.ParameterName = "@Fecha";
+			parametro.Value = Fecha.ToString("yyyy-MM-dd");
+			comando.Parameters.Add(parametro);
+			//EsFranqueo
+			parametro = comando.CreateParameter();
+			parametro.DbType = System.Data.DbType.Int32;
+			parametro.ParameterName = "@EsFranqueo";
+			parametro.Value = EsFranqueo ? 1 : 0;
+			comando.Parameters.Add(parametro);
+			//EsFestivo
+			parametro = comando.CreateParameter();
+			parametro.DbType = System.Data.DbType.Int32;
+			parametro.ParameterName = "@EsFestivo";
+			parametro.Value = EsFestivo ? 1 : 0;
+			comando.Parameters.Add(parametro);
+			//CodigoIncidencia
+			parametro = comando.CreateParameter();
+			parametro.DbType = System.Data.DbType.Int32;
+			parametro.ParameterName = "@CodigoIncidencia";
+			parametro.Value = CodigoIncidencia;
+			comando.Parameters.Add(parametro);
+			//HuelgaParcial
+			parametro = comando.CreateParameter();
+			parametro.DbType = System.Data.DbType.Int32;
+			parametro.ParameterName = "@HuelgaParcial";
+			parametro.Value = HuelgaParcial ? 1 : 0;
+			comando.Parameters.Add(parametro);
+			//HorasHuelga
+			parametro = comando.CreateParameter();
+			parametro.DbType = System.Data.DbType.Decimal;
+			parametro.ParameterName = "@HorasHuelga";
+			parametro.Value = HorasHuelga;
+			comando.Parameters.Add(parametro);
+			//Relevo
+			parametro = comando.CreateParameter();
+			parametro.DbType = System.Data.DbType.Int32;
+			parametro.ParameterName = "@Relevo";
+			parametro.Value = Relevo;
+			comando.Parameters.Add(parametro);
+			//Susti
+			parametro = comando.CreateParameter();
+			parametro.DbType = System.Data.DbType.Int32;
+			parametro.ParameterName = "@Susti";
+			parametro.Value = Susti;
+			comando.Parameters.Add(parametro);
+			//Bus
+			parametro = comando.CreateParameter();
+			parametro.DbType = System.Data.DbType.String;
+			parametro.ParameterName = "@Bus";
+			parametro.Value = Bus;
+			comando.Parameters.Add(parametro);
+		}
+
+		#endregion
+		// ====================================================================================================
 
 
 		// ====================================================================================================
@@ -94,7 +192,7 @@ namespace Quattro.Models {
 		}
 
 
-		private int codigoIncidencia; //TODO: Cambiar según EFCore.
+		private int codigoIncidencia;
 		public int CodigoIncidencia {
 			get { return codigoIncidencia; }
 			set {
@@ -130,19 +228,7 @@ namespace Quattro.Models {
 		}
 
 
-		private string textoLinea;
-		public string TextoLinea {
-			get { return textoLinea; }
-			set {
-				if (textoLinea != value) {
-					textoLinea = value;
-					OnPropertyChanged();
-				}
-			}
-		}
-
-
-		private int relevo; //TODO: Cambiar según EFCore.
+		private int relevo;
 		public int Relevo {
 			get { return relevo; }
 			set {
@@ -154,7 +240,7 @@ namespace Quattro.Models {
 		}
 
 
-		private int susti; //TODO: Cambiar según EFCore.
+		private int susti;
 		public int Susti {
 			get { return susti; }
 			set {
@@ -177,8 +263,6 @@ namespace Quattro.Models {
 			}
 		}
 
-
-		//TODO: Añadir los servicios del calendario.
 
 		#endregion
 		// ====================================================================================================

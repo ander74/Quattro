@@ -2,21 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <PackageId>Quattro.Models</PackageId>
-    <Version>2.0</Version>
-    <Authors>A. Herrero</Authors>
-    <Company>AnderSoft</Company>
-    <Product>Quattro</Product>
-    <Description>Biblioteca de clases con los modelos del proyecto Quattro.</Description>
-    <Copyright>GNU/GPL Versión 3</Copyright>
-    <PackageLicenseUrl>https://www.gnu.org/licenses/gpl-3.0.html</PackageLicenseUrl>
-    <RepositoryUrl>https://github.com/ander74/Quattro</RepositoryUrl>
-    <RepositoryType>GitHub</RepositoryType>
   </PropertyGroup>
-
-  <ItemGroup>
-    <PackageReference Include="System.ValueTuple" Version="4.5.0" />
-  </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Quattro\Quattro.csproj" />

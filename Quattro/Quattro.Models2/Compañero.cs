@@ -5,33 +5,32 @@
 //  Vea el archivo Licencia.txt para más detalles 
 // ===============================================
 #endregion
-using System;
 using System.Data.Common;
 using Quattro.Common;
 using Quattro.Notify;
 
-namespace Quattro.Models {
+namespace Quattro.Models2 {
 
 
 	/// <summary>
 	/// 
-	/// HORA AJENA
-	/// ==========
+	/// COMPAÑERO
+	/// =========
 	/// 
 	///		Se pueden cargar los datos desde un DataReader y se pueden introducir los datos como parámetros de 
 	///		un Command que se pase por referencia.
 	///		
 	/// </summary>
-	public class HoraAjena : NotifyBase {
+	public class Compañero : NotifyBase {
 
 		// ====================================================================================================
 		#region CONSTRUCTORES
 		// ====================================================================================================
 
-		public HoraAjena() { }
+		public Compañero() { }
 
 
-		public HoraAjena(DbDataReader lector) {
+		public Compañero(DbDataReader lector) {
 			FromReader(lector);
 		}
 
@@ -45,10 +44,13 @@ namespace Quattro.Models {
 
 		public virtual void FromReader(DbDataReader lector) {
 			id = lector.ToInt32("Id");
-			fecha = lector.ToDateTime("Fecha");
-			horas = lector.ToDecimal("Horas");
-			motivo = lector.ToString("Motivo");
-			codigo = lector.ToInt32("Codigo");
+			matricula = lector.ToInt32("Matricula");
+			nombre = lector.ToString("Nombre");
+			apellidos = lector.ToString("Apellidos");
+			telefono = lector.ToString("Telefono");
+			calificacion = (CalificacionCompañero)lector.ToInt32("Calificacion");
+			deuda = lector.ToInt32("Deuda");
+			notas = lector.ToString("Notas");
 		}
 
 
@@ -59,29 +61,47 @@ namespace Quattro.Models {
 			parametro.ParameterName = "@Id";
 			parametro.Value = Id;
 			comando.Parameters.Add(parametro);
-			// Fecha
-			parametro = comando.CreateParameter();
-			parametro.DbType = System.Data.DbType.DateTime;
-			parametro.ParameterName = "@Fecha";
-			parametro.Value = Fecha.ToString("yyyy-MM-dd");
-			comando.Parameters.Add(parametro);
-			// Horas
-			parametro = comando.CreateParameter();
-			parametro.DbType = System.Data.DbType.Decimal;
-			parametro.ParameterName = "@Horas";
-			parametro.Value = Horas;
-			comando.Parameters.Add(parametro);
-			// Motivo
-			parametro = comando.CreateParameter();
-			parametro.DbType = System.Data.DbType.String;
-			parametro.ParameterName = "@Motivo";
-			parametro.Value = Motivo;
-			comando.Parameters.Add(parametro);
-			//Codigo
+			// Matricula
 			parametro = comando.CreateParameter();
 			parametro.DbType = System.Data.DbType.Int32;
-			parametro.ParameterName = "@Codigo";
-			parametro.Value = Codigo;
+			parametro.ParameterName = "@Matricula";
+			parametro.Value = Matricula;
+			comando.Parameters.Add(parametro);
+			//Nombre
+			parametro = comando.CreateParameter();
+			parametro.DbType = System.Data.DbType.String;
+			parametro.ParameterName = "@Nombre";
+			parametro.Value = Nombre;
+			comando.Parameters.Add(parametro);
+			//Apellidos
+			parametro = comando.CreateParameter();
+			parametro.DbType = System.Data.DbType.String;
+			parametro.ParameterName = "@Apellidos";
+			parametro.Value = Apellidos;
+			comando.Parameters.Add(parametro);
+			//Telefono
+			parametro = comando.CreateParameter();
+			parametro.DbType = System.Data.DbType.String;
+			parametro.ParameterName = "@Telefono";
+			parametro.Value = Telefono;
+			comando.Parameters.Add(parametro);
+			//Calificacion
+			parametro = comando.CreateParameter();
+			parametro.DbType = System.Data.DbType.Int32;
+			parametro.ParameterName = "@Calificacion";
+			parametro.Value = Calificacion;
+			comando.Parameters.Add(parametro);
+			//Deuda
+			parametro = comando.CreateParameter();
+			parametro.DbType = System.Data.DbType.Int32;
+			parametro.ParameterName = "@Deuda";
+			parametro.Value = Deuda;
+			comando.Parameters.Add(parametro);
+			// Notas
+			parametro = comando.CreateParameter();
+			parametro.DbType = System.Data.DbType.String;
+			parametro.ParameterName = "@Notas";
+			parametro.Value = Notas;
 			comando.Parameters.Add(parametro);
 		}
 
@@ -95,24 +115,21 @@ namespace Quattro.Models {
 		// ====================================================================================================
 
 		public override string ToString() {
-			return $"{Fecha:dd:MM:yyyy}: {Horas:0.00} {Motivo}";
+			return $"{Matricula:00}: {Nombre} {Apellidos}";
 		}
 
 
 		public override bool Equals(object obj) {
-			var horaajena = obj as HoraAjena;
-			if (horaajena == null) return false;
-			return Fecha == horaajena.Fecha && Horas == horaajena.Horas && Motivo == horaajena.Motivo && Codigo == horaajena.Codigo;
+			var compañero = obj as Compañero;
+			if (compañero == null) return false;
+			return Matricula == compañero.Matricula;
 		}
 
 
 		public override int GetHashCode() {
 			unchecked {
 				int hash = 5060;
-				hash = hash * fecha.GetHashCode();
-				hash = hash * horas.GetHashCode();
-				hash = hash * motivo?.GetHashCode() ?? 1234;
-				hash = hash * codigo.GetHashCode();
+				hash = hash * matricula.GetHashCode();
 				return hash;
 			}
 		}
@@ -139,57 +156,93 @@ namespace Quattro.Models {
 		}
 
 
-		private DateTime fecha;
-		public DateTime Fecha {
-			get { return fecha; }
+		private int matricula;
+		public int Matricula {
+			get { return matricula; }
 			set {
-				if (fecha != value) {
-					fecha = value;
+				if (matricula != value) {
+					matricula = value;
 					OnPropertyChanged();
 				}
 			}
 		}
 
 
-		private decimal horas;
-		public decimal Horas {
-			get { return horas; }
+		private string nombre;
+		public string Nombre {
+			get { return nombre; }
 			set {
-				if (horas != value) {
-					horas = value;
+				if (nombre != value) {
+					nombre = value;
 					OnPropertyChanged();
 				}
 			}
 		}
 
 
-		private string motivo;
-		public string Motivo {
-			get { return motivo; }
+		private string apellidos;
+		public string Apellidos {
+			get { return apellidos; }
 			set {
-				if (motivo != value) {
-					motivo = value;
+				if (apellidos != value) {
+					apellidos = value;
 					OnPropertyChanged();
 				}
 			}
 		}
 
 
-		private int codigo;
-		public int Codigo {
-			get { return codigo; }
+		private string telefono;
+		public string Telefono {
+			get { return telefono; }
 			set {
-				if (codigo != value) {
-					codigo = value;
+				if (telefono != value) {
+					telefono = value;
 					OnPropertyChanged();
 				}
 			}
 		}
+
+
+		private CalificacionCompañero calificacion;
+		public CalificacionCompañero Calificacion {
+			get { return calificacion; }
+			set {
+				if (calificacion != value) {
+					calificacion = value;
+					OnPropertyChanged();
+				}
+			}
+		}
+
+
+		private int deuda;
+		public int Deuda {
+			get { return deuda; }
+			set {
+				if (deuda != value) {
+					deuda = value;
+					OnPropertyChanged();
+				}
+			}
+		}
+
+
+		private string notas;
+		public string Notas {
+			get { return notas; }
+			set {
+				if (notas != value) {
+					notas = value;
+					OnPropertyChanged();
+				}
+			}
+		}
+
 
 
 		#endregion
 		// ====================================================================================================
-
 
 
 

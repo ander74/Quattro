@@ -61,120 +61,70 @@ namespace Quattro.Models {
 		private DateTime fecha;
 		public DateTime Fecha {
 			get { return fecha; }
-			set {
-				if (fecha != value) {
-					fecha = value;
-					OnPropertyChanged();
-				}
-			}
+			set { SetValue(ref fecha, value); }
 		}
 
 
 		private bool esFranqueo;
 		public bool EsFranqueo {
 			get { return esFranqueo; }
-			set {
-				if (esFranqueo != value) {
-					esFranqueo = value;
-					OnPropertyChanged();
-				}
-			}
+			set { SetValue(ref esFranqueo, value); }
 		}
 
 
 		private bool esFestivo;
 		public bool EsFestivo {
 			get { return esFestivo; }
-			set {
-				if (esFestivo != value) {
-					esFestivo = value;
-					OnPropertyChanged();
-				}
-			}
+			set { SetValue(ref esFestivo, value); }
 		}
 
 
 		private int codigoIncidencia; //TODO: Cambiar según EFCore.
 		public int CodigoIncidencia {
 			get { return codigoIncidencia; }
-			set {
-				if (codigoIncidencia != value) {
-					codigoIncidencia = value;
-					OnPropertyChanged();
-				}
-			}
+			set { SetValue(ref codigoIncidencia, value); }
 		}
 
 
 		private bool huelgaParcial;
 		public bool HuelgaParcial {
 			get { return huelgaParcial; }
-			set {
-				if (huelgaParcial != value) {
-					huelgaParcial = value;
-					OnPropertyChanged();
-				}
-			}
+			set { SetValue(ref huelgaParcial, value); }
 		}
 
 
 		private decimal horasHuelga;
 		public decimal HorasHuelga {
 			get { return horasHuelga; }
-			set {
-				if (horasHuelga != value) {
-					horasHuelga = value;
-					OnPropertyChanged();
-				}
-			}
+			set { SetValue(ref horasHuelga, value); }
 		}
 
 
 		private string textoLinea;
 		public string TextoLinea {
 			get { return textoLinea; }
-			set {
-				if (textoLinea != value) {
-					textoLinea = value;
-					OnPropertyChanged();
-				}
-			}
+			set { SetValue(ref textoLinea, value); }
 		}
 
 
 		private int relevo; //TODO: Cambiar según EFCore.
 		public int Relevo {
 			get { return relevo; }
-			set {
-				if (relevo != value) {
-					relevo = value;
-					OnPropertyChanged();
-				}
-			}
+			set { SetValue(ref relevo, value); }
 		}
 
 
 		private int susti; //TODO: Cambiar según EFCore.
 		public int Susti {
 			get { return susti; }
-			set {
-				if (susti != value) {
-					susti = value;
-					OnPropertyChanged();
-				}
-			}
+			set { SetValue(ref susti, value); }
 		}
 
 
 		private string bus;
 		public string Bus {
 			get { return bus; }
-			set {
-				if (bus != value) {
-					bus = value;
-					OnPropertyChanged();
-				}
-			}
+			set { SetValue(ref bus, value); }
 		}
 
 

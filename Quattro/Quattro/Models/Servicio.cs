@@ -7,7 +7,7 @@
 #endregion
 namespace Quattro.Models {
 
-	using Quattro.Common;
+	using Common;
 
 	/// <summary>
 	/// 

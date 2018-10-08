@@ -9,7 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Data.SQLite;
 using System.Text;
-using Quattro.Models;
+using Quattro.Models2;
 using Quattro.Notify;
 
 namespace Quattro.SQLite {
@@ -132,32 +132,29 @@ namespace Quattro.SQLite {
 			// Conexión a la base de datos.
 			using (SQLiteConnection conexion = new SQLiteConnection(CadenaConexion)) {
 				conexion.Open();
-				// Transacción.
-				using (SQLiteTransaction transaccion = conexion.BeginTransaction()) {
-					// Comando para extraer los días
-					using (SQLiteCommand comandoDias = new SQLiteCommand(COMANDO_GET_DIAS_POR_MES, conexion, transaccion)) {
-						comandoDias.Parameters.AddWithValue("@Año", año);
-						comandoDias.Parameters.AddWithValue("@Mes", mes);
-						// Reader para extraer los días
-						using (SQLiteDataReader lectorDias = comandoDias.ExecuteReader()) {
-							while (lectorDias.Read()) {
-								DiaCalendario dia = new DiaCalendario(lectorDias);
-								dia.ServiciosAuxiliares = new NotifyCollection<ServicioBase>();
-								// Comando para extraer los servicios de cada día.
-								using (SQLiteCommand comandoServicios = new SQLiteCommand(COMANDO_GET_SERVICIOS_POR_DIA, conexion, transaccion)) {
-									comandoServicios.Parameters.AddWithValue("@Fecha", dia.Fecha.ToString("yyyy-MM-dd"));
-									// Reader para extraer los servicios de cada día.
-									using (SQLiteDataReader lectorServicios = comandoServicios.ExecuteReader()) {
-										while (lectorServicios.Read()) {
-											ServicioBase servicio = new ServicioBase(lectorServicios);
-											servicio.Nuevo = false;
-											dia.ServiciosAuxiliares.Add(servicio);
-										}
+				// Comando para extraer los días
+				using (SQLiteCommand comandoDias = new SQLiteCommand(COMANDO_GET_DIAS_POR_MES, conexion)) {
+					comandoDias.Parameters.AddWithValue("@Año", año);
+					comandoDias.Parameters.AddWithValue("@Mes", mes);
+					// Reader para extraer los días
+					using (SQLiteDataReader lectorDias = comandoDias.ExecuteReader()) {
+						while (lectorDias.Read()) {
+							DiaCalendario dia = new DiaCalendario(lectorDias);
+							dia.ServiciosAuxiliares = new NotifyCollection<ServicioBase>();
+							// Comando para extraer los servicios de cada día.
+							using (SQLiteCommand comandoServicios = new SQLiteCommand(COMANDO_GET_SERVICIOS_POR_DIA, conexion)) {
+								comandoServicios.Parameters.AddWithValue("@Fecha", dia.Fecha.ToString("yyyy-MM-dd"));
+								// Reader para extraer los servicios de cada día.
+								using (SQLiteDataReader lectorServicios = comandoServicios.ExecuteReader()) {
+									while (lectorServicios.Read()) {
+										ServicioBase servicio = new ServicioBase(lectorServicios);
+										servicio.Nuevo = false;
+										dia.ServiciosAuxiliares.Add(servicio);
 									}
 								}
-								dia.Nuevo = false;
-								lista.Add(dia);
 							}
+							dia.Nuevo = false;
+							lista.Add(dia);
 						}
 					}
 				}
@@ -174,44 +171,47 @@ namespace Quattro.SQLite {
 			if (lista == null || lista.Count == 0) return;
 			using (SQLiteConnection conexion = new SQLiteConnection(CadenaConexion)) {
 				conexion.Open();
-				foreach (DiaCalendario dia in lista) {
-					if (dia.Nuevo) {
-						using (SQLiteCommand comando = new SQLiteCommand(COMANDO_INSERTAR_DIA, conexion)) {
-							dia.ToCommand(comando);
-							comando.ExecuteNonQuery();
-							comando.CommandText = COMANDO_IDENTIDAD;
-							int id = Convert.ToInt32(comando.ExecuteScalar());
-							dia.Id = id;
-							dia.Nuevo = false;
-							dia.Modificado = false;
-						}
-					} else if (dia.Modificado) {
-						using (SQLiteCommand comando = new SQLiteCommand(COMANDO_ACTUALIZAR_DIA, conexion)) {
-							dia.ToCommand(comando);
-							comando.ExecuteNonQuery();
-							dia.Modificado = false;
-						}
-					}
-					// Guardamos los servicios auxiliares de cada servicio de cada línea.
-					foreach (ServicioBase servicio in dia.ServiciosAuxiliares) {
-						if (servicio.Nuevo) {
-							using (SQLiteCommand comando = new SQLiteCommand(COMANDO_INSERTAR_SERVICIO_CALENDARIO, conexion)) {
-								servicio.ToCommand(comando);
+				using (SQLiteTransaction transaccion = conexion.BeginTransaction()) {
+					foreach (DiaCalendario dia in lista) {
+						if (dia.Nuevo) {
+							using (SQLiteCommand comando = new SQLiteCommand(COMANDO_INSERTAR_DIA, conexion, transaccion)) {
+								dia.ToCommand(comando);
 								comando.ExecuteNonQuery();
 								comando.CommandText = COMANDO_IDENTIDAD;
 								int id = Convert.ToInt32(comando.ExecuteScalar());
-								servicio.Id = id;
-								servicio.Nuevo = false;
-								servicio.Modificado = false;
+								dia.Id = id;
+								dia.Nuevo = false;
+								dia.Modificado = false;
 							}
-						} else if (servicio.Modificado) {
-							using (SQLiteCommand comando = new SQLiteCommand(COMANDO_ACTUALIZAR_SERVICIO_CALENDARIO, conexion)) {
-								servicio.ToCommand(comando);
+						} else if (dia.Modificado) {
+							using (SQLiteCommand comando = new SQLiteCommand(COMANDO_ACTUALIZAR_DIA, conexion, transaccion)) {
+								dia.ToCommand(comando);
 								comando.ExecuteNonQuery();
-								servicio.Modificado = false;
+								dia.Modificado = false;
+							}
+						}
+						// Guardamos los servicios auxiliares de cada servicio de cada línea.
+						foreach (ServicioBase servicio in dia.ServiciosAuxiliares) {
+							if (servicio.Nuevo) {
+								using (SQLiteCommand comando = new SQLiteCommand(COMANDO_INSERTAR_SERVICIO_CALENDARIO, conexion, transaccion)) {
+									servicio.ToCommand(comando);
+									comando.ExecuteNonQuery();
+									comando.CommandText = COMANDO_IDENTIDAD;
+									int id = Convert.ToInt32(comando.ExecuteScalar());
+									servicio.Id = id;
+									servicio.Nuevo = false;
+									servicio.Modificado = false;
+								}
+							} else if (servicio.Modificado) {
+								using (SQLiteCommand comando = new SQLiteCommand(COMANDO_ACTUALIZAR_SERVICIO_CALENDARIO, conexion, transaccion)) {
+									servicio.ToCommand(comando);
+									comando.ExecuteNonQuery();
+									servicio.Modificado = false;
+								}
 							}
 						}
 					}
+					transaccion.Commit();
 				}
 			}
 		}
@@ -225,13 +225,16 @@ namespace Quattro.SQLite {
 			if (lista == null || lista.Count == 0) return;
 			using (SQLiteConnection conexion = new SQLiteConnection(CadenaConexion)) {
 				conexion.Open();
-				foreach (DiaCalendario dia in lista) {
-					if (!dia.Nuevo) {
-						using (SQLiteCommand comando = new SQLiteCommand(COMANDO_BORRAR_DIA, conexion)) {
-							comando.Parameters.AddWithValue("@Id", dia.Id);
-							comando.ExecuteNonQuery();
+				using (SQLiteTransaction transaccion = conexion.BeginTransaction()) {
+					foreach (DiaCalendario dia in lista) {
+						if (!dia.Nuevo) {
+							using (SQLiteCommand comando = new SQLiteCommand(COMANDO_BORRAR_DIA, conexion, transaccion)) {
+								comando.Parameters.AddWithValue("@Id", dia.Id);
+								comando.ExecuteNonQuery();
+							}
 						}
 					}
+					transaccion.Commit();
 				}
 			}
 		}

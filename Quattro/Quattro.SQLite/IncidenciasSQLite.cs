@@ -8,7 +8,7 @@
 using System;
 using System.Collections.Generic;
 using System.Data.SQLite;
-using Quattro.Models;
+using Quattro.Models2;
 using Quattro.Notify;
 
 namespace Quattro.SQLite {
@@ -99,24 +99,27 @@ namespace Quattro.SQLite {
 			if (lista == null || lista.Count == 0) return;
 			using (SQLiteConnection conexion = new SQLiteConnection(CadenaConexion)) {
 				conexion.Open();
-				foreach(Incidencia incidencia in lista) {
-					if (incidencia.Nuevo) {
-						using (SQLiteCommand comando = new SQLiteCommand(COMANDO_INSERTAR, conexion)) {
-							incidencia.ToCommand(comando);
-							comando.ExecuteNonQuery();
-							comando.CommandText = COMANDO_IDENTIDAD;
-							int id = Convert.ToInt32(comando.ExecuteScalar());
-							incidencia.Id = id;
-							incidencia.Nuevo = false;
-							incidencia.Modificado = false;
-						}
-					} else if (incidencia.Modificado) {
-						using (SQLiteCommand comando = new SQLiteCommand(COMANDO_ACTUALIZAR, conexion)) {
-							incidencia.ToCommand(comando);
-							comando.ExecuteNonQuery();
-							incidencia.Modificado = false;
+				using (SQLiteTransaction transaccion = conexion.BeginTransaction()) {
+					foreach (Incidencia incidencia in lista) {
+						if (incidencia.Nuevo) {
+							using (SQLiteCommand comando = new SQLiteCommand(COMANDO_INSERTAR, conexion, transaccion)) {
+								incidencia.ToCommand(comando);
+								comando.ExecuteNonQuery();
+								comando.CommandText = COMANDO_IDENTIDAD;
+								int id = Convert.ToInt32(comando.ExecuteScalar());
+								incidencia.Id = id;
+								incidencia.Nuevo = false;
+								incidencia.Modificado = false;
+							}
+						} else if (incidencia.Modificado) {
+							using (SQLiteCommand comando = new SQLiteCommand(COMANDO_ACTUALIZAR, conexion, transaccion)) {
+								incidencia.ToCommand(comando);
+								comando.ExecuteNonQuery();
+								incidencia.Modificado = false;
+							}
 						}
 					}
+					transaccion.Commit();
 				}
 			}
 		}
@@ -130,13 +133,16 @@ namespace Quattro.SQLite {
 			if (lista == null || lista.Count == 0) return;
 			using (SQLiteConnection conexion = new SQLiteConnection(CadenaConexion)) {
 				conexion.Open();
-				foreach(Incidencia incidencia in lista) {
-					if (!incidencia.Nuevo) {
-						using (SQLiteCommand comando = new SQLiteCommand(COMANDO_BORRAR, conexion)) {
-							comando.Parameters.AddWithValue("@Id", incidencia.Id);
-							comando.ExecuteNonQuery();
+				using (SQLiteTransaction transaccion = conexion.BeginTransaction()) {
+					foreach (Incidencia incidencia in lista) {
+						if (!incidencia.Nuevo) {
+							using (SQLiteCommand comando = new SQLiteCommand(COMANDO_BORRAR, conexion, transaccion)) {
+								comando.Parameters.AddWithValue("@Id", incidencia.Id);
+								comando.ExecuteNonQuery();
+							}
 						}
 					}
+					transaccion.Commit();
 				}
 			}
 		}

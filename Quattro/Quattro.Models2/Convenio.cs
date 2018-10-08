@@ -11,7 +11,7 @@ using System.Linq;
 using Quattro.Common;
 using Quattro.Notify;
 
-namespace Quattro.Models {
+namespace Quattro.Models2 {
 
 
 	/// <summary>

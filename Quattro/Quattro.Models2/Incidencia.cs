@@ -9,28 +9,28 @@ using System.Data.Common;
 using Quattro.Common;
 using Quattro.Notify;
 
-namespace Quattro.Models {
+namespace Quattro.Models2 {
 
 
 	/// <summary>
 	/// 
-	/// COMPAÑERO
-	/// =========
+	/// INCIDENCIA
+	/// ==========
 	/// 
 	///		Se pueden cargar los datos desde un DataReader y se pueden introducir los datos como parámetros de 
 	///		un Command que se pase por referencia.
 	///		
 	/// </summary>
-	public class Compañero : NotifyBase {
+	public class Incidencia : NotifyBase {
 
 		// ====================================================================================================
 		#region CONSTRUCTORES
 		// ====================================================================================================
 
-		public Compañero() { }
+		public Incidencia() { }
 
 
-		public Compañero(DbDataReader lector) {
+		public Incidencia(DbDataReader lector) {
 			FromReader(lector);
 		}
 
@@ -44,12 +44,9 @@ namespace Quattro.Models {
 
 		public virtual void FromReader(DbDataReader lector) {
 			id = lector.ToInt32("Id");
-			matricula = lector.ToInt32("Matricula");
-			nombre = lector.ToString("Nombre");
-			apellidos = lector.ToString("Apellidos");
-			telefono = lector.ToString("Telefono");
-			calificacion = (CalificacionCompañero)lector.ToInt32("Calificacion");
-			deuda = lector.ToInt32("Deuda");
+			codigo = lector.ToInt32("Codigo");
+			textoIncidencia = lector.ToString("TextoIncidencia");
+			tipo = lector.ToInt32("Tipo");
 			notas = lector.ToString("Notas");
 		}
 
@@ -61,43 +58,25 @@ namespace Quattro.Models {
 			parametro.ParameterName = "@Id";
 			parametro.Value = Id;
 			comando.Parameters.Add(parametro);
-			// Matricula
+			// Codigo
 			parametro = comando.CreateParameter();
 			parametro.DbType = System.Data.DbType.Int32;
-			parametro.ParameterName = "@Matricula";
-			parametro.Value = Matricula;
+			parametro.ParameterName = "@Codigo";
+			parametro.Value = Codigo;
 			comando.Parameters.Add(parametro);
-			//Nombre
+			//TextoIncidencia
 			parametro = comando.CreateParameter();
 			parametro.DbType = System.Data.DbType.String;
-			parametro.ParameterName = "@Nombre";
-			parametro.Value = Nombre;
+			parametro.ParameterName = "@TextoIncidencia";
+			parametro.Value = TextoIncidencia;
 			comando.Parameters.Add(parametro);
-			//Apellidos
-			parametro = comando.CreateParameter();
-			parametro.DbType = System.Data.DbType.String;
-			parametro.ParameterName = "@Apellidos";
-			parametro.Value = Apellidos;
-			comando.Parameters.Add(parametro);
-			//Telefono
-			parametro = comando.CreateParameter();
-			parametro.DbType = System.Data.DbType.String;
-			parametro.ParameterName = "@Telefono";
-			parametro.Value = Telefono;
-			comando.Parameters.Add(parametro);
-			//Calificacion
+			//Tipo
 			parametro = comando.CreateParameter();
 			parametro.DbType = System.Data.DbType.Int32;
-			parametro.ParameterName = "@Calificacion";
-			parametro.Value = Calificacion;
+			parametro.ParameterName = "@Tipo";
+			parametro.Value = Tipo;
 			comando.Parameters.Add(parametro);
-			//Deuda
-			parametro = comando.CreateParameter();
-			parametro.DbType = System.Data.DbType.Int32;
-			parametro.ParameterName = "@Deuda";
-			parametro.Value = Deuda;
-			comando.Parameters.Add(parametro);
-			// Notas
+			//Notas
 			parametro = comando.CreateParameter();
 			parametro.DbType = System.Data.DbType.String;
 			parametro.ParameterName = "@Notas";
@@ -115,21 +94,21 @@ namespace Quattro.Models {
 		// ====================================================================================================
 
 		public override string ToString() {
-			return $"{Matricula:00}: {Nombre} {Apellidos}";
+			return $"{codigo:00}: {TextoIncidencia}";
 		}
 
 
 		public override bool Equals(object obj) {
-			var compañero = obj as Compañero;
-			if (compañero == null) return false;
-			return Matricula == compañero.Matricula;
+			var incidencia = obj as Incidencia;
+			if (incidencia == null) return false;
+			return Codigo == incidencia.Codigo;
 		}
 
 
 		public override int GetHashCode() {
 			unchecked {
 				int hash = 5060;
-				hash = hash * matricula.GetHashCode();
+				hash = hash * codigo.GetHashCode();
 				return hash;
 			}
 		}
@@ -156,72 +135,36 @@ namespace Quattro.Models {
 		}
 
 
-		private int matricula;
-		public int Matricula {
-			get { return matricula; }
+		private int codigo;
+		public int Codigo {
+			get { return codigo; }
 			set {
-				if (matricula != value) {
-					matricula = value;
+				if (codigo != value) {
+					codigo = value;
 					OnPropertyChanged();
 				}
 			}
 		}
 
 
-		private string nombre;
-		public string Nombre {
-			get { return nombre; }
+		private string textoIncidencia;
+		public string TextoIncidencia {
+			get { return textoIncidencia; }
 			set {
-				if (nombre != value) {
-					nombre = value;
+				if (textoIncidencia != value) {
+					textoIncidencia = value;
 					OnPropertyChanged();
 				}
 			}
 		}
 
 
-		private string apellidos;
-		public string Apellidos {
-			get { return apellidos; }
+		private int tipo;
+		public int Tipo {
+			get { return tipo; }
 			set {
-				if (apellidos != value) {
-					apellidos = value;
-					OnPropertyChanged();
-				}
-			}
-		}
-
-
-		private string telefono;
-		public string Telefono {
-			get { return telefono; }
-			set {
-				if (telefono != value) {
-					telefono = value;
-					OnPropertyChanged();
-				}
-			}
-		}
-
-
-		private CalificacionCompañero calificacion;
-		public CalificacionCompañero Calificacion {
-			get { return calificacion; }
-			set {
-				if (calificacion != value) {
-					calificacion = value;
-					OnPropertyChanged();
-				}
-			}
-		}
-
-
-		private int deuda;
-		public int Deuda {
-			get { return deuda; }
-			set {
-				if (deuda != value) {
-					deuda = value;
+				if (tipo != value) {
+					tipo = value;
 					OnPropertyChanged();
 				}
 			}

@@ -9,28 +9,29 @@ using System.Data.Common;
 using Quattro.Common;
 using Quattro.Notify;
 
-namespace Quattro.Models {
+namespace Quattro.Models2 {
 
 
 	/// <summary>
 	/// 
-	/// INCIDENCIA
-	/// ==========
+	/// LÍNEA
+	/// =====
 	/// 
 	///		Se pueden cargar los datos desde un DataReader y se pueden introducir los datos como parámetros de 
 	///		un Command que se pase por referencia.
 	///		
+	///		
 	/// </summary>
-	public class Incidencia : NotifyBase {
+	public class Linea : NotifyBase {
 
 		// ====================================================================================================
 		#region CONSTRUCTORES
 		// ====================================================================================================
 
-		public Incidencia() { }
+		public Linea () { }
 
 
-		public Incidencia(DbDataReader lector) {
+		public Linea(DbDataReader lector) {
 			FromReader(lector);
 		}
 
@@ -44,9 +45,8 @@ namespace Quattro.Models {
 
 		public virtual void FromReader(DbDataReader lector) {
 			id = lector.ToInt32("Id");
-			codigo = lector.ToInt32("Codigo");
-			textoIncidencia = lector.ToString("TextoIncidencia");
-			tipo = lector.ToInt32("Tipo");
+			numeroLinea = lector.ToString("NumeroLinea");
+			textoLinea = lector.ToString("TextoLinea");
 			notas = lector.ToString("Notas");
 		}
 
@@ -58,25 +58,19 @@ namespace Quattro.Models {
 			parametro.ParameterName = "@Id";
 			parametro.Value = Id;
 			comando.Parameters.Add(parametro);
-			// Codigo
-			parametro = comando.CreateParameter();
-			parametro.DbType = System.Data.DbType.Int32;
-			parametro.ParameterName = "@Codigo";
-			parametro.Value = Codigo;
-			comando.Parameters.Add(parametro);
-			//TextoIncidencia
+			// NumeroLinea
 			parametro = comando.CreateParameter();
 			parametro.DbType = System.Data.DbType.String;
-			parametro.ParameterName = "@TextoIncidencia";
-			parametro.Value = TextoIncidencia;
+			parametro.ParameterName = "@NumeroLinea";
+			parametro.Value = NumeroLinea;
 			comando.Parameters.Add(parametro);
-			//Tipo
+			// TextoLinea
 			parametro = comando.CreateParameter();
-			parametro.DbType = System.Data.DbType.Int32;
-			parametro.ParameterName = "@Tipo";
-			parametro.Value = Tipo;
+			parametro.DbType = System.Data.DbType.String;
+			parametro.ParameterName = "@TextoLinea";
+			parametro.Value = TextoLinea;
 			comando.Parameters.Add(parametro);
-			//Notas
+			// Notas
 			parametro = comando.CreateParameter();
 			parametro.DbType = System.Data.DbType.String;
 			parametro.ParameterName = "@Notas";
@@ -94,21 +88,21 @@ namespace Quattro.Models {
 		// ====================================================================================================
 
 		public override string ToString() {
-			return $"{codigo:00}: {TextoIncidencia}";
+			return $"{NumeroLinea}: {TextoLinea}";
 		}
 
 
 		public override bool Equals(object obj) {
-			var incidencia = obj as Incidencia;
-			if (incidencia == null) return false;
-			return Codigo == incidencia.Codigo;
+			if (obj is Linea linea)
+				return NumeroLinea == linea.NumeroLinea;
+			return false;
 		}
 
 
 		public override int GetHashCode() {
 			unchecked {
 				int hash = 5060;
-				hash = hash * codigo.GetHashCode();
+				hash = hash * numeroLinea?.GetHashCode() ?? 1234;
 				return hash;
 			}
 		}
@@ -122,7 +116,6 @@ namespace Quattro.Models {
 		#region PROPIEDADES
 		// ====================================================================================================
 
-
 		private int id;
 		public int Id {
 			get { return id; }
@@ -135,36 +128,36 @@ namespace Quattro.Models {
 		}
 
 
-		private int codigo;
-		public int Codigo {
-			get { return codigo; }
+		private string numeroLinea;
+		public string NumeroLinea {
+			get { return numeroLinea; }
 			set {
-				if (codigo != value) {
-					codigo = value;
+				if (numeroLinea != value) {
+					numeroLinea = value;
 					OnPropertyChanged();
 				}
 			}
 		}
 
 
-		private string textoIncidencia;
-		public string TextoIncidencia {
-			get { return textoIncidencia; }
+		private string textoLinea;
+		public string TextoLinea {
+			get { return textoLinea; }
 			set {
-				if (textoIncidencia != value) {
-					textoIncidencia = value;
+				if (textoLinea != value) {
+					textoLinea = value;
 					OnPropertyChanged();
 				}
 			}
 		}
 
 
-		private int tipo;
-		public int Tipo {
-			get { return tipo; }
+		private NotifyCollection<Servicio> servicios;
+		public NotifyCollection<Servicio> Servicios {
+			get { return servicios; }
 			set {
-				if (tipo != value) {
-					tipo = value;
+				if (servicios != value) {
+					servicios = value;
 					OnPropertyChanged();
 				}
 			}
@@ -186,7 +179,6 @@ namespace Quattro.Models {
 
 		#endregion
 		// ====================================================================================================
-
 
 
 	}

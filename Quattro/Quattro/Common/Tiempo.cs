@@ -5,18 +5,15 @@
 //  Vea el archivo Licencia.txt para más detalles 
 // ===============================================
 #endregion
-using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Text;
-
 namespace Quattro.Common {
 
+	using System;
+	using System.Globalization;
 
 	/// <summary>
 	/// Representa un intervalo de tiempo compuesto de días, horas, minutos y segundos.
 	/// </summary>
-    public class Tiempo : IComparable, IComparable<Tiempo>, IEquatable<Tiempo>, IFormattable {
+	public class Tiempo : IComparable, IComparable<Tiempo>, IEquatable<Tiempo>, IFormattable {
 
 
 		// ====================================================================================================
@@ -115,7 +112,7 @@ namespace Quattro.Common {
 		/// El intervalo por debajo de un minuto será desechado.
 		/// </summary>
 		/// <param name="ts">Objeto TimeSpan que será convertido explicitamente.</param>
-		public static explicit operator Tiempo (TimeSpan ts) {
+		public static explicit operator Tiempo(TimeSpan ts) {
 			return new Tiempo((int)ts.TotalMinutes);
 		}
 
@@ -127,6 +124,7 @@ namespace Quattro.Common {
 		/// <param name="t2">Segundo sumando.</param>
 		/// <returns>Un nuevo objeto Tiempo con la suma de los dos sumandos.</returns>
 		public static Tiempo operator +(Tiempo t1, Tiempo t2) {
+			if (t1 == null || t2 == null) return null;
 			return new Tiempo(t1.TotalMinutos + t2.TotalMinutos);
 		}
 
@@ -138,6 +136,7 @@ namespace Quattro.Common {
 		/// <param name="t2">Sustraendo de la resta.</param>
 		/// <returns></returns>
 		public static Tiempo operator -(Tiempo t1, Tiempo t2) {
+			if (t1 == null || t2 == null) return null;
 			return new Tiempo(t1.TotalMinutos - t2.TotalMinutos);
 		}
 
@@ -159,7 +158,7 @@ namespace Quattro.Common {
 		/// <param name="d2">Número por el que se va a multiplicar el objeto Tiempo.</param>
 		/// <returns>Objeto Tiempo con el resultado de la multiplicación.</returns>
 		public static Tiempo operator *(Tiempo t1, double d2) {
-			return new Tiempo((int)(t1.TotalMinutos * d2));
+			return new Tiempo((int)(t1?.TotalMinutos * d2));
 		}
 
 
@@ -170,7 +169,7 @@ namespace Quattro.Common {
 		/// <param name="t2">Objeto Tiempo con el que se va a multiplicar el número.</param>
 		/// <returns>Objeto Tiempo con el resultado de la multiplicación.</returns>
 		public static Tiempo operator *(double d1, Tiempo t2) {
-			return new Tiempo((int)(d1 * t2.TotalMinutos));
+			return new Tiempo((int)(d1 * t2?.TotalMinutos));
 		}
 
 
@@ -181,6 +180,7 @@ namespace Quattro.Common {
 		/// <param name="t2">Divisor.</param>
 		/// <returns>Número que resulta de la división.</returns>
 		public static double operator /(Tiempo t1, Tiempo t2) {
+			if (t1 == null || t2 == null) return 0;
 			return t1.TotalMinutos / (double)t2.TotalMinutos;
 		}
 
@@ -203,7 +203,7 @@ namespace Quattro.Common {
 		/// <param name="t2">Segundo objeto Tiempo.</param>
 		/// <returns>True si son iguales. False en caso contrario.</returns>
 		public static bool operator ==(Tiempo t1, Tiempo t2) {
-			return t1.TotalMinutos == t2.TotalMinutos;
+			return t1?.TotalMinutos == t2?.TotalMinutos;
 		}
 
 
@@ -214,7 +214,7 @@ namespace Quattro.Common {
 		/// <param name="t2">Segundo objeto Tiempo.</param>
 		/// <returns>True si no son iguales. False en caso contrario.</returns>
 		public static bool operator !=(Tiempo t1, Tiempo t2) {
-			return t1.TotalMinutos != t2.TotalMinutos;
+			return t1?.TotalMinutos != t2?.TotalMinutos;
 		}
 
 
@@ -225,7 +225,7 @@ namespace Quattro.Common {
 		/// <param name="t2">Segundo objeto Tiempo.</param>
 		/// <returns>True si el primero es mayor. False en caso contrario.</returns>
 		public static bool operator >(Tiempo t1, Tiempo t2) {
-			return t1.TotalMinutos > t2.TotalMinutos;
+			return t1?.TotalMinutos > t2?.TotalMinutos;
 		}
 
 
@@ -236,7 +236,7 @@ namespace Quattro.Common {
 		/// <param name="t2">Segundo objeto Tiempo.</param>
 		/// <returns>True si el primero es menor. False en caso contrario.</returns>
 		public static bool operator <(Tiempo t1, Tiempo t2) {
-			return t1.TotalMinutos < t2.TotalMinutos;
+			return t1?.TotalMinutos < t2?.TotalMinutos;
 		}
 
 
@@ -247,7 +247,7 @@ namespace Quattro.Common {
 		/// <param name="t2">Segundo objeto Tiempo.</param>
 		/// <returns>True si el primero es mayor o igual. False en caso contrario.</returns>
 		public static bool operator >=(Tiempo t1, Tiempo t2) {
-			return t1.TotalMinutos >= t2.TotalMinutos;
+			return t1?.TotalMinutos >= t2?.TotalMinutos;
 		}
 
 
@@ -258,7 +258,7 @@ namespace Quattro.Common {
 		/// <param name="t2">Segundo objeto Tiempo.</param>
 		/// <returns>True si el primero es menor igual. False en caso contrario.</returns>
 		public static bool operator <=(Tiempo t1, Tiempo t2) {
-			return t1.TotalMinutos <= t2.TotalMinutos;
+			return t1?.TotalMinutos <= t2?.TotalMinutos;
 		}
 
 
@@ -436,7 +436,7 @@ namespace Quattro.Common {
 		#region MÉTODOS PÚBLICOS SUMA
 		// ====================================================================================================
 
-		
+
 		///// <summary>
 		///// Añade un número de segundos al objeto actual.
 		///// </summary>
@@ -632,7 +632,7 @@ namespace Quattro.Common {
 		/// </summary>
 		/// <returns>Texto con la representación del intervalo actual.</returns>
 		public override string ToString() {
-			return this.ToString("DHM", CultureInfo.CurrentCulture);
+			return this.ToString("HM", CultureInfo.CurrentCulture);
 		}
 
 
