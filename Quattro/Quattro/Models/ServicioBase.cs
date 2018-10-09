@@ -133,7 +133,7 @@ namespace Quattro.Models {
 			get { return servicio; }
 			set {
 				var temp = value.ToUpper();
-				if (Regex.IsMatch(temp, "^[0 - 9]{ 1}\\D *")) temp += "0";
+				if (!Regex.IsMatch(temp, @"^\d{2,}\D*")) temp = "0" + temp;
 				SetValue(ref servicio, temp);
 				OnFirmaChanged();
 			}

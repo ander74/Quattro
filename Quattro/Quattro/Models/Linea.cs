@@ -8,6 +8,8 @@
 namespace Quattro.Models {
 
 	using System.Collections.Generic;
+	using System.ComponentModel.DataAnnotations;
+	using System.ComponentModel.DataAnnotations.Schema;
 	using Quattro.Notify;
 
 	/// <summary>

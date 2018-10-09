@@ -9,6 +9,7 @@ namespace Quattro.Models {
 
 	using System;
 	using System.Collections.Generic;
+	using System.ComponentModel.DataAnnotations.Schema;
 	using System.Text;
 
 	/// <summary>
@@ -47,9 +48,10 @@ namespace Quattro.Models {
 		#region PROPIEDADES
 		// ====================================================================================================
 
-		public int DiaCalendarioId { get; set; } // Id del DiaCalendario al que pertenece el servicio.
+		public int DiaCalendarioId { get; set; }
 
-		public DiaCalendario DiaCalendario { get; set; } // DiaCalendario al que pertenece el servicio, según EFCore. Falta Anotación ForeignKey.
+		[ForeignKey("DiaCalendarioId")] //TODO: Hacer esto con Fluent API.
+		public DiaCalendario DiaCalendario { get; set; }
 
 		#endregion
 		// ====================================================================================================

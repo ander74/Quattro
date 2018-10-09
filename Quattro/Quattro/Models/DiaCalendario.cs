@@ -8,6 +8,7 @@
 namespace Quattro.Models {
 
 	using System;
+	using System.Collections.Generic;
 
 	/// <summary>
 	/// 
@@ -79,11 +80,8 @@ namespace Quattro.Models {
 		}
 
 
-		private int codigoIncidencia; //TODO: Cambiar según EFCore.
-		public int CodigoIncidencia {
-			get { return codigoIncidencia; }
-			set { SetValue(ref codigoIncidencia, value); }
-		}
+		public int CodigoIncidencia { get; set; }
+		public Incidencia Incidencia { get; set; }
 
 
 		private bool huelgaParcial;
@@ -107,18 +105,12 @@ namespace Quattro.Models {
 		}
 
 
-		private int relevo; //TODO: Cambiar según EFCore.
-		public int Relevo {
-			get { return relevo; }
-			set { SetValue(ref relevo, value); }
-		}
+		public int MatriculaRelevo { get; set; }
+		public Compañero Relevo { get; set; }
 
 
-		private int susti; //TODO: Cambiar según EFCore.
-		public int Susti {
-			get { return susti; }
-			set { SetValue(ref susti, value); }
-		}
+		public int MatriculaSusti { get; set; }
+		public Compañero Susti { get; set; }
 
 
 		private string bus;
@@ -128,7 +120,8 @@ namespace Quattro.Models {
 		}
 
 
-		//TODO: Añadir los servicios del calendario.
+		public List<ServicioCalendario> Servicios { get; set; }
+
 
 		#endregion
 		// ====================================================================================================

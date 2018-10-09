@@ -6,7 +6,7 @@
 // ===============================================
 #endregion
 namespace Quattro.Models {
-
+	using System.Collections.Generic;
 	using Quattro.Notify;
 
 	public class Incidencia : NotifyBase {
@@ -46,11 +46,11 @@ namespace Quattro.Models {
 		// ====================================================================================================
 
 
-		private int id;
-		public int Id {
-			get { return id; }
-			set { SetValue(ref id, value); }
-		}
+		//private int id;
+		//public int Id {
+		//	get { return id; }
+		//	set { SetValue(ref id, value); }
+		//}
 
 
 		private int codigo;
@@ -80,6 +80,8 @@ namespace Quattro.Models {
 			set { SetValue(ref notas, value); }
 		}
 
+
+		public List<DiaCalendario> DiasCalendario { get; set; }
 
 
 		#endregion

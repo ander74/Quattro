@@ -639,6 +639,16 @@ namespace Quattro.Common {
 		/// <summary>
 		/// Devuelve una cadena de texto con la representación del intervalo actual.
 		/// </summary>
+		/// <param name="provider">Proovedor de formato que se usará para el objeto actual.</param>
+		/// <returns>Texto con la representación del intervalo actual.</returns>
+		public string ToString(IFormatProvider provider) {
+			return this.ToString("HM", provider);
+		}
+
+
+		/// <summary>
+		/// Devuelve una cadena de texto con la representación del intervalo actual.
+		/// </summary>
 		/// <param name="formato">Cadena con el formato en el que se representará el intervalo actual.</param>
 		/// <returns>Texto con la representación del intervalo actual.</returns>
 		public string ToString(string formato) {
@@ -653,7 +663,7 @@ namespace Quattro.Common {
 		/// <param name="provider">Proovedor de formato que se usará para el objeto actual.</param>
 		/// <returns>Texto con la representación del intervalo actual.</returns>
 		public string ToString(string formato, IFormatProvider provider) {
-			if (string.IsNullOrEmpty(formato)) formato = "DHM";
+			if (string.IsNullOrEmpty(formato)) formato = "HM";
 			if (provider == null) provider = CultureInfo.CurrentCulture;
 			switch (formato.ToUpperInvariant()) {
 				case "DHM":

@@ -6,7 +6,7 @@
 // ===============================================
 #endregion
 namespace Quattro.Models {
-
+	using System.Collections.Generic;
 	using Common;
 	using Notify;
 
@@ -47,11 +47,11 @@ namespace Quattro.Models {
 		// ====================================================================================================
 
 
-		private int id;
-		public int Id {
-			get { return id; }
-			set { SetValue(ref id, value); }
-		}
+		//private int id;
+		//public int Id {
+		//	get { return id; }
+		//	set { SetValue(ref id, value); }
+		//}
 
 
 		private int matricula;
@@ -103,6 +103,9 @@ namespace Quattro.Models {
 		}
 
 
+		public List<DiaCalendario> Relevos { get; set; }
+
+		public List<DiaCalendario> Sustis { get; set; }
 
 		#endregion
 		// ====================================================================================================

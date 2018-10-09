@@ -9,6 +9,7 @@ namespace Quattro.Models {
 
 	using System;
 	using System.Collections.Generic;
+	using System.ComponentModel.DataAnnotations.Schema;
 	using System.Text;
 
 	/// <summary>
@@ -47,9 +48,10 @@ namespace Quattro.Models {
 		#region PROPIEDADES
 		// ====================================================================================================
 
-		public int LineaId { get; set; } // Id de la línea a la que pertenece el servicio.
+		public int LineaId { get; set; }
 
-		public Linea Linea { get; set; } // Línea a la que pertenece el servicio, según EFCore. Falta Anotación ForeignKey.
+
+		public Linea Linea { get; set; }
 
 
 		private List<ServicioAuxiliar> servicios;
