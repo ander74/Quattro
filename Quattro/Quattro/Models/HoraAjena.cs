@@ -8,8 +8,6 @@
 namespace Quattro.Models {
 
 	using System;
-	using System.Collections.Generic;
-	using System.Text;
 	using Quattro.Notify;
 
 	public class HoraAjena : NotifyBase { 

@@ -12,9 +12,6 @@ namespace Quattro.Models {
 	using System.ComponentModel.DataAnnotations.Schema;
 	using System.Text;
 
-	/// <summary>
-	/// 
-	/// </summary>
 	public class ServicioAuxiliar : ServicioBase {
 
 

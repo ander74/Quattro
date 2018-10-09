@@ -7,14 +7,8 @@
 #endregion
 namespace Quattro.Models {
 
-	using System;
-	using System.Collections.Generic;
 	using System.ComponentModel.DataAnnotations.Schema;
-	using System.Text;
 
-	/// <summary>
-	/// 
-	/// </summary>
 	public class ServicioCalendario : ServicioBase {
 
 

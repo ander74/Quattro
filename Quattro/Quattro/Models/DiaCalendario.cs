@@ -10,17 +10,6 @@ namespace Quattro.Models {
 	using System;
 	using System.Collections.Generic;
 
-	/// <summary>
-	/// 
-	/// DÍA CALENDARIO
-	/// ==============
-	/// 
-	///		Hereda de la calse Servicio.
-	///		
-	///		Se pueden cargar los datos desde un DataReader y se pueden introducir los datos como parámetros de 
-	///		un Command que se pase por referencia.
-	///		
-	/// </summary>
 	public class DiaCalendario : Servicio {
 
 

@@ -9,17 +9,6 @@ namespace Quattro.Models {
 
 	using Common;
 
-	/// <summary>
-	/// 
-	/// SERVICIO
-	/// ========
-	/// 
-	///		Hereda de la calse ServicioBase.
-	///		
-	///		Se pueden cargar los datos desde un DataReader y se pueden introducir los datos como parámetros de 
-	///		un Command que se pase por referencia.
-	///		
-	/// </summary>
 	public class Servicio : ServicioBase {
 
 

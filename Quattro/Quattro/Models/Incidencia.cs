@@ -6,6 +6,7 @@
 // ===============================================
 #endregion
 namespace Quattro.Models {
+
 	using System.Collections.Generic;
 	using Quattro.Notify;
 

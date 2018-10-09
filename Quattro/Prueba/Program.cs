@@ -13,7 +13,7 @@ namespace Prueba {
 
 		static void Main(string[] args) {
 
-			using (QuattroContext db = new QuattroContext(@"\\Mac\Compartida\QuattroDB.db")) {
+			using (QuattroContext db = new QuattroContext(@"Z:\\QuattroDB.db")) {
 
 				db.Database.Migrate();
 
@@ -40,6 +40,7 @@ namespace Prueba {
 				Console.WriteLine($"{db.Calendario.Count()}");
 
 				Console.WriteLine();
+				Console.WriteLine("Finalizado.");
 				Console.Read();
 			}
 

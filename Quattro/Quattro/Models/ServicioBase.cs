@@ -12,32 +12,6 @@ namespace Quattro.Models {
 	using Common;
 	using Notify;
 
-	/// <summary>
-	/// 
-	/// SERVICIO BASE
-	/// =============
-	/// 
-	///		Contiene los datos básicos de un servicio.
-	///		
-	///		Se pueden cargar los datos desde un DataReader y se pueden introducir los datos como parámetros de 
-	///		un Command que se pase por referencia.
-	///		
-	///		La propiedad Servicio se formateará de acuerdo a los servicios típicos (mayusculas y números de
-	///		dos cifras).
-	///		
-	///		Tanto la propiedad Inicio, como la propiedad Final aceptarán valores de más de 24h, pero se ajustarán
-	///		automáticamente reflejando su valor real (si ponemos 24:00 se convierte en 00:00).
-	///		
-	///		
-	///		Evento FirmaChanged
-	///		-------------------
-	///			Se dispara al cambiar el número de línea, el servicio o el turno.
-	///			
-	///		Evento JornadaChanged
-	///		---------------------
-	///			Se dispara al cambiar el inicio o el final.
-	/// 
-	/// </summary>
 	public class ServicioBase: NotifyBase {
 
 
