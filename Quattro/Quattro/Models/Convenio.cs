@@ -7,8 +7,8 @@
 #endregion
 namespace Quattro.Models {
 
-	using Quattro.Common;
-	using Quattro.Notify;
+	using Common;
+	using Notify;
 
 	public class Convenio : NotifyBase {
 

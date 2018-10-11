@@ -8,6 +8,7 @@
 
 namespace Quattro.Common {
 
+
 	/// <summary>
 	/// Clase que encapsula los datos del evento ServicioChanged, lanzado cuando alguna parte de
 	/// Quattro.Models.ServicioBase ha cambiado.

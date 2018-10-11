@@ -10,8 +10,9 @@ namespace Quattro.Common {
 	using System;
 	using System.Globalization;
 
+
 	/// <summary>
-	/// Representa un intervalo de tiempo compuesto de días, horas, minutos y segundos.
+	/// Representa un intervalo de tiempo compuesto de días, horas y minutos.
 	/// </summary>
 	public class Tiempo : IComparable, IComparable<Tiempo>, IEquatable<Tiempo>, IFormattable {
 

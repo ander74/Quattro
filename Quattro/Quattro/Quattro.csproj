@@ -13,19 +13,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Migrations\20181009101043_Inicial.cs" />
-    <Compile Remove="Migrations\20181009102416_Inicial.cs" />
-    <Compile Remove="Migrations\20181009103339_Inicial.cs" />
-    <Compile Remove="Migrations\20181009104820_Inicial.cs" />
-    <Compile Remove="Migrations\20181009105142_Inicial.cs" />
-    <Compile Remove="Migrations\20181009105705_Inicial.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.1.4" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="2.1.4" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="2.1.4" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite.Design" Version="1.1.6" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="2.1.4">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>

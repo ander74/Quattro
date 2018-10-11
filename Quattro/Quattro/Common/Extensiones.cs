@@ -5,11 +5,10 @@
 //  Vea el archivo Licencia.txt para más detalles 
 // ===============================================
 #endregion
-using System;
-using System.Data.Common;
-
 namespace Quattro.Common {
 
+	using System;
+	using System.Data.Common;
 
 	public static class Extensiones {
 

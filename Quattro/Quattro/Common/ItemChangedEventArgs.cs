@@ -5,11 +5,8 @@
 //  Vea el archivo Licencia.txt para más detalles 
 // ===============================================
 #endregion
-using System;
-using System.Collections.Generic;
-using System.Text;
-
 namespace Quattro.Common {
+
 
 	/// <summary>
 	/// Clase que encapsula un Item T y el nombre de la propiedad que ha cambiado en T para devolverlo en el

@@ -5,14 +5,15 @@
 //  Vea el archivo Licencia.txt para más detalles 
 // ===============================================
 #endregion
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Collections.Specialized;
-using System.ComponentModel;
-using Quattro.Common;
-
 namespace Quattro.Notify {
+
+	using System;
+	using System.Collections.Generic;
+	using System.Collections.ObjectModel;
+	using System.Collections.Specialized;
+	using System.ComponentModel;
+	using Common;
+
 
 	/// <summary>
 	/// Esta clase añade la notificación de cambios en las propiedades de los elementos dentro de la colección.

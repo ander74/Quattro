@@ -7,16 +7,19 @@
 #endregion
 namespace Quattro.Common {
 
+	using System;
+	using System.Collections.Generic;
+	using System.Text;
 
-	/// <summary>
-	/// Define la calificación de un compañero.
-	/// </summary>
-	public enum CalificacionCompañero {
-		Normal = 0,
-		Bueno = 1,
-		Malo = 2
+	public class Response {
+
+
+		public bool IsSuccess { get; set; }
+
+		public string Message { get; set; }
+
+		public object Result { get; set; }
+
+
 	}
-
-
-
 }

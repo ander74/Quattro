@@ -8,6 +8,7 @@
 
 namespace Quattro.Common {
 
+
 	/// <summary>
 	/// Representa el método que manejará el evento lanzado cuando cambia una parte de Quattro.Models.ServicioBase.
 	/// </summary>
