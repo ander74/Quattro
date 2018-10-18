@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Quattroid.Views.MenuPage"
+			 BindingContext="{Binding Main, Source={StaticResource Locator}}"
+			 Title="Menú"
+			 BackgroundColor="LightGray">
+    <ContentPage.Content>
+		<StackLayout>
+			<Grid Margin="5,25,5,0" RowSpacing="0">
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition Width="Auto"/>
+					<ColumnDefinition Width="*"/>
+				</Grid.ColumnDefinitions>
+				<Grid.RowDefinitions>
+					<RowDefinition Height="*"/>
+					<RowDefinition Height="Auto"/>
+				</Grid.RowDefinitions>
+				<Image Grid.Column="0" Grid.RowSpan="2"
+					   HeightRequest="60"
+					   Source="LogoBus"
+					   VerticalOptions="CenterAndExpand"/>
+				<Label Grid.Column="1"
+					   FontSize="24"
+					   Text="Quattroid 2.0"
+					   TextColor="Navy"
+					   VerticalOptions="End"/>
+				<Label Grid.Column="1" Grid.Row="1"
+					   FontSize="16"
+					   Margin="4,0,0,0"
+					   Text="Sin usuario activo"
+					   TextColor="DimGray"/>
+			</Grid>
+			<BoxView Grid.ColumnSpan="2"
+					 BackgroundColor="Gray"
+					 HeightRequest="1"
+					 HorizontalOptions="Fill"/>
+		</StackLayout>
+	</ContentPage.Content>
+</ContentPage>

@@ -5,12 +5,12 @@
 //  Vea el archivo Licencia.txt para más detalles 
 // ===============================================
 #endregion
-namespace Quattro.Models {
-
+namespace Quattro.Models 
+{
 	using System;
 	using Microsoft.EntityFrameworkCore;
 	using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-	using Quattro.Common;
+	using Common;
 
 	public class QuattroContext : DbContext {
 
@@ -37,7 +37,9 @@ namespace Quattro.Models {
 		// ====================================================================================================
 
 		protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) {
-			optionsBuilder.UseSqlite($"data source = {ArchivoDb}");
+			SQLitePCL.Batteries_V2.Init();
+			SQLitePCL.Batteries.Init();
+			optionsBuilder.UseSqlite($"Data Source={ArchivoDb}");
 		}
 
 
@@ -76,29 +78,29 @@ namespace Quattro.Models {
 
 			// INCIDENCIA
 			modelBuilder.Entity<Incidencia>()
-				.Property(c => c.Codigo)
+				.Property(c => c.CodigoIncidencia)
 				.ValueGeneratedNever();
 			modelBuilder.Entity<Incidencia>()
-				.HasKey(c => c.Codigo);
+				.HasKey(c => c.CodigoIncidencia);
 			modelBuilder.Entity<Incidencia>()
 				.HasData(
-					new Incidencia { Codigo = 0, TextoIncidencia = "Repite día anterior", Tipo = 0, Notas = "Incidencia Protegida." },
-					new Incidencia { Codigo = 1, TextoIncidencia = "Trabajo", Tipo = 1, Notas = "Incidencia Protegida." },
-					new Incidencia { Codigo = 2, TextoIncidencia = "Franqueo", Tipo = 4, Notas = "Incidencia Protegida." },
-					new Incidencia { Codigo = 3, TextoIncidencia = "Vacaciones", Tipo = 4, Notas = "Incidencia Protegida." },
-					new Incidencia { Codigo = 4, TextoIncidencia = "F.O.D.", Tipo = 3, Notas = "Incidencia Protegida." },
-					new Incidencia { Codigo = 5, TextoIncidencia = "Franqueo a trabajar", Tipo = 2, Notas = "Incidencia Protegida." },
-					new Incidencia { Codigo = 6, TextoIncidencia = "Enferma/o", Tipo = 4, Notas = "Incidencia Protegida." },
-					new Incidencia { Codigo = 7, TextoIncidencia = "Accidentada/o", Tipo = 4, Notas = "Incidencia Protegida." },
-					new Incidencia { Codigo = 8, TextoIncidencia = "Permiso", Tipo = 6, Notas = "Incidencia Protegida." },
-					new Incidencia { Codigo = 9, TextoIncidencia = "F.N.R. año actual", Tipo = 4, Notas = "Incidencia Protegida." },
-					new Incidencia { Codigo = 10, TextoIncidencia = "F.N.R. año anterior", Tipo = 4, Notas = "Incidencia Protegida." },
-					new Incidencia { Codigo = 11, TextoIncidencia = "Nos hacen el día", Tipo = 1, Notas = "Incidencia Protegida." },
-					new Incidencia { Codigo = 12, TextoIncidencia = "Hacemos el día", Tipo = 5, Notas = "Incidencia Protegida." },
-					new Incidencia { Codigo = 13, TextoIncidencia = "Sanción", Tipo = 4, Notas = "Incidencia Protegida." },
-					new Incidencia { Codigo = 14, TextoIncidencia = "En otro destino", Tipo = 4, Notas = "Incidencia Protegida." },
-					new Incidencia { Codigo = 15, TextoIncidencia = "Huelga", Tipo = 5, Notas = "Incidencia Protegida." },
-					new Incidencia { Codigo = 16, TextoIncidencia = "Día por H. Acumuladas", Tipo = 3, Notas = "Incidencia Protegida." }
+					new Incidencia { CodigoIncidencia = 0, TextoIncidencia = "Repite día anterior", Tipo = 0, Notas = "Incidencia Protegida." },
+					new Incidencia { CodigoIncidencia = 1, TextoIncidencia = "Trabajo", Tipo = 1, Notas = "Incidencia Protegida." },
+					new Incidencia { CodigoIncidencia = 2, TextoIncidencia = "Franqueo", Tipo = 4, Notas = "Incidencia Protegida." },
+					new Incidencia { CodigoIncidencia = 3, TextoIncidencia = "Vacaciones", Tipo = 4, Notas = "Incidencia Protegida." },
+					new Incidencia { CodigoIncidencia = 4, TextoIncidencia = "F.O.D.", Tipo = 3, Notas = "Incidencia Protegida." },
+					new Incidencia { CodigoIncidencia = 5, TextoIncidencia = "Franqueo a trabajar", Tipo = 2, Notas = "Incidencia Protegida." },
+					new Incidencia { CodigoIncidencia = 6, TextoIncidencia = "Enferma/o", Tipo = 4, Notas = "Incidencia Protegida." },
+					new Incidencia { CodigoIncidencia = 7, TextoIncidencia = "Accidentada/o", Tipo = 4, Notas = "Incidencia Protegida." },
+					new Incidencia { CodigoIncidencia = 8, TextoIncidencia = "Permiso", Tipo = 6, Notas = "Incidencia Protegida." },
+					new Incidencia { CodigoIncidencia = 9, TextoIncidencia = "F.N.R. año actual", Tipo = 4, Notas = "Incidencia Protegida." },
+					new Incidencia { CodigoIncidencia = 10, TextoIncidencia = "F.N.R. año anterior", Tipo = 4, Notas = "Incidencia Protegida." },
+					new Incidencia { CodigoIncidencia = 11, TextoIncidencia = "Nos hacen el día", Tipo = 1, Notas = "Incidencia Protegida." },
+					new Incidencia { CodigoIncidencia = 12, TextoIncidencia = "Hacemos el día", Tipo = 5, Notas = "Incidencia Protegida." },
+					new Incidencia { CodigoIncidencia = 13, TextoIncidencia = "Sanción", Tipo = 4, Notas = "Incidencia Protegida." },
+					new Incidencia { CodigoIncidencia = 14, TextoIncidencia = "En otro destino", Tipo = 4, Notas = "Incidencia Protegida." },
+					new Incidencia { CodigoIncidencia = 15, TextoIncidencia = "Huelga", Tipo = 5, Notas = "Incidencia Protegida." },
+					new Incidencia { CodigoIncidencia = 16, TextoIncidencia = "Día por H. Acumuladas", Tipo = 3, Notas = "Incidencia Protegida." }
 				);
 
 			// LÍNEA

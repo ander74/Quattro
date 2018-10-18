@@ -5,8 +5,8 @@
 //  Vea el archivo Licencia.txt para más detalles 
 // ===============================================
 #endregion
-namespace Quattro.Models {
-
+namespace Quattro.Models
+{
 	using System.ComponentModel.DataAnnotations.Schema;
 
 	public class ServicioCalendario : ServicioBase {
@@ -42,10 +42,18 @@ namespace Quattro.Models {
 		#region PROPIEDADES
 		// ====================================================================================================
 
+		private int servicioCalendarioId;
+		public int ServicioCalendarioId
+		{
+			get { return servicioCalendarioId; }
+			set { SetValue(ref servicioCalendarioId, value); }
+		}
+
+
 		public int DiaCalendarioId { get; set; }
 
-		[ForeignKey("DiaCalendarioId")] //TODO: Hacer esto con Fluent API.
-		public DiaCalendario DiaCalendario { get; set; }
+
+		public virtual DiaCalendario DiaCalendario { get; set; }
 
 		#endregion
 		// ====================================================================================================

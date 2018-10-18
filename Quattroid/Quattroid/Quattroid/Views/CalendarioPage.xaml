@@ -1,0 +1,63 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Quattroid.Views.CalendarioPage"
+			 BindingContext="{Binding Main, Source={StaticResource Locator}}"
+			 Title="Calendario">
+    <ContentPage.Content>
+        <StackLayout BindingContext="{Binding CalendarioVM}">
+			<Button Text="Cargar Calendario" Command="{Binding CargarCommand}"/>
+			<!-- El Background transparente es importante por iOS -->
+			<ListView BackgroundColor="LightGray"
+					  SelectionMode="None"
+					  HasUnevenRows="True"
+					  IsRefreshing="{Binding IsRefreshing}"
+					  IsPullToRefreshEnabled="True"
+					  ItemsSource="{Binding Calendario}"
+					  RefreshCommand="{Binding RefreshCommand}"
+					  SeparatorVisibility="None">
+				<ListView.ItemTemplate>
+					<DataTemplate>
+						<ViewCell>
+								<Grid Margin="1,1,1,0" BackgroundColor="White">
+								<Grid.GestureRecognizers>
+									<TapGestureRecognizer Command="{Binding GotoDiaCommand}"/>
+								</Grid.GestureRecognizers>
+								<!-- CONTENIDO DE LA CELDA (Puede no ser un Grid, pero seguro que lo es) -->
+									<Grid.ColumnDefinitions>
+										<ColumnDefinition Width="*"/>
+										<ColumnDefinition Width="7*"/>
+									</Grid.ColumnDefinitions>
+									<Grid.RowDefinitions>
+										<RowDefinition Height="Auto"/>
+										<RowDefinition Height="*"/>
+										<RowDefinition Height="Auto"/>
+									</Grid.RowDefinitions>
+									<StackLayout Grid.RowSpan="3" BackgroundColor="LightGreen"
+												 HorizontalOptions="FillAndExpand"
+												 Padding="5"
+												 VerticalOptions="FillAndExpand">
+										<Label FontAttributes="Bold"
+											   FontSize="Large"
+											   HorizontalOptions="CenterAndExpand"
+											   TextColor="Navy"
+											   Text="{Binding Fecha, StringFormat='{}{0:dd}'}"/>
+										<Label FontSize="Small"
+											   HorizontalOptions="CenterAndExpand"
+											   TextColor="Navy"
+											   Text="{Binding Fecha, StringFormat='{}{0:ddd}'}"/>
+									</StackLayout>
+									<Label Grid.Column="1" Grid.Row="0"
+											   FontSize="Small"
+											   HorizontalOptions="FillAndExpand"
+										       Margin="5"
+											   TextColor="Navy"
+											   Text="{Binding Servicio}"/>
+								</Grid>
+						</ViewCell>
+					</DataTemplate>
+				</ListView.ItemTemplate>
+			</ListView>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

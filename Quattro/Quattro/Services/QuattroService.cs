@@ -45,6 +45,20 @@ namespace Quattro.Services {
 
 
 		// ====================================================================================================
+		#region MÉTODOS PÚBLICOS
+		// ====================================================================================================
+
+		public async void MigrateDataBase(string archivoDB) {
+			using (QuattroContext db = new QuattroContext(archivoDB)) {
+				await db.Database.MigrateAsync();
+			}
+		}
+
+		#endregion
+		// ====================================================================================================
+
+
+		// ====================================================================================================
 		#region MÉTODOS CALENDARIO
 		// ====================================================================================================
 
@@ -120,6 +134,22 @@ namespace Quattro.Services {
 		}
 
 
+		public async void UpdateCalendariosAsync(IEnumerable<DiaCalendario> lista, string archivoDB) {
+			using (QuattroContext db = new QuattroContext(archivoDB)) {
+				db.Calendario.UpdateRange(lista);
+				await db.SaveChangesAsync();
+			}
+		}
+
+
+		public async void DeleteCalendariosAsync(IEnumerable<DiaCalendario> lista, string archivoDB) {
+			using (QuattroContext db = new QuattroContext(archivoDB)) {
+				db.Calendario.RemoveRange(lista);
+				await db.SaveChangesAsync();
+			}
+		}
+
+
 		#endregion
 		// ====================================================================================================
 
@@ -133,6 +163,22 @@ namespace Quattro.Services {
 				return await db.Compañeros
 							   .OrderBy(c => c.Matricula)
 							   .ToListAsync();
+			}
+		}
+
+
+		public async void UpdateCompañerosAsync(IEnumerable<Compañero> lista, string archivoDB) {
+			using (QuattroContext db = new QuattroContext(archivoDB)) {
+				db.Compañeros.UpdateRange(lista);
+				await db.SaveChangesAsync();
+			}
+		}
+
+
+		public async void DeleteCompañerosAsync(IEnumerable<Compañero> lista, string archivoDB) {
+			using (QuattroContext db = new QuattroContext(archivoDB)) {
+				db.Compañeros.RemoveRange(lista);
+				await db.SaveChangesAsync();
 			}
 		}
 
@@ -156,6 +202,20 @@ namespace Quattro.Services {
 		}
 
 
+		public async void UpdateLineasAsync(IEnumerable<Linea> lista, string archivoDB) {
+			using (QuattroContext db = new QuattroContext(archivoDB)) {
+				db.Lineas.UpdateRange(lista);
+				await db.SaveChangesAsync();
+			}
+		}
+
+
+		public async void DeleteLineasAsync(IEnumerable<Linea> lista, string archivoDB) {
+			using (QuattroContext db = new QuattroContext(archivoDB)) {
+				db.Lineas.RemoveRange(lista);
+				await db.SaveChangesAsync();
+			}
+		}
 
 
 		#endregion
@@ -169,8 +229,24 @@ namespace Quattro.Services {
 		public async Task<List<Incidencia>> GetIncidenciasAsync(string archivoDB) {
 			using (QuattroContext db = new QuattroContext(archivoDB)) {
 				return await db.Incidencias
-							   .OrderBy(i => i.Codigo)
+							   .OrderBy(i => i.CodigoIncidencia)
 							   .ToListAsync();
+			}
+		}
+
+
+		public async void UpdateIncidenciasAsync(IEnumerable<Incidencia> lista, string archivoDB) {
+			using (QuattroContext db = new QuattroContext(archivoDB)) {
+				db.Incidencias.UpdateRange(lista);
+				await db.SaveChangesAsync();
+			}
+		}
+
+
+		public async void DeleteIncidenciasAsync(IEnumerable<Incidencia> lista, string archivoDB) {
+			using (QuattroContext db = new QuattroContext(archivoDB)) {
+				db.Incidencias.RemoveRange(lista);
+				await db.SaveChangesAsync();
 			}
 		}
 
@@ -188,6 +264,22 @@ namespace Quattro.Services {
 				return await db.HorasAjenas
 							   .OrderByDescending(h => h.Fecha)
 							   .ToListAsync();
+			}
+		}
+
+
+		public async void UpdateHorasAjenasAsync(IEnumerable<HoraAjena> lista, string archivoDB) {
+			using (QuattroContext db = new QuattroContext(archivoDB)) {
+				db.HorasAjenas.UpdateRange(lista);
+				await db.SaveChangesAsync();
+			}
+		}
+
+
+		public async void DeleteHorasAjenasAsync(IEnumerable<HoraAjena> lista, string archivoDB) {
+			using (QuattroContext db = new QuattroContext(archivoDB)) {
+				db.HorasAjenas.RemoveRange(lista);
+				await db.SaveChangesAsync();
 			}
 		}
 

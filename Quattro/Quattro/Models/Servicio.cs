@@ -5,8 +5,8 @@
 //  Vea el archivo Licencia.txt para más detalles 
 // ===============================================
 #endregion
-namespace Quattro.Models {
-
+namespace Quattro.Models 
+{
 	using Common;
 
 	public class Servicio : ServicioBase {

@@ -5,12 +5,12 @@
 //  Vea el archivo Licencia.txt para más detalles 
 // ===============================================
 #endregion
-namespace Quattro.Models {
-
+namespace Quattro.Models 
+{
 	using System.Collections.Generic;
 	using Quattro.Notify;
 
-	public class Linea: NotifyBase {
+	public class Linea: EntityNotifyBase {
 
 
 		// ====================================================================================================
@@ -47,10 +47,10 @@ namespace Quattro.Models {
 		// ====================================================================================================
 
 
-		private int id;
-		public int Id {
-			get { return id; }
-			set { SetValue(ref id, value); }
+		private int lineaId;
+		public int LineaId {
+			get { return lineaId; }
+			set { SetValue(ref lineaId, value); }
 		}
 
 
@@ -76,7 +76,7 @@ namespace Quattro.Models {
 
 
 		private List<ServicioLinea> servicios;
-		public List<ServicioLinea> Servicios {
+		public virtual List<ServicioLinea> Servicios {
 			get { return servicios; }
 			set { SetValue(ref servicios, value); }
 		}

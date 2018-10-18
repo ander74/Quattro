@@ -9,6 +9,7 @@ namespace Quattro.Common {
 
 	using System;
 	using System.Globalization;
+	using Newtonsoft.Json;
 
 
 	/// <summary>
@@ -64,6 +65,7 @@ namespace Quattro.Common {
 		/// Instancia un objeto Tiempo con un número de minutos iniciales.
 		/// </summary>
 		/// <param name="minutos">Número de segundos iniciales.</param>
+		[JsonConstructor]
 		public Tiempo(int minutos) {
 			TotalMinutos = minutos;
 		}
@@ -715,6 +717,7 @@ namespace Quattro.Common {
 		/// <summary>
 		/// Devuelve el componente Dias del intervalo.
 		/// </summary>
+		[JsonIgnore]
 		public int Dias {
 			get {
 				return TotalMinutos / MinutosPorDia;
@@ -725,6 +728,7 @@ namespace Quattro.Common {
 		/// <summary>
 		/// Devuelve el componente Horas del intervalo.
 		/// </summary>
+		[JsonIgnore]
 		public int Horas {
 			get {
 				return (TotalMinutos % MinutosPorDia) / MinutosPorHora;
@@ -735,6 +739,7 @@ namespace Quattro.Common {
 		/// <summary>
 		/// Devuelve el componente Minutos del intervalo.
 		/// </summary>
+		[JsonIgnore]
 		public int Minutos {
 			get {
 				return (TotalMinutos % MinutosPorDia) % MinutosPorHora;
@@ -755,6 +760,7 @@ namespace Quattro.Common {
 		/// <summary>
 		/// Devuelve el total de días del intervalo, expresado con una parte fraccional del mismo redondeada a 6 decimales.
 		/// </summary>
+		[JsonIgnore]
 		public double TotalDias {
 			get {
 				return Math.Round(TotalMinutos / (double)MinutosPorDia, 6);
@@ -765,6 +771,7 @@ namespace Quattro.Common {
 		/// <summary>
 		/// Devuelve el total de horas del intervalo, expresado con una parte fraccional del mismo redondeada a 6 decimales.
 		/// </summary>
+		[JsonIgnore]
 		public double TotalHoras {
 			get {
 				return Math.Round(TotalMinutos / (double)MinutosPorHora, 6);
@@ -785,6 +792,7 @@ namespace Quattro.Common {
 		/// <summary>
 		/// Devuelve el total de segundos del intervalo.
 		/// </summary>
+		[JsonProperty("TotalMinutos")]
 		public int TotalMinutos { get; private set; }
 
 

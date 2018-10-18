@@ -5,14 +5,14 @@
 //  Vea el archivo Licencia.txt para más detalles 
 // ===============================================
 #endregion
-namespace Quattro.Models {
-
+namespace Quattro.Models 
+{
 	using System.Runtime.CompilerServices;
 	using System.Text.RegularExpressions;
 	using Common;
 	using Notify;
 
-	public class ServicioBase: NotifyBase {
+	public class ServicioBase: EntityNotifyBase {
 
 
 		// ====================================================================================================
@@ -88,11 +88,11 @@ namespace Quattro.Models {
 		#region PROPIEDADES
 		// ====================================================================================================
 
-		private int id;
-		public int Id {
-			get { return id; }
-			set { SetValue(ref id, value); }
-		}
+		//private int id;
+		//public int Id {
+		//	get { return id; }
+		//	set { SetValue(ref id, value); }
+		//}
 
 
 		private string numeroLinea;
@@ -106,9 +106,12 @@ namespace Quattro.Models {
 		public string Servicio {
 			get { return servicio; }
 			set {
-				var temp = value.ToUpper();
-				if (!Regex.IsMatch(temp, @"^\d{2,}\D*")) temp = "0" + temp;
-				SetValue(ref servicio, temp);
+				if (!string.IsNullOrEmpty(value))
+				{
+					value = value.ToUpper();
+					if (!Regex.IsMatch(value, @"^\d{2,}\D*")) value = "0" + value;
+				}
+				SetValue(ref servicio, value);
 				OnFirmaChanged();
 			}
 		}

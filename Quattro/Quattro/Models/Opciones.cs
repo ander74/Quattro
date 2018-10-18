@@ -5,9 +5,12 @@
 //  Vea el archivo Licencia.txt para más detalles 
 // ===============================================
 #endregion
-namespace Quattro.Models.Models {
-
+namespace Quattro.Models.Models 
+{
+	using System.IO;
+	using Newtonsoft.Json;
 	using Notify;
+	using Quattro.Common;
 
 	public class Opciones : NotifyBase {
 
@@ -127,6 +130,28 @@ namespace Quattro.Models.Models {
 		#endregion
 		// ====================================================================================================
 
+
+		// ====================================================================================================
+		#region MÉTODOS PÚBLICOS
+		// ====================================================================================================
+
+		public void Guardar(string ruta) {
+
+			string datos = JsonConvert.SerializeObject(this, Formatting.Indented);
+			File.WriteAllText(ruta, datos);
+		}
+
+		public void Cargar(string ruta) {
+
+			if (File.Exists(ruta)) {
+				string datos = File.ReadAllText(ruta);
+				JsonConvert.PopulateObject(datos, this);
+				OnPropertyChanged("");
+			}
+		}
+
+		#endregion
+		// ====================================================================================================
 
 
 	}

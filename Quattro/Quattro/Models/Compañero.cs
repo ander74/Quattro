@@ -5,13 +5,13 @@
 //  Vea el archivo Licencia.txt para más detalles 
 // ===============================================
 #endregion
-namespace Quattro.Models {
-
+namespace Quattro.Models 
+{
 	using System.Collections.Generic;
 	using Common;
 	using Notify;
 
-	public class Compañero: NotifyBase {
+	public class Compañero: EntityNotifyBase {
 
 
 		// ====================================================================================================
@@ -97,9 +97,9 @@ namespace Quattro.Models {
 		}
 
 
-		public List<DiaCalendario> Relevos { get; set; }
+		public virtual List<DiaCalendario> Relevos { get; set; }
 
-		public List<DiaCalendario> Sustis { get; set; }
+		public virtual List<DiaCalendario> Sustis { get; set; }
 
 		#endregion
 		// ====================================================================================================

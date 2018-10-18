@@ -5,8 +5,8 @@
 //  Vea el archivo Licencia.txt para más detalles 
 // ===============================================
 #endregion
-namespace Quattro.Models {
-
+namespace Quattro.Models 
+{
 	using System;
 	using System.Collections.Generic;
 
@@ -48,6 +48,14 @@ namespace Quattro.Models {
 		#region PROPIEDADES
 		// ====================================================================================================
 
+		private int diaCalendarioId;
+		public int DiaCalendarioId
+		{
+			get { return diaCalendarioId; }
+			set { SetValue(ref diaCalendarioId, value); }
+		}
+
+
 		private DateTime fecha;
 		public DateTime Fecha {
 			get { return fecha; }
@@ -70,7 +78,7 @@ namespace Quattro.Models {
 
 
 		public int CodigoIncidencia { get; set; }
-		public Incidencia Incidencia { get; set; }
+		public virtual Incidencia Incidencia { get; set; }
 
 
 		private bool huelgaParcial;
@@ -95,11 +103,11 @@ namespace Quattro.Models {
 
 
 		public int MatriculaRelevo { get; set; }
-		public Compañero Relevo { get; set; }
+		public virtual Compañero Relevo { get; set; }
 
 
 		public int MatriculaSusti { get; set; }
-		public Compañero Susti { get; set; }
+		public virtual Compañero Susti { get; set; }
 
 
 		private string bus;
@@ -109,7 +117,7 @@ namespace Quattro.Models {
 		}
 
 
-		public List<ServicioCalendario> Servicios { get; set; }
+		public virtual List<ServicioCalendario> Servicios { get; set; }
 
 
 		#endregion

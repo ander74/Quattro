@@ -42,7 +42,7 @@ namespace Quattro.Migrations
 
             modelBuilder.Entity("Quattro.Models.DiaCalendario", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("DiaCalendarioId")
                         .ValueGeneratedOnAdd();
 
                     b.Property<decimal>("Acumuladas");
@@ -104,7 +104,7 @@ namespace Quattro.Migrations
 
                     b.Property<int>("Turno");
 
-                    b.HasKey("Id");
+                    b.HasKey("DiaCalendarioId");
 
                     b.HasIndex("CodigoIncidencia");
 
@@ -117,7 +117,7 @@ namespace Quattro.Migrations
 
             modelBuilder.Entity("Quattro.Models.HoraAjena", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("HoraAjenaId")
                         .ValueGeneratedOnAdd();
 
                     b.Property<int>("Codigo");
@@ -129,14 +129,14 @@ namespace Quattro.Migrations
 
                     b.Property<string>("Motivo");
 
-                    b.HasKey("Id");
+                    b.HasKey("HoraAjenaId");
 
                     b.ToTable("HorasAjenas");
                 });
 
             modelBuilder.Entity("Quattro.Models.Incidencia", b =>
                 {
-                    b.Property<int>("Codigo");
+                    b.Property<int>("CodigoIncidencia");
 
                     b.Property<string>("Notas");
 
@@ -144,34 +144,34 @@ namespace Quattro.Migrations
 
                     b.Property<int>("Tipo");
 
-                    b.HasKey("Codigo");
+                    b.HasKey("CodigoIncidencia");
 
                     b.ToTable("Incidencias");
 
                     b.HasData(
-                        new { Codigo = 0, Notas = "Incidencia Protegida.", TextoIncidencia = "Repite día anterior", Tipo = 0 },
-                        new { Codigo = 1, Notas = "Incidencia Protegida.", TextoIncidencia = "Trabajo", Tipo = 1 },
-                        new { Codigo = 2, Notas = "Incidencia Protegida.", TextoIncidencia = "Franqueo", Tipo = 4 },
-                        new { Codigo = 3, Notas = "Incidencia Protegida.", TextoIncidencia = "Vacaciones", Tipo = 4 },
-                        new { Codigo = 4, Notas = "Incidencia Protegida.", TextoIncidencia = "F.O.D.", Tipo = 3 },
-                        new { Codigo = 5, Notas = "Incidencia Protegida.", TextoIncidencia = "Franqueo a trabajar", Tipo = 2 },
-                        new { Codigo = 6, Notas = "Incidencia Protegida.", TextoIncidencia = "Enferma/o", Tipo = 4 },
-                        new { Codigo = 7, Notas = "Incidencia Protegida.", TextoIncidencia = "Accidentada/o", Tipo = 4 },
-                        new { Codigo = 8, Notas = "Incidencia Protegida.", TextoIncidencia = "Permiso", Tipo = 6 },
-                        new { Codigo = 9, Notas = "Incidencia Protegida.", TextoIncidencia = "F.N.R. año actual", Tipo = 4 },
-                        new { Codigo = 10, Notas = "Incidencia Protegida.", TextoIncidencia = "F.N.R. año anterior", Tipo = 4 },
-                        new { Codigo = 11, Notas = "Incidencia Protegida.", TextoIncidencia = "Nos hacen el día", Tipo = 1 },
-                        new { Codigo = 12, Notas = "Incidencia Protegida.", TextoIncidencia = "Hacemos el día", Tipo = 5 },
-                        new { Codigo = 13, Notas = "Incidencia Protegida.", TextoIncidencia = "Sanción", Tipo = 4 },
-                        new { Codigo = 14, Notas = "Incidencia Protegida.", TextoIncidencia = "En otro destino", Tipo = 4 },
-                        new { Codigo = 15, Notas = "Incidencia Protegida.", TextoIncidencia = "Huelga", Tipo = 5 },
-                        new { Codigo = 16, Notas = "Incidencia Protegida.", TextoIncidencia = "Día por H. Acumuladas", Tipo = 3 }
+                        new { CodigoIncidencia = 0, Notas = "Incidencia Protegida.", TextoIncidencia = "Repite día anterior", Tipo = 0 },
+                        new { CodigoIncidencia = 1, Notas = "Incidencia Protegida.", TextoIncidencia = "Trabajo", Tipo = 1 },
+                        new { CodigoIncidencia = 2, Notas = "Incidencia Protegida.", TextoIncidencia = "Franqueo", Tipo = 4 },
+                        new { CodigoIncidencia = 3, Notas = "Incidencia Protegida.", TextoIncidencia = "Vacaciones", Tipo = 4 },
+                        new { CodigoIncidencia = 4, Notas = "Incidencia Protegida.", TextoIncidencia = "F.O.D.", Tipo = 3 },
+                        new { CodigoIncidencia = 5, Notas = "Incidencia Protegida.", TextoIncidencia = "Franqueo a trabajar", Tipo = 2 },
+                        new { CodigoIncidencia = 6, Notas = "Incidencia Protegida.", TextoIncidencia = "Enferma/o", Tipo = 4 },
+                        new { CodigoIncidencia = 7, Notas = "Incidencia Protegida.", TextoIncidencia = "Accidentada/o", Tipo = 4 },
+                        new { CodigoIncidencia = 8, Notas = "Incidencia Protegida.", TextoIncidencia = "Permiso", Tipo = 6 },
+                        new { CodigoIncidencia = 9, Notas = "Incidencia Protegida.", TextoIncidencia = "F.N.R. año actual", Tipo = 4 },
+                        new { CodigoIncidencia = 10, Notas = "Incidencia Protegida.", TextoIncidencia = "F.N.R. año anterior", Tipo = 4 },
+                        new { CodigoIncidencia = 11, Notas = "Incidencia Protegida.", TextoIncidencia = "Nos hacen el día", Tipo = 1 },
+                        new { CodigoIncidencia = 12, Notas = "Incidencia Protegida.", TextoIncidencia = "Hacemos el día", Tipo = 5 },
+                        new { CodigoIncidencia = 13, Notas = "Incidencia Protegida.", TextoIncidencia = "Sanción", Tipo = 4 },
+                        new { CodigoIncidencia = 14, Notas = "Incidencia Protegida.", TextoIncidencia = "En otro destino", Tipo = 4 },
+                        new { CodigoIncidencia = 15, Notas = "Incidencia Protegida.", TextoIncidencia = "Huelga", Tipo = 5 },
+                        new { CodigoIncidencia = 16, Notas = "Incidencia Protegida.", TextoIncidencia = "Día por H. Acumuladas", Tipo = 3 }
                     );
                 });
 
             modelBuilder.Entity("Quattro.Models.Linea", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("LineaId")
                         .ValueGeneratedOnAdd();
 
                     b.Property<string>("Notas");
@@ -180,14 +180,14 @@ namespace Quattro.Migrations
 
                     b.Property<string>("TextoLinea");
 
-                    b.HasKey("Id");
+                    b.HasKey("LineaId");
 
                     b.ToTable("Lineas");
                 });
 
             modelBuilder.Entity("Quattro.Models.ServicioAuxiliar", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("ServicioAuxiliarId")
                         .ValueGeneratedOnAdd();
 
                     b.Property<int?>("Final");
@@ -206,7 +206,7 @@ namespace Quattro.Migrations
 
                     b.Property<int>("Turno");
 
-                    b.HasKey("Id");
+                    b.HasKey("ServicioAuxiliarId");
 
                     b.HasIndex("ServicioLineaId");
 
@@ -215,7 +215,7 @@ namespace Quattro.Migrations
 
             modelBuilder.Entity("Quattro.Models.ServicioCalendario", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("ServicioCalendarioId")
                         .ValueGeneratedOnAdd();
 
                     b.Property<int>("DiaCalendarioId");
@@ -234,7 +234,7 @@ namespace Quattro.Migrations
 
                     b.Property<int>("Turno");
 
-                    b.HasKey("Id");
+                    b.HasKey("ServicioCalendarioId");
 
                     b.HasIndex("DiaCalendarioId");
 
@@ -243,7 +243,7 @@ namespace Quattro.Migrations
 
             modelBuilder.Entity("Quattro.Models.ServicioLinea", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("ServicioLineaId")
                         .ValueGeneratedOnAdd();
 
                     b.Property<decimal>("Acumuladas");
@@ -280,7 +280,7 @@ namespace Quattro.Migrations
 
                     b.Property<int>("Turno");
 
-                    b.HasKey("Id");
+                    b.HasKey("ServicioLineaId");
 
                     b.HasIndex("LineaId");
 

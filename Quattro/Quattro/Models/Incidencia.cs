@@ -5,12 +5,12 @@
 //  Vea el archivo Licencia.txt para más detalles 
 // ===============================================
 #endregion
-namespace Quattro.Models {
-
+namespace Quattro.Models 
+{
 	using System.Collections.Generic;
 	using Quattro.Notify;
 
-	public class Incidencia : NotifyBase {
+	public class Incidencia : EntityNotifyBase {
 
 
 		// ====================================================================================================
@@ -18,21 +18,21 @@ namespace Quattro.Models {
 		// ====================================================================================================
 
 		public override string ToString() {
-			return $"{codigo:00}: {TextoIncidencia}";
+			return $"{codigoIncidencia:00}: {TextoIncidencia}";
 		}
 
 
 		public override bool Equals(object obj) {
 			var incidencia = obj as Incidencia;
 			if (incidencia == null) return false;
-			return Codigo == incidencia.Codigo;
+			return CodigoIncidencia == incidencia.CodigoIncidencia;
 		}
 
 
 		public override int GetHashCode() {
 			unchecked {
 				int hash = 5060;
-				hash = hash * codigo.GetHashCode();
+				hash = hash * codigoIncidencia.GetHashCode();
 				return hash;
 			}
 		}
@@ -54,10 +54,10 @@ namespace Quattro.Models {
 		//}
 
 
-		private int codigo;
-		public int Codigo {
-			get { return codigo; }
-			set { SetValue(ref codigo, value); }
+		private int codigoIncidencia;
+		public int CodigoIncidencia {
+			get { return codigoIncidencia; }
+			set { SetValue(ref codigoIncidencia, value); }
 		}
 
 
@@ -82,7 +82,7 @@ namespace Quattro.Models {
 		}
 
 
-		public List<DiaCalendario> DiasCalendario { get; set; }
+		public virtual List<DiaCalendario> DiasCalendario { get; set; }
 
 
 		#endregion

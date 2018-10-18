@@ -5,12 +5,12 @@
 //  Vea el archivo Licencia.txt para más detalles 
 // ===============================================
 #endregion
-namespace Quattro.Models {
-
+namespace Quattro.Models 
+{
 	using System;
 	using Quattro.Notify;
 
-	public class HoraAjena : NotifyBase { 
+	public class HoraAjena : EntityNotifyBase { 
 
 
 		// ====================================================================================================
@@ -50,10 +50,10 @@ namespace Quattro.Models {
 		// ====================================================================================================
 
 
-		private int id;
-		public int Id {
-			get { return id; }
-			set { SetValue(ref id, value); }
+		private int horaAjenaId;
+		public int HoraAjenaId {
+			get { return horaAjenaId; }
+			set { SetValue(ref horaAjenaId, value); }
 		}
 
 

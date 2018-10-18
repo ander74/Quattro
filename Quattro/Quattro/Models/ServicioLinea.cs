@@ -5,8 +5,8 @@
 //  Vea el archivo Licencia.txt para más detalles 
 // ===============================================
 #endregion
-namespace Quattro.Models {
-
+namespace Quattro.Models 
+{
 	using System.Collections.Generic;
 
 	public class ServicioLinea: Servicio {
@@ -42,6 +42,14 @@ namespace Quattro.Models {
 		#region PROPIEDADES
 		// ====================================================================================================
 
+		private int servicioLineaId;
+		public int ServicioLineaId
+		{
+			get { return servicioLineaId; }
+			set { SetValue(ref servicioLineaId, value); }
+		}
+
+
 		public int LineaId { get; set; }
 
 
@@ -49,7 +57,7 @@ namespace Quattro.Models {
 
 
 		private List<ServicioAuxiliar> servicios;
-		public List<ServicioAuxiliar> Servicios {
+		public virtual List<ServicioAuxiliar> Servicios {
 			get { return servicios; }
 			set { SetValue(ref servicios, value); }
 		}
