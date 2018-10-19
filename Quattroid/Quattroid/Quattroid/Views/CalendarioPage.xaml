@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Quattroid.Views.CalendarioPage"
@@ -38,17 +38,17 @@
 												 Padding="5"
 												 VerticalOptions="FillAndExpand">
 										<Label FontAttributes="Bold"
-											   FontSize="Large"
+											   FontSize="16"
 											   HorizontalOptions="CenterAndExpand"
 											   TextColor="Navy"
 											   Text="{Binding Fecha, StringFormat='{}{0:dd}'}"/>
-										<Label FontSize="Small"
+										<Label FontSize="10"
 											   HorizontalOptions="CenterAndExpand"
 											   TextColor="Navy"
 											   Text="{Binding Fecha, StringFormat='{}{0:ddd}'}"/>
 									</StackLayout>
 									<Label Grid.Column="1" Grid.Row="0"
-											   FontSize="Small"
+											   FontSize="10"
 											   HorizontalOptions="FillAndExpand"
 										       Margin="5"
 											   TextColor="Navy"

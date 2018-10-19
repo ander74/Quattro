@@ -199,12 +199,12 @@
     <PackageReference Include="System.ValueTuple">
       <Version>4.5.0</Version>
     </PackageReference>
-    <PackageReference Include="Xamarin.Forms" Version="3.1.0.697729" />
+    <PackageReference Include="Xamarin.Forms" Version="3.3.0.912540" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
   <ItemGroup>
     <ProjectReference Include="..\Quattroid\Quattroid.csproj">
-      <Project>{93D065A6-1258-416D-9F61-34E5E9202743}</Project>
+      <Project>{E84D5996-F500-4DC4-8515-E9D1D5DD818A}</Project>
       <Name>Quattroid</Name>
     </ProjectReference>
   </ItemGroup>

@@ -42,14 +42,17 @@
 			using (QuattroContext context = new QuattroContext(archivoDB))
 			{
 				context.Database.Migrate();
-				//var cal = new ObservableCollection<DiaCalendario>();
-				//for (int mes = 1; mes <= 12; mes++)
-				//{
-				//	for (int dia = 1; dia <= DateTime.DaysInMonth(2018, mes); dia++)
-				//		cal.Add(new DiaCalendario { Fecha = new DateTime(2018, mes, dia) });
-				//}
-				//context.Calendario.AddRange(cal);
-				//context.SaveChanges();
+				var lista = context.Calendario.AsNoTracking().ToList();
+				if (!lista.Any())
+				{
+					var cal = new List<DiaCalendario>();
+					for (int mes = 1; mes <= 12; mes++) {
+						for (int dia = 1; dia <= DateTime.DaysInMonth(2018, mes); dia++)
+							cal.Add(new DiaCalendario { Fecha = new DateTime(2018, mes, dia) });
+					}
+					context.Calendario.AddRange(cal);
+					context.SaveChanges();
+				}
 			}
 		}
 
