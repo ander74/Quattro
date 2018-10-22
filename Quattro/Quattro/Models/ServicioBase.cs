@@ -7,41 +7,30 @@
 #endregion
 namespace Quattro.Models 
 {
+	using System;
 	using System.Runtime.CompilerServices;
 	using System.Text.RegularExpressions;
 	using Common;
 	using Notify;
 
-	public class ServicioBase: EntityNotifyBase {
-
+	public class ServicioBase: EntityNotifyBase, IEquatable<ServicioBase>
+	{
 
 		// ====================================================================================================
 		#region MÉTODOS OVERRIDE
 		// ====================================================================================================
 
-		public override string ToString() {
-			return $"{NumeroLinea} - {Servicio}/{Turno}: {Inicio} - {Final}";
-		}
+		public override string ToString() => $"{NumeroLinea} - {Servicio}/{Turno}: {Inicio} - {Final}";
+		
+		public override bool Equals(object obj) => (obj is ServicioBase serviciobase) && Equals(serviciobase);
+		
+		public bool Equals(ServicioBase sb) => (NumeroLinea, Servicio, Turno) == (sb.NumeroLinea, sb.Servicio, sb.Turno);
 
+		public static bool operator ==(ServicioBase s1, ServicioBase s2) => Equals(s1, s2);
 
-		//TODO: Determinar si eliminamos la sobrecarga de estos métodos o no.
-		public override bool Equals(object obj) {
-			if (obj is ServicioBase serviciobase)
-				return NumeroLinea == serviciobase.NumeroLinea && Servicio == serviciobase.Servicio && Turno == serviciobase.Turno;
-			return false;
-		}
+		public static bool operator !=(ServicioBase s1, ServicioBase s2) => !Equals(s1, s2);
 
-
-		public override int GetHashCode() {
-			unchecked {
-				int hash = 5060;
-				hash = (hash * 7) + NumeroLinea?.GetHashCode() ?? 1234;
-				hash = (hash * 7) + Servicio?.GetHashCode() ?? 1234;
-				hash = (hash * 7) + Turno.GetHashCode();
-				return hash;
-			}
-		}
-
+		public override int GetHashCode() => (NumeroLinea, Servicio, Turno).GetHashCode();
 
 		#endregion
 		// ====================================================================================================
@@ -87,13 +76,6 @@ namespace Quattro.Models
 		// ====================================================================================================
 		#region PROPIEDADES
 		// ====================================================================================================
-
-		//private int id;
-		//public int Id {
-		//	get { return id; }
-		//	set { SetValue(ref id, value); }
-		//}
-
 
 		private string numeroLinea;
 		public string NumeroLinea {

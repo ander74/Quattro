@@ -7,32 +7,38 @@
 #endregion
 namespace Quattro.Models 
 {
+	using System;
 	using System.Collections.Generic;
 
-	public class ServicioLinea: Servicio {
+	public class ServicioLinea: Servicio, IEquatable<ServicioLinea>
+	{
+
+		// ====================================================================================================
+		#region CONSTRUCTORES
+		// ====================================================================================================
+
+		public ServicioLinea() : base()
+		{
+			Servicios = new List<ServicioAuxiliar>();
+		}
+
+		#endregion
+		// ====================================================================================================
 
 
 		// ====================================================================================================
 		#region MÉTODOS OVERRIDE
 		// ====================================================================================================
 
-		public override bool Equals(object obj) {
-			if (obj is ServicioLinea servicio)
-				return NumeroLinea == servicio.NumeroLinea && Servicio == servicio.Servicio && Turno == servicio.Turno;
-			return false;
-		}
+		public override bool Equals(object obj) => (obj is ServicioLinea serviciobase) && Equals(serviciobase);
 
+		public bool Equals(ServicioLinea sb) => (NumeroLinea, Servicio, Turno) == (sb.NumeroLinea, sb.Servicio, sb.Turno);
 
-		public override int GetHashCode() {
-			unchecked {
-				int hash = 5060;
-				hash = (hash * 7) + NumeroLinea?.GetHashCode() ?? 1234;
-				hash = (hash * 7) + Servicio?.GetHashCode() ?? 1234;
-				hash = (hash * 7) + Turno.GetHashCode();
-				return hash;
-			}
-		}
+		public static bool operator ==(ServicioLinea s1, ServicioLinea s2) => Equals(s1, s2);
 
+		public static bool operator !=(ServicioLinea s1, ServicioLinea s2) => !Equals(s1, s2);
+
+		public override int GetHashCode() => (NumeroLinea, Servicio, Turno).GetHashCode();
 
 		#endregion
 		// ====================================================================================================
@@ -64,8 +70,6 @@ namespace Quattro.Models
 
 		#endregion
 		// ====================================================================================================
-
-
 
 	}
 }

@@ -12,8 +12,8 @@ namespace Quattro.Models
 	using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 	using Common;
 
-	public class QuattroContext : DbContext {
-
+	public class QuattroContext : DbContext
+	{
 
 		// ====================================================================================================
 		#region CONSTRUCTORES
@@ -219,8 +219,6 @@ namespace Quattro.Models
 
 		#endregion
 		// ====================================================================================================
-
-
 
 	}
 }

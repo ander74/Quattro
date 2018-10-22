@@ -10,36 +10,24 @@ namespace Quattro.Models
 	using System;
 	using Quattro.Notify;
 
-	public class HoraAjena : EntityNotifyBase { 
-
+	public class HoraAjena : EntityNotifyBase, IEquatable<HoraAjena>
+	{
 
 		// ====================================================================================================
 		#region MÉTODOS OVERRIDE
 		// ====================================================================================================
 
-		public override string ToString() {
-			return $"{Fecha:dd:MM:yyyy}: {Horas:0.00} {Motivo}";
-		}
+		public override string ToString() => $"{Fecha:dd:MM:yyyy}: {Horas:0.00} {Motivo}";
 
+		public override bool Equals(object obj) => (obj is HoraAjena horaAjena) && Equals(horaAjena);
 
-		public override bool Equals(object obj) {
-			var horaajena = obj as HoraAjena;
-			if (horaajena == null) return false;
-			return Fecha == horaajena.Fecha && Horas == horaajena.Horas && Motivo == horaajena.Motivo && Codigo == horaajena.Codigo;
-		}
+		public bool Equals(HoraAjena ha) => (Fecha, Horas, Motivo, Codigo) == (ha.Fecha, ha.Horas, ha.Motivo, ha.Codigo);
 
+		public static bool operator ==(HoraAjena ha1, HoraAjena ha2) => Equals(ha1, ha2);
 
-		public override int GetHashCode() {
-			unchecked {
-				int hash = 5060;
-				hash = hash * fecha.GetHashCode();
-				hash = hash * horas.GetHashCode();
-				hash = hash * motivo?.GetHashCode() ?? 1234;
-				hash = hash * codigo.GetHashCode();
-				return hash;
-			}
-		}
+		public static bool operator !=(HoraAjena ha1, HoraAjena ha2) => !Equals(ha1, ha2);
 
+		public override int GetHashCode() => (Fecha, Horas, Motivo, Codigo).GetHashCode();
 
 		#endregion
 		// ====================================================================================================
@@ -87,7 +75,6 @@ namespace Quattro.Models
 
 		#endregion
 		// ====================================================================================================
-
 
 	}
 }

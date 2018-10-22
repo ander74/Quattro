@@ -7,37 +7,43 @@
 #endregion
 namespace Quattro.Models 
 {
+	using System;
 	using System.Collections.Generic;
 	using Common;
 	using Notify;
 
-	public class Compañero: EntityNotifyBase {
+	public class Compañero: EntityNotifyBase, IEquatable<Compañero>
+	{
+
+		// ====================================================================================================
+		#region CONSTRUCTORES
+		// ====================================================================================================
+
+		public Compañero()
+		{
+			Relevos = new List<DiaCalendario>();
+			Sustis = new List<DiaCalendario>();
+		}
+
+		#endregion
+		// ====================================================================================================
 
 
 		// ====================================================================================================
 		#region MÉTODOS OVERRIDE
 		// ====================================================================================================
 
-		public override string ToString() {
-			return $"{Matricula:00}: {Nombre} {Apellidos}";
-		}
+		public override string ToString() => $"{Matricula:00}: {Nombre} {Apellidos}";
 
+		public override bool Equals(object obj) => (obj is Compañero compañero) && Equals(compañero);
 
-		public override bool Equals(object obj) {
-			var compañero = obj as Compañero;
-			if (compañero == null) return false;
-			return Matricula == compañero.Matricula;
-		}
+		public bool Equals(Compañero c) => (Matricula) == (c.Matricula);
 
+		public static bool operator ==(Compañero c1, Compañero c2) => Equals(c1, c2);
 
-		public override int GetHashCode() {
-			unchecked {
-				int hash = 5060;
-				hash = hash * matricula.GetHashCode();
-				return hash;
-			}
-		}
+		public static bool operator !=(Compañero c1, Compañero c2) => !Equals(c1, c2);
 
+		public override int GetHashCode() => (Matricula).GetHashCode();
 
 		#endregion
 		// ====================================================================================================
@@ -103,8 +109,6 @@ namespace Quattro.Models
 
 		#endregion
 		// ====================================================================================================
-
-
 
 	}
 }

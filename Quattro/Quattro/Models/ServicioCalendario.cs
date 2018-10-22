@@ -7,32 +7,24 @@
 #endregion
 namespace Quattro.Models
 {
-	using System.ComponentModel.DataAnnotations.Schema;
-
-	public class ServicioCalendario : ServicioBase {
-
+	using System;
+	
+	public class ServicioCalendario : ServicioBase, IEquatable<ServicioCalendario>
+	{
 
 		// ====================================================================================================
 		#region MÉTODOS OVERRIDE
 		// ====================================================================================================
 
-		public override bool Equals(object obj) {
-			if (obj is ServicioCalendario servicio)
-				return NumeroLinea == servicio.NumeroLinea && Servicio == servicio.Servicio && Turno == servicio.Turno;
-			return false;
-		}
+		public override bool Equals(object obj) => (obj is ServicioCalendario serviciobase) && Equals(serviciobase);
 
+		public bool Equals(ServicioCalendario sb) => (NumeroLinea, Servicio, Turno) == (sb.NumeroLinea, sb.Servicio, sb.Turno);
 
-		public override int GetHashCode() {
-			unchecked {
-				int hash = 5060;
-				hash = (hash * 7) + NumeroLinea?.GetHashCode() ?? 1234;
-				hash = (hash * 7) + Servicio?.GetHashCode() ?? 1234;
-				hash = (hash * 7) + Turno.GetHashCode();
-				return hash;
-			}
-		}
+		public static bool operator ==(ServicioCalendario s1, ServicioCalendario s2) => Equals(s1, s2);
 
+		public static bool operator !=(ServicioCalendario s1, ServicioCalendario s2) => !Equals(s1, s2);
+
+		public override int GetHashCode() => (NumeroLinea, Servicio, Turno).GetHashCode();
 
 		#endregion
 		// ====================================================================================================
@@ -57,7 +49,6 @@ namespace Quattro.Models
 
 		#endregion
 		// ====================================================================================================
-
 
 	}
 }

@@ -15,8 +15,8 @@ namespace Quattro.Models
 	using Newtonsoft.Json;
 	using Notify;
 
-	public class Convenio : NotifyBase {
-
+	public class Convenio : NotifyBase
+	{
 
 		// ====================================================================================================
 		#region MÉTODOS PÚBLICOS
@@ -317,7 +317,6 @@ namespace Quattro.Models
 
 		#endregion
 		// ====================================================================================================
-
 
 	}
 

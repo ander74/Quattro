@@ -7,36 +7,41 @@
 #endregion
 namespace Quattro.Models 
 {
+	using System;
 	using System.Collections.Generic;
 	using Quattro.Notify;
 
-	public class Incidencia : EntityNotifyBase {
+	public class Incidencia : EntityNotifyBase, IEquatable<Incidencia>
+	{
+
+		// ====================================================================================================
+		#region CONSTRUCTORES
+		// ====================================================================================================
+
+		public Incidencia()
+		{
+			DiasCalendario = new List<DiaCalendario>();
+		}
+
+		#endregion
+		// ====================================================================================================
 
 
 		// ====================================================================================================
 		#region MÉTODOS OVERRIDE
 		// ====================================================================================================
 
-		public override string ToString() {
-			return $"{codigoIncidencia:00}: {TextoIncidencia}";
-		}
+		public override string ToString() => $"{CodigoIncidencia}: {TextoIncidencia}";
 
+		public override bool Equals(object obj) => (obj is Incidencia incidencia) && Equals(incidencia);
 
-		public override bool Equals(object obj) {
-			var incidencia = obj as Incidencia;
-			if (incidencia == null) return false;
-			return CodigoIncidencia == incidencia.CodigoIncidencia;
-		}
+		public bool Equals(Incidencia incidencia) => CodigoIncidencia == incidencia.CodigoIncidencia;
 
+		public static bool operator ==(Incidencia i1, Incidencia i2) => Equals(i1, i2);
 
-		public override int GetHashCode() {
-			unchecked {
-				int hash = 5060;
-				hash = hash * codigoIncidencia.GetHashCode();
-				return hash;
-			}
-		}
+		public static bool operator !=(Incidencia i1, Incidencia i2) => !Equals(i1, i2);
 
+		public override int GetHashCode() => CodigoIncidencia.GetHashCode();
 
 		#endregion
 		// ====================================================================================================
@@ -45,13 +50,6 @@ namespace Quattro.Models
 		// ====================================================================================================
 		#region PROPIEDADES
 		// ====================================================================================================
-
-
-		//private int id;
-		//public int Id {
-		//	get { return id; }
-		//	set { SetValue(ref id, value); }
-		//}
 
 
 		private int codigoIncidencia;
@@ -87,8 +85,6 @@ namespace Quattro.Models
 
 		#endregion
 		// ====================================================================================================
-
-
 
 	}
 }

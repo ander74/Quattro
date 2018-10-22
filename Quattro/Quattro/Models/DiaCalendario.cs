@@ -10,35 +10,37 @@ namespace Quattro.Models
 	using System;
 	using System.Collections.Generic;
 
-	public class DiaCalendario : Servicio {
+	public class DiaCalendario : Servicio, IEquatable<DiaCalendario>
+	{
+
+		// ====================================================================================================
+		#region CONSTRUCTORES
+		// ====================================================================================================
+
+		public DiaCalendario() : base()
+		{
+			Servicios = new List<ServicioCalendario>();
+		}
+
+		#endregion
+		// ====================================================================================================
 
 
 		// ====================================================================================================
 		#region MÉTODOS OVERRIDE
 		// ====================================================================================================
 
-		public override string ToString() {
-			return $"{Fecha.ToString("dd-MM-yyyy")}: {NumeroLinea} - {Servicio}/{Turno} ({Inicio} - {Final})";
-		}
+		public override string ToString() => $"{Fecha.ToString("dd-MM-yyyy")}: {NumeroLinea} - {Servicio}/{Turno} ({Inicio} - {Final})";
 
+		public override bool Equals(object obj) => (obj is DiaCalendario diaCalendario) && Equals(diaCalendario);
 
-		public override bool Equals(object obj) {
-			if (obj is DiaCalendario diaCalendario)
-				return NumeroLinea == diaCalendario.NumeroLinea && Servicio == diaCalendario.Servicio && Turno == diaCalendario.Turno;
-			return false;
-		}
+		public bool Equals(DiaCalendario dc) => (Fecha) == (dc.Fecha);
 
+		public static bool operator ==(DiaCalendario dc1, DiaCalendario dc2) => Equals(dc1, dc2);
 
-		public override int GetHashCode() {
-			unchecked {
-				int hash = 5060;
-				hash = (hash * 7) + NumeroLinea?.GetHashCode() ?? 1234;
-				hash = (hash * 7) + Servicio?.GetHashCode() ?? 1234;
-				hash = (hash * 7) + Turno.GetHashCode();
-				return hash;
-			}
-		}
+		public static bool operator !=(DiaCalendario dc1, DiaCalendario dc2) => !Equals(dc1, dc2);
 
+		public override int GetHashCode() => (Fecha).GetHashCode();
 
 		#endregion
 		// ====================================================================================================
@@ -122,9 +124,6 @@ namespace Quattro.Models
 
 		#endregion
 		// ====================================================================================================
-
-
-
 
 	}
 }

@@ -10,10 +10,9 @@ namespace Quattro.Models.Models
 	using System.IO;
 	using Newtonsoft.Json;
 	using Notify;
-	using Quattro.Common;
 
-	public class Opciones : NotifyBase {
-
+	public class Opciones : NotifyBase
+	{
 
 		// ====================================================================================================
 		#region OPCIONES
@@ -152,7 +151,6 @@ namespace Quattro.Models.Models
 
 		#endregion
 		// ====================================================================================================
-
 
 	}
 }

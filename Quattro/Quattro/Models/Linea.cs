@@ -7,36 +7,41 @@
 #endregion
 namespace Quattro.Models 
 {
+	using System;
 	using System.Collections.Generic;
 	using Quattro.Notify;
 
-	public class Linea: EntityNotifyBase {
+	public class Linea: EntityNotifyBase, IEquatable<Linea>
+	{
+
+		// ====================================================================================================
+		#region CONSTRUCTORES
+		// ====================================================================================================
+
+		public Linea()
+		{
+			Servicios = new List<ServicioLinea>();
+		}
+
+		#endregion
+		// ====================================================================================================
 
 
 		// ====================================================================================================
 		#region MÉTODOS OVERRIDE
 		// ====================================================================================================
 
-		public override string ToString() {
-			return $"{NumeroLinea}: {TextoLinea}";
-		}
+		public override string ToString() => $"{NumeroLinea}: {TextoLinea}";
 
+		public override bool Equals(object obj) => (obj is Linea linea) && Equals(linea);
 
-		public override bool Equals(object obj) {
-			if (obj is Linea linea)
-				return NumeroLinea == linea.NumeroLinea;
-			return false;
-		}
+		public bool Equals(Linea linea) => NumeroLinea == linea.NumeroLinea;
 
+		public static bool operator ==(Linea linea1, Linea linea2) => Equals(linea1, linea2);
 
-		public override int GetHashCode() {
-			unchecked {
-				int hash = 5060;
-				hash = hash * numeroLinea?.GetHashCode() ?? 1234;
-				return hash;
-			}
-		}
+		public static bool operator !=(Linea linea1, Linea linea2) => !Equals(linea1, linea2);
 
+		public override int GetHashCode() => NumeroLinea.GetHashCode();
 
 		#endregion
 		// ====================================================================================================
