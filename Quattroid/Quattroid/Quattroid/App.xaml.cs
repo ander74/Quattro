@@ -15,9 +15,8 @@ namespace Quattroid
 		{
 			InitializeComponent();
 
-			var mainViewModel = MainViewModel.GetInstance();
-
 			this.MainPage = new MasterPage();
+
 		}
 
 		protected override void OnStart() 
