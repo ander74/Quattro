@@ -5,13 +5,13 @@
 //  Vea el archivo Licencia.txt para más detalles 
 // ===============================================
 #endregion
-namespace Quattro.Common {
-
+namespace Quattro.Common
+{
 	using System;
 	using System.Data.Common;
 
-	public static class Extensiones {
-
+	public static class Extensiones
+	{
 
 		// ====================================================================================================
 		#region MÉTODOS DE EXTENSIÓN PARA TIMESPAN y TIMESPAN?
@@ -287,8 +287,6 @@ namespace Quattro.Common {
 
 		#endregion
 		// ====================================================================================================
-
-
 
 	}
 }

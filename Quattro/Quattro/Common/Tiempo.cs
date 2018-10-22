@@ -5,35 +5,29 @@
 //  Vea el archivo Licencia.txt para más detalles 
 // ===============================================
 #endregion
-namespace Quattro.Common {
-
+namespace Quattro.Common
+{
 	using System;
 	using System.Globalization;
 	using Newtonsoft.Json;
 
-
 	/// <summary>
 	/// Representa un intervalo de tiempo compuesto de días, horas y minutos.
 	/// </summary>
-	public class Tiempo : IComparable, IComparable<Tiempo>, IEquatable<Tiempo>, IFormattable {
-
+	public class Tiempo : IComparable, IComparable<Tiempo>, IEquatable<Tiempo>, IFormattable
+	{
 
 		// ====================================================================================================
 		#region CAMPOS
 		// ====================================================================================================
 
-		///// <summary>
-		///// Cantidad de segundos en un minuto. Evidente :)
-		///// </summary>
-		//public const int SegundosPorMinuto = 60;
-
 		/// <summary>
-		/// Cantidad de segundos en una hora.
+		/// Cantidad de minutos en una hora.
 		/// </summary>
 		public const int MinutosPorHora = 60;
 
 		/// <summary>
-		/// Cantidad de segundos en un día.
+		/// Cantidad de minutos en un día.
 		/// </summary>
 		public const int MinutosPorDia = 1440;
 
@@ -64,11 +58,9 @@ namespace Quattro.Common {
 		/// <summary>
 		/// Instancia un objeto Tiempo con un número de minutos iniciales.
 		/// </summary>
-		/// <param name="minutos">Número de segundos iniciales.</param>
+		/// <param name="minutos">Número de minutos iniciales.</param>
 		[JsonConstructor]
-		public Tiempo(int minutos) {
-			TotalMinutos = minutos;
-		}
+		public Tiempo(int minutos) => TotalMinutos = minutos;
 
 
 		/// <summary>
@@ -76,9 +68,7 @@ namespace Quattro.Common {
 		/// </summary>
 		/// <param name="horas">Número de horas iniciales (pueden ser más de 24).</param>
 		/// <param name="minutos">Número de minutos iniciales (pueden ser más de 60).</param>
-		public Tiempo(int horas, int minutos) {
-			TotalMinutos = minutos + (horas * MinutosPorHora);
-		}
+		public Tiempo(int horas, int minutos) => TotalMinutos = minutos + (horas * MinutosPorHora);
 
 
 		/// <summary>
@@ -87,9 +77,7 @@ namespace Quattro.Common {
 		/// <param name="dias">Número de días iniciales.</param>
 		/// <param name="horas">Número de horas iniciales (pueden ser más de 24).</param>
 		/// <param name="minutos">Número de minutos iniciales (pueden ser más de 60).</param>
-		public Tiempo(int dias, int horas, int minutos) {
-			TotalMinutos = minutos + (horas * MinutosPorHora) + (dias * MinutosPorDia);
-		}
+		public Tiempo(int dias, int horas, int minutos) => TotalMinutos = minutos + (horas * MinutosPorHora) + (dias * MinutosPorDia);
 
 
 		/// <summary>
@@ -97,9 +85,7 @@ namespace Quattro.Common {
 		/// El intervalo por debajo de un minuto será desechado.
 		/// </summary>
 		/// <param name="ts">Objeto TimeSpan del que se extraerá el intervalo.</param>
-		public Tiempo(TimeSpan ts) {
-			TotalMinutos = (int)ts.TotalMinutes;
-		}
+		public Tiempo(TimeSpan ts) => TotalMinutos = (int)ts.TotalMinutes;
 
 
 		#endregion
@@ -115,9 +101,7 @@ namespace Quattro.Common {
 		/// El intervalo por debajo de un minuto será desechado.
 		/// </summary>
 		/// <param name="ts">Objeto TimeSpan que será convertido explicitamente.</param>
-		public static explicit operator Tiempo(TimeSpan ts) {
-			return new Tiempo((int)ts.TotalMinutes);
-		}
+		public static explicit operator Tiempo(TimeSpan ts) => new Tiempo((int)ts.TotalMinutes);
 
 
 		/// <summary>
@@ -125,11 +109,8 @@ namespace Quattro.Common {
 		/// </summary>
 		/// <param name="t1">Primer sumando.</param>
 		/// <param name="t2">Segundo sumando.</param>
-		/// <returns>Un nuevo objeto Tiempo con la suma de los dos sumandos.</returns>
-		public static Tiempo operator +(Tiempo t1, Tiempo t2) {
-			if (t1 == null || t2 == null) return null;
-			return new Tiempo(t1.TotalMinutos + t2.TotalMinutos);
-		}
+		/// <returns>Un nuevo objeto Tiempo con el resultado de la suma.</returns>
+		public static Tiempo operator +(Tiempo t1, Tiempo t2) => new Tiempo((t1?.TotalMinutos ?? 0) + (t2?.TotalMinutos ?? 0));
 
 
 		/// <summary>
@@ -137,66 +118,16 @@ namespace Quattro.Common {
 		/// </summary>
 		/// <param name="t1">Minuendo de la resta.</param>
 		/// <param name="t2">Sustraendo de la resta.</param>
-		/// <returns></returns>
-		public static Tiempo operator -(Tiempo t1, Tiempo t2) {
-			if (t1 == null || t2 == null) return null;
-			return new Tiempo(t1.TotalMinutos - t2.TotalMinutos);
-		}
+		/// <returns>Un nuevo objeto Tiempo con el resultado de la resta.</returns>
+		public static Tiempo operator -(Tiempo t1, Tiempo t2) => new Tiempo((t1?.TotalMinutos ?? 0) - (t2?.TotalMinutos ?? 0));
 
 
 		/// <summary>
 		/// Devuelve un Nuevo objeto Tiempo, negando el actual.
 		/// </summary>
 		/// <param name="t1">Objeto a negar.</param>
-		/// <returns>Nuevo objeto Tiempo.</returns>
-		public static Tiempo operator -(Tiempo t1) {
-			return new Tiempo(-t1.TotalMinutos);
-		}
-
-
-		/// <summary>
-		/// Multiplica un objeto Tiempo por el valor de un número doble.
-		/// </summary>
-		/// <param name="t1">Objeto Tiempo a multiplicar.</param>
-		/// <param name="d2">Número por el que se va a multiplicar el objeto Tiempo.</param>
-		/// <returns>Objeto Tiempo con el resultado de la multiplicación.</returns>
-		public static Tiempo operator *(Tiempo t1, double d2) {
-			return new Tiempo((int)(t1?.TotalMinutos * d2));
-		}
-
-
-		/// <summary>
-		/// Multiplica un numero doble por un objeto Tiempo.
-		/// </summary>
-		/// <param name="d1">Número  que se va a multiplicar con el objeto Tiempo.</param>
-		/// <param name="t2">Objeto Tiempo con el que se va a multiplicar el número.</param>
-		/// <returns>Objeto Tiempo con el resultado de la multiplicación.</returns>
-		public static Tiempo operator *(double d1, Tiempo t2) {
-			return new Tiempo((int)(d1 * t2?.TotalMinutos));
-		}
-
-
-		/// <summary>
-		/// Divide un objeto Tiempo por otro.
-		/// </summary>
-		/// <param name="t1">Dividendo.</param>
-		/// <param name="t2">Divisor.</param>
-		/// <returns>Número que resulta de la división.</returns>
-		public static double operator /(Tiempo t1, Tiempo t2) {
-			if (t1 == null || t2 == null) return 0;
-			return t1.TotalMinutos / (double)t2.TotalMinutos;
-		}
-
-
-		/// <summary>
-		/// DIvide un objeto tiempo entre un número doble.
-		/// </summary>
-		/// <param name="t1">Dividendo.</param>
-		/// <param name="d2">Divisor.</param>
-		/// <returns>Objeto Tiempo resultante de la división.</returns>
-		public static Tiempo operator /(Tiempo t1, double d2) {
-			return new Tiempo((int)(t1.TotalMinutos / d2));
-		}
+		/// <returns>Nuevo objeto Tiempo negado.</returns>
+		public static Tiempo operator -(Tiempo t1) => new Tiempo(-t1.TotalMinutos);
 
 
 		/// <summary>
@@ -205,9 +136,7 @@ namespace Quattro.Common {
 		/// <param name="t1">Primer objeto Tiempo.</param>
 		/// <param name="t2">Segundo objeto Tiempo.</param>
 		/// <returns>True si son iguales. False en caso contrario.</returns>
-		public static bool operator ==(Tiempo t1, Tiempo t2) {
-			return t1?.TotalMinutos == t2?.TotalMinutos;
-		}
+		public static bool operator ==(Tiempo t1, Tiempo t2) => t1?.TotalMinutos == t2?.TotalMinutos;
 
 
 		/// <summary>
@@ -216,9 +145,7 @@ namespace Quattro.Common {
 		/// <param name="t1">Primer objeto Tiempo.</param>
 		/// <param name="t2">Segundo objeto Tiempo.</param>
 		/// <returns>True si no son iguales. False en caso contrario.</returns>
-		public static bool operator !=(Tiempo t1, Tiempo t2) {
-			return t1?.TotalMinutos != t2?.TotalMinutos;
-		}
+		public static bool operator !=(Tiempo t1, Tiempo t2) => t1?.TotalMinutos != t2?.TotalMinutos;
 
 
 		/// <summary>
@@ -227,9 +154,7 @@ namespace Quattro.Common {
 		/// <param name="t1">Primer objeto Tiempo.</param>
 		/// <param name="t2">Segundo objeto Tiempo.</param>
 		/// <returns>True si el primero es mayor. False en caso contrario.</returns>
-		public static bool operator >(Tiempo t1, Tiempo t2) {
-			return t1?.TotalMinutos > t2?.TotalMinutos;
-		}
+		public static bool operator >(Tiempo t1, Tiempo t2) => t1?.TotalMinutos > t2?.TotalMinutos;
 
 
 		/// <summary>
@@ -238,9 +163,7 @@ namespace Quattro.Common {
 		/// <param name="t1">Primer objeto Tiempo.</param>
 		/// <param name="t2">Segundo objeto Tiempo.</param>
 		/// <returns>True si el primero es menor. False en caso contrario.</returns>
-		public static bool operator <(Tiempo t1, Tiempo t2) {
-			return t1?.TotalMinutos < t2?.TotalMinutos;
-		}
+		public static bool operator <(Tiempo t1, Tiempo t2) => t1?.TotalMinutos < t2?.TotalMinutos;
 
 
 		/// <summary>
@@ -249,9 +172,7 @@ namespace Quattro.Common {
 		/// <param name="t1">Primer objeto Tiempo.</param>
 		/// <param name="t2">Segundo objeto Tiempo.</param>
 		/// <returns>True si el primero es mayor o igual. False en caso contrario.</returns>
-		public static bool operator >=(Tiempo t1, Tiempo t2) {
-			return t1?.TotalMinutos >= t2?.TotalMinutos;
-		}
+		public static bool operator >=(Tiempo t1, Tiempo t2) => t1?.TotalMinutos >= t2?.TotalMinutos;
 
 
 		/// <summary>
@@ -260,10 +181,80 @@ namespace Quattro.Common {
 		/// <param name="t1">Primer objeto Tiempo.</param>
 		/// <param name="t2">Segundo objeto Tiempo.</param>
 		/// <returns>True si el primero es menor igual. False en caso contrario.</returns>
-		public static bool operator <=(Tiempo t1, Tiempo t2) {
-			return t1?.TotalMinutos <= t2?.TotalMinutos;
-		}
+		public static bool operator <=(Tiempo t1, Tiempo t2) => t1?.TotalMinutos <= t2?.TotalMinutos;
 
+
+		#endregion
+		// ====================================================================================================
+
+
+		// ====================================================================================================
+		#region OPERADORES * y / (Sin efecto temporalmente)
+		// ====================================================================================================
+
+
+		/// <summary>
+		/// Multiplica un objeto Tiempo por el valor de un número doble.
+		/// </summary>
+		/// <param name="t1">Objeto Tiempo a multiplicar.</param>
+		/// <param name="d2">Número por el que se va a multiplicar el objeto Tiempo.</param>
+		/// <returns>Objeto Tiempo con el resultado de la multiplicación.</returns>
+		//public static Tiempo operator *(Tiempo t1, double d2) => new Tiempo((int)(t1?.TotalMinutos * d2));
+
+
+		/// <summary>
+		/// Multiplica un numero doble por un objeto Tiempo.
+		/// </summary>
+		/// <param name="d1">Número  que se va a multiplicar con el objeto Tiempo.</param>
+		/// <param name="t2">Objeto Tiempo con el que se va a multiplicar el número.</param>
+		/// <returns>Objeto Tiempo con el resultado de la multiplicación.</returns>
+		//public static Tiempo operator *(double d1, Tiempo t2) => new Tiempo((int)(d1 * t2?.TotalMinutos));
+
+
+		/// <summary>
+		/// Divide un objeto Tiempo por otro.
+		/// </summary>
+		/// <param name="t1">Dividendo.</param>
+		/// <param name="t2">Divisor.</param>
+		/// <returns>Número que resulta de la división.</returns>
+		//public static double operator /(Tiempo t1, Tiempo t2)
+		//{
+		//	if (t2 == null) return 0;
+		//	return t1?.TotalMinutos ?? 0 / (double)t2.TotalMinutos;
+		//}
+
+
+		/// <summary>
+		/// DIvide un objeto tiempo entre un número doble.
+		/// </summary>
+		/// <param name="t1">Dividendo.</param>
+		/// <param name="d2">Divisor.</param>
+		/// <returns>Un nuevo objeto Tiempo resultante de la división.</returns>
+		//public static Tiempo operator /(Tiempo t1, double d2) => new Tiempo((int)(t1.TotalMinutos / d2));
+
+
+		/// <summary>
+		/// Devuelve un NUEVO objeto Tiempo con el actual multiplicado por el número indicado.
+		/// </summary>
+		/// <param name="factor">Número por el que se va a multiplicar el objeto Tiempo actual.</param>
+		/// <returns>NUEVO objeto Tiempo con el resultado de la multiplicación.</returns>
+		//public Tiempo Multiply(double factor) => new Tiempo((int)(TotalMinutos * factor));
+
+
+		/// <summary>
+		/// Devuelve un NUEVO objeto Tiempo con el actual dividido por el indicado.
+		/// </summary>
+		/// <param name="factor">Objeto Tiempo por el que se va a dividir el objeto Tiempo actual.</param>
+		/// <returns>NUEVO objeto Tiempo con el resultado de la división.</returns>
+		//public double Divide(Tiempo tiempo) => TotalMinutos / (double)(tiempo?.TotalMinutos ?? 0d);
+
+
+		/// <summary>
+		/// Devuelve un NUEVO objeto Tiempo con el actual dividido por el número indicado.
+		/// </summary>
+		/// <param name="factor">Número por el que se va a dividir el objeto Tiempo actual.</param>
+		/// <returns>NUEVO objeto Tiempo con el resultado de la división.</returns>
+		//public Tiempo Divide(double divisor) => new Tiempo((int)(TotalMinutos / divisor));
 
 
 		#endregion
@@ -279,9 +270,7 @@ namespace Quattro.Common {
 		/// </summary>
 		/// <param name="tiempo">Objeto tiempo que se sumará al actual.</param>
 		/// <returns>NUEVO objeto Tiempo con el resultado de la suma.</returns>
-		public Tiempo Add(Tiempo tiempo) {
-			return new Tiempo(TotalMinutos + tiempo.TotalMinutos);
-		}
+		public Tiempo Add(Tiempo tiempo) => new Tiempo(TotalMinutos + (tiempo?.TotalMinutos ?? 0));
 
 
 		/// <summary>
@@ -290,9 +279,7 @@ namespace Quattro.Common {
 		/// <param name="horas">Horas que se añadirán al objeto actual.</param>
 		/// <param name="minutos">Minutos que se añadirán al objeto actual.</param>
 		/// <returns>NUEVO objeto Tiempo con la suma de los intervalos.</returns>
-		public Tiempo Add(int horas, int minutos) {
-			return new Tiempo(TotalMinutos + minutos + (horas * MinutosPorHora));
-		}
+		public Tiempo Add(int horas, int minutos) => new Tiempo(TotalMinutos + minutos + (horas * MinutosPorHora));
 
 
 		/// <summary>
@@ -302,9 +289,7 @@ namespace Quattro.Common {
 		/// <param name="horas">Horas que se añadirán al objeto actual.</param>
 		/// <param name="minutos">Minutos que se añadirán al objeto actual.</param>
 		/// <returns>NUEVO objeto Tiempo con la suma de los intervalos.</returns>
-		public Tiempo Add(int dias, int horas, int minutos) {
-			return new Tiempo(TotalMinutos + minutos + (horas * MinutosPorHora) + (dias * MinutosPorDia));
-		}
+		public Tiempo Add(int dias, int horas, int minutos) => new Tiempo(TotalMinutos + minutos + (horas * MinutosPorHora) + (dias * MinutosPorDia));
 
 
 		/// <summary>
@@ -312,9 +297,7 @@ namespace Quattro.Common {
 		/// </summary>
 		/// <param name="tiempo">Objeto tiempo que se restará al actual.</param>
 		/// <returns>NUEVO objeto Tiempo con el resultado de la resta.</returns>
-		public Tiempo Subtract(Tiempo tiempo) {
-			return new Tiempo(TotalMinutos - tiempo.TotalMinutos);
-		}
+		public Tiempo Subtract(Tiempo tiempo) => new Tiempo(TotalMinutos - (tiempo?.TotalMinutos ?? 0));
 
 
 		/// <summary>
@@ -323,9 +306,7 @@ namespace Quattro.Common {
 		/// <param name="horas">Horas que se quitarán al objeto actual.</param>
 		/// <param name="minutos">Minutos que se quitarán al objeto actual.</param>
 		/// <returns>NUEVO objeto Tiempo con la resta de los intervalos.</returns>
-		public Tiempo Subtract(int horas, int minutos) {
-			return new Tiempo(TotalMinutos - minutos - (horas * MinutosPorHora));
-		}
+		public Tiempo Subtract(int horas, int minutos) => new Tiempo(TotalMinutos - minutos - (horas * MinutosPorHora));
 
 
 		/// <summary>
@@ -335,49 +316,14 @@ namespace Quattro.Common {
 		/// <param name="horas">Horas que se quitarán al objeto actual.</param>
 		/// <param name="minutos">Minutos que se quitarán al objeto actual.</param>
 		/// <returns>NUEVO objeto Tiempo con la resta de los intervalos.</returns>
-		public Tiempo Subtract(int dias, int horas, int minutos) {
-			return new Tiempo(TotalMinutos - minutos - (horas * MinutosPorHora) - (dias * MinutosPorDia));
-		}
-
-
-		/// <summary>
-		/// Devuelve un NUEVO objeto Tiempo con el actual multiplicado por el número indicado.
-		/// </summary>
-		/// <param name="factor">Número por el que se va a multiplicar el objeto Tiempo actual.</param>
-		/// <returns>NUEVO objeto Tiempo con el resultado de la multiplicación.</returns>
-		public Tiempo Multiply(double factor) {
-			return new Tiempo((int)(TotalMinutos * factor));
-		}
-
-
-		/// <summary>
-		/// Devuelve un NUEVO objeto Tiempo con el actual dividido por el indicado.
-		/// </summary>
-		/// <param name="factor">Objeto Tiempo por el que se va a dividir el objeto Tiempo actual.</param>
-		/// <returns>NUEVO objeto Tiempo con el resultado de la división.</returns>
-		public double Divide(Tiempo tiempo) {
-			return TotalMinutos / (double)tiempo.TotalMinutos;
-		}
-
-
-		/// <summary>
-		/// Devuelve un NUEVO objeto Tiempo con el actual dividido por el número indicado.
-		/// </summary>
-		/// <param name="factor">Número por el que se va a dividir el objeto Tiempo actual.</param>
-		/// <returns>NUEVO objeto Tiempo con el resultado de la división.</returns>
-		public Tiempo Divide(double divisor) {
-			return new Tiempo((int)(TotalMinutos / divisor));
-		}
+		public Tiempo Subtract(int dias, int horas, int minutos) => new Tiempo(TotalMinutos - minutos - (horas * MinutosPorHora) - (dias * MinutosPorDia));
 
 
 		/// <summary>
 		/// Duración absoluta del objeto Tiempo. Si es negativo, se pasará a positivo.
 		/// </summary>
 		/// <returns>NUEVO objeto Tiempo con la duración absoluta del intervalo. </returns>
-		public Tiempo Duration() {
-			return new Tiempo(TotalMinutos < 0 ? -TotalMinutos : TotalMinutos);
-		}
-
+		public Tiempo Duration() => new Tiempo(TotalMinutos < 0 ? -TotalMinutos : TotalMinutos);
 
 
 		#endregion
@@ -394,9 +340,7 @@ namespace Quattro.Common {
 		/// </summary>
 		/// <param name="dias">Número de días (con decimales) que contendrá el nuevo objeto Tiempo.</param>
 		/// <returns>Nuevo objeto Tiempo con el número de días indicado.</returns>
-		public static Tiempo FromDias(double dias) {
-			return new Tiempo(Convert.ToInt32(dias * MinutosPorDia));
-		}
+		public static Tiempo FromDias(double dias) => new Tiempo(Convert.ToInt32(dias * MinutosPorDia));
 
 
 		/// <summary>
@@ -405,9 +349,7 @@ namespace Quattro.Common {
 		/// </summary>
 		/// <param name="horas">Número de horas (con decimales) que contendrá el nuevo objeto Tiempo.</param>
 		/// <returns>Nuevo objeto Tiempo con el número de horas indicado.</returns>
-		public static Tiempo FromHoras(double horas) {
-			return new Tiempo(Convert.ToInt32(horas * MinutosPorHora));
-		}
+		public static Tiempo FromHoras(double horas) => new Tiempo(Convert.ToInt32(horas * MinutosPorHora));
 
 
 		/// <summary>
@@ -415,20 +357,7 @@ namespace Quattro.Common {
 		/// </summary>
 		/// <param name="minutos">Número de minutos que contendrá el nuevo objeto Tiempo.</param>
 		/// <returns>Nuevo objeto Tiempo con el número de minutos indicado.</returns>
-		public static Tiempo FromMinutos(int minutos) {
-			return new Tiempo(minutos);
-		}
-
-
-		///// <summary>
-		///// Devuelve un nuevo objeto Tiempo a partir del total de segundos pasado.
-		///// </summary>
-		///// <param name="segundos">Número de segundos que contendrá el nuevo objeto Tiempo.</param>
-		///// <returns>Nuevo objeto Tiempo con el número de segundos indicado.</returns>
-		//public static Tiempo FromSegundos(int segundos) {
-		//	return new Tiempo(segundos);
-		//}
-
+		public static Tiempo FromMinutos(int minutos) => new Tiempo(minutos);
 
 
 		#endregion
@@ -440,49 +369,32 @@ namespace Quattro.Common {
 		// ====================================================================================================
 
 
-		///// <summary>
-		///// Añade un número de segundos al objeto actual.
-		///// </summary>
-		///// <param name="segundos">Número de segundos que se va a añadir.</param>
-		//public void AddSegundos(int segundos) {
-		//	TotalMinutos += segundos;
-		//}
-
-
 		/// <summary>
 		/// Añade un número de minutos al objeto actual.
 		/// </summary>
 		/// <param name="minutos">Número de minutos que se va a añadir.</param>
-		public void SumaMinutos(int minutos) {
-			TotalMinutos += minutos;
-		}
+		public void SumaMinutos(int minutos) => TotalMinutos += minutos;
 
 
 		/// <summary>
 		/// Añade un número de horas al objeto actual.
 		/// </summary>
 		/// <param name="horas">Número de horas que se va a añadir.</param>
-		public void SumaHoras(int horas) {
-			TotalMinutos += horas * MinutosPorHora;
-		}
+		public void SumaHoras(int horas) => TotalMinutos += horas * MinutosPorHora;
 
 
 		/// <summary>
 		/// Añade un número de dias al objeto actual.
 		/// </summary>
 		/// <param name="dias">Número de dias que se va a añadir.</param>
-		public void SumaDias(int dias) {
-			TotalMinutos += dias * MinutosPorDia;
-		}
+		public void SumaDias(int dias) => TotalMinutos += dias * MinutosPorDia;
 
 
 		/// <summary>
 		/// Añade el valor de un objeto Tiempo al objeto actual.
 		/// </summary>
 		/// <param name="tiempo">Objeto Tiempo que se va a añadir.</param>
-		public void SumaTiempo(Tiempo tiempo) {
-			TotalMinutos += tiempo.TotalMinutos;
-		}
+		public void SumaTiempo(Tiempo tiempo) => TotalMinutos += (tiempo?.TotalMinutos ?? 0);
 
 
 		/// <summary>
@@ -490,9 +402,7 @@ namespace Quattro.Common {
 		/// </summary>
 		/// <param name="horas">Número de horas que se añadirán.</param>
 		/// <param name="minutos">Número de minutos que se añadirán.</param>
-		public void SumaTiempo(int horas, int minutos) {
-			TotalMinutos += minutos + (horas * MinutosPorHora);
-		}
+		public void SumaTiempo(int horas, int minutos) => TotalMinutos += minutos + (horas * MinutosPorHora);
 
 
 		/// <summary>
@@ -501,11 +411,7 @@ namespace Quattro.Common {
 		/// <param name="dias">Número de días que se añadirán.</param>
 		/// <param name="horas">Número de horas que se añadirán.</param>
 		/// <param name="minutos">Número de minutos que se añadirán.</param>
-		public void SumaTiempo(int dias, int horas, int minutos) {
-			TotalMinutos += minutos + (horas * MinutosPorHora) + (dias * MinutosPorDia);
-		}
-
-
+		public void SumaTiempo(int dias, int horas, int minutos) => TotalMinutos += minutos + (horas * MinutosPorHora) + (dias * MinutosPorDia);
 
 
 		#endregion
@@ -517,49 +423,32 @@ namespace Quattro.Common {
 		// ====================================================================================================
 
 
-		///// <summary>
-		///// Resta un número de segundos al objeto actual.
-		///// </summary>
-		///// <param name="segundos">Número de segundos que se va a restar.</param>
-		//public void SubtractSegundos(int segundos) {
-		//	TotalMinutos -= segundos;
-		//}
-
-
 		/// <summary>
 		/// Resta un número de minutos al objeto actual.
 		/// </summary>
 		/// <param name="minutos">Número de minutos que se va a restar.</param>
-		public void RestatMinutos(int minutos) {
-			TotalMinutos -= minutos;
-		}
+		public void RestatMinutos(int minutos) => TotalMinutos -= minutos;
 
 
 		/// <summary>
 		/// Resta un número de horas al objeto actual.
 		/// </summary>
 		/// <param name="horas">Número de horas que se va a restar.</param>
-		public void RestaHoras(int horas) {
-			TotalMinutos -= horas * MinutosPorHora;
-		}
+		public void RestaHoras(int horas) => TotalMinutos -= horas * MinutosPorHora;
 
 
 		/// <summary>
 		/// Resta un número de dias al objeto actual.
 		/// </summary>
 		/// <param name="dias">Número de dias que se va a restar.</param>
-		public void RestaDias(int dias) {
-			TotalMinutos -= dias * MinutosPorDia;
-		}
+		public void RestaDias(int dias) => TotalMinutos -= dias * MinutosPorDia;
 
 
 		/// <summary>
 		/// Resta un objeto Tiempo al objeto actual.
 		/// </summary>
 		/// <param name="tiempo">Objeto tiempo que se va a restar.</param>
-		public void RestaTiempo(Tiempo tiempo) {
-			TotalMinutos -= tiempo.TotalMinutos;
-		}
+		public void RestaTiempo(Tiempo tiempo) => TotalMinutos -= (tiempo?.TotalMinutos ?? 0);
 
 
 		/// <summary>
@@ -567,9 +456,7 @@ namespace Quattro.Common {
 		/// </summary>
 		/// <param name="horas">Número de horas que se restarán.</param>
 		/// <param name="minutos">Número de minutos que se restarán.</param>
-		public void RestaTiempo(int horas, int minutos) {
-			TotalMinutos -= minutos + (horas * MinutosPorHora);
-		}
+		public void RestaTiempo(int horas, int minutos) => TotalMinutos -= minutos + (horas * MinutosPorHora);
 
 
 		/// <summary>
@@ -578,11 +465,7 @@ namespace Quattro.Common {
 		/// <param name="dias">Número de días que se restarán.</param>
 		/// <param name="horas">Número de horas que se restarán.</param>
 		/// <param name="minutos">Número de minutos que se restarán.</param>
-		public void RestaTiempo(int dias, int horas, int minutos) {
-			TotalMinutos -= minutos + (horas * MinutosPorHora) + (dias * MinutosPorDia);
-		}
-
-
+		public void RestaTiempo(int dias, int horas, int minutos) => TotalMinutos -= minutos + (horas * MinutosPorHora) + (dias * MinutosPorDia);
 
 
 		#endregion
@@ -597,9 +480,15 @@ namespace Quattro.Common {
 		/// Devuelve el código hash de esta instancia.
 		/// </summary>
 		/// <returns>Código hash de esta instancia.</returns>
-		public override int GetHashCode() {
-			return TotalMinutos.GetHashCode();
-		}
+		public override int GetHashCode() => TotalMinutos.GetHashCode();
+
+
+		/// <summary>
+		/// Determina la instancia actual es igual a la del objeto proporcionado.
+		/// </summary>
+		/// <param name="obj">Objeto que se va a comparar con el actual.</param>
+		/// <returns>True si ambas instancias son iguales. False en caso contrario.</returns>
+		public override bool Equals(object obj) => (obj is Tiempo tiempo) && Equals(tiempo);
 
 
 		/// <summary>
@@ -607,36 +496,14 @@ namespace Quattro.Common {
 		/// </summary>
 		/// <param name="tiempo">Objeto Tiempo a comparar con el actual.</param>
 		/// <returns>True si ambas instancias son iguales. False en caso contrario.</returns>
-		public bool Equals(Tiempo tiempo) {
-			if (tiempo == null) return false;
-			if (TotalMinutos == tiempo.TotalMinutos)
-				return true;
-			else
-				return false;
-		}
-
-		/// <summary>
-		/// Determina la instancia actual es igual a la del objeto proporcionado.
-		/// </summary>
-		/// <param name="obj">Objeto que se va a comparar con el actual.</param>
-		/// <returns>True si ambas instancias son iguales. False en caso contrario.</returns>
-		public override bool Equals(object obj) {
-			if (obj == null) return false;
-			Tiempo tiempoObj = obj as Tiempo;
-			if (tiempoObj == null)
-				return false;
-			else
-				return Equals(tiempoObj);
-		}
+		public bool Equals(Tiempo tiempo) => (TotalMinutos == tiempo?.TotalMinutos);
 
 
 		/// <summary>
 		/// Devuelve una cadena de texto con la representación del intervalo actual.
 		/// </summary>
 		/// <returns>Texto con la representación del intervalo actual.</returns>
-		public override string ToString() {
-			return this.ToString("HM", CultureInfo.CurrentCulture);
-		}
+		public override string ToString() => this.ToString("hm", CultureInfo.CurrentCulture);
 
 
 		/// <summary>
@@ -644,35 +511,36 @@ namespace Quattro.Common {
 		/// </summary>
 		/// <param name="provider">Proovedor de formato que se usará para el objeto actual.</param>
 		/// <returns>Texto con la representación del intervalo actual.</returns>
-		public string ToString(IFormatProvider provider) {
-			return this.ToString("HM", provider);
-		}
+		public string ToString(IFormatProvider provider) => this.ToString("hm", provider);
 
 
 		/// <summary>
 		/// Devuelve una cadena de texto con la representación del intervalo actual.
 		/// </summary>
-		/// <param name="formato">Cadena con el formato en el que se representará el intervalo actual.</param>
+		/// <param name="formato">dhm (1.01:45) -- hm (01:45) -- hhm (25:45).</param>
 		/// <returns>Texto con la representación del intervalo actual.</returns>
-		public string ToString(string formato) {
-			return this.ToString(formato, CultureInfo.CurrentCulture);
-		}
+		public string ToString(string formato) => this.ToString(formato, CultureInfo.CurrentCulture);
 
 
 		/// <summary>
 		/// Devuelve una cadena de texto con la representación del intervalo actual.
 		/// </summary>
-		/// <param name="formato">Cadena con el formato en el que se representará el intervalo actual.</param>
+		/// <param name="formato">dhm (1.01:45) -- hm (01:45) -- hhm (25:45).</param>
 		/// <param name="provider">Proovedor de formato que se usará para el objeto actual.</param>
 		/// <returns>Texto con la representación del intervalo actual.</returns>
-		public string ToString(string formato, IFormatProvider provider) {
-			if (string.IsNullOrEmpty(formato)) formato = "HM";
+		public string ToString(string formato, IFormatProvider provider)
+		{
+			if (string.IsNullOrEmpty(formato)) formato = "hm";
 			if (provider == null) provider = CultureInfo.CurrentCulture;
-			switch (formato.ToUpperInvariant()) {
-				case "DHM":
-					return $"{Dias}.{Horas:00}:{Minutos:00}";
-				case "HM":
-					return $"{Horas:00}:{Minutos:00}";
+			string signo = TotalMinutos <0 ? "-" : string.Empty;
+			switch (formato.ToLowerInvariant())
+			{
+				case "dhm":
+					return $"{signo}{Math.Abs(Dias)}.{Math.Abs(Horas):00}:{Math.Abs(Minutos):00}";
+				case "hm":
+					return $"{signo}{Math.Abs(Horas):00}:{Math.Abs(Minutos):00}";
+				case "hhm":
+					return $"{signo}{Math.Abs(Horas + (Dias * 24)):00}:{Math.Abs(Minutos):00}";
 				default:
 					throw new FormatException($"El formato '{formato}' no está soportado.");
 			}
@@ -684,14 +552,7 @@ namespace Quattro.Common {
 		/// </summary>
 		/// <param name="obj">Objeto con el que se comparará el objeto Tiempo actual.</param>
 		/// <returns>-1 si el objeto es anterior, 0 si es igual o 1 si es posterior.</returns>
-		public int CompareTo(object obj) {
-			if (obj == null) return 1;
-			Tiempo tiempoObj = obj as Tiempo;
-			if (tiempoObj != null)
-				return TotalMinutos.CompareTo(tiempoObj.TotalMinutos);
-			else
-				throw new ArgumentException("No es un objeto Tiempo.");
-		}
+		public int CompareTo(object obj) => (obj is Tiempo tiempoObj) ? TotalMinutos.CompareTo(tiempoObj?.TotalMinutos) : 1;
 
 
 		/// <summary>
@@ -699,12 +560,7 @@ namespace Quattro.Common {
 		/// </summary>
 		/// <param name="other">Instancia con la que se comparará la actual.</param>
 		/// <returns>-1 si la instancia es anterior, 0 si es igual o 1 si es posterior.</returns>
-		public int CompareTo(Tiempo other) {
-			if (other == null) return 1;
-			return TotalMinutos.CompareTo(other.TotalMinutos);
-		}
-
-
+		public int CompareTo(Tiempo other) => TotalMinutos.CompareTo(other?.TotalMinutos);
 
 		#endregion
 		// ====================================================================================================
@@ -718,10 +574,9 @@ namespace Quattro.Common {
 		/// Devuelve el componente Dias del intervalo.
 		/// </summary>
 		[JsonIgnore]
-		public int Dias {
-			get {
-				return TotalMinutos / MinutosPorDia;
-			}
+		public int Dias
+		{
+			get => TotalMinutos / MinutosPorDia;
 		}
 
 
@@ -729,10 +584,9 @@ namespace Quattro.Common {
 		/// Devuelve el componente Horas del intervalo.
 		/// </summary>
 		[JsonIgnore]
-		public int Horas {
-			get {
-				return (TotalMinutos % MinutosPorDia) / MinutosPorHora;
-			}
+		public int Horas
+		{
+			get => (TotalMinutos % MinutosPorDia) / MinutosPorHora;
 		}
 
 
@@ -741,20 +595,8 @@ namespace Quattro.Common {
 		/// </summary>
 		[JsonIgnore]
 		public int Minutos {
-			get {
-				return (TotalMinutos % MinutosPorDia) % MinutosPorHora;
-			}
+			get => (TotalMinutos % MinutosPorDia) % MinutosPorHora;
 		}
-
-
-		///// <summary>
-		///// Devuelve el componente Segundos del intervalo.
-		///// </summary>
-		//public int Segundos {
-		//	get {
-		//		return ((TotalMinutos % MinutosPorDia) % MinutosPorHora) % SegundosPorMinuto;
-		//	}
-		//}
 
 
 		/// <summary>
@@ -762,9 +604,7 @@ namespace Quattro.Common {
 		/// </summary>
 		[JsonIgnore]
 		public double TotalDias {
-			get {
-				return Math.Round(TotalMinutos / (double)MinutosPorDia, 6);
-			}
+			get => Math.Round(TotalMinutos / (double)MinutosPorDia, 2);
 		}
 
 
@@ -773,20 +613,8 @@ namespace Quattro.Common {
 		/// </summary>
 		[JsonIgnore]
 		public double TotalHoras {
-			get {
-				return Math.Round(TotalMinutos / (double)MinutosPorHora, 6);
-			}
+			get => Math.Round(TotalMinutos / (double)MinutosPorHora, 2);
 		}
-
-
-		///// <summary>
-		///// Devuelve el total de minutos del intervalo, expresado con una parte fraccional del mismo.
-		///// </summary>
-		//public double TotalMinutos {
-		//	get {
-		//		return Math.Round(TotalSegundos / Convert.ToDouble(SegundosPorMinuto), 6);
-		//	}
-		//}
 
 
 		/// <summary>
