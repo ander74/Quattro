@@ -1,63 +1,201 @@
-<?xml version="1.0" encoding="utf-8" ?>
+﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+			 xmlns:cnv="clr-namespace:Quattroid.Converters"
+			 xmlns:sf="clr-namespace:Syncfusion.ListView.XForms;assembly=Syncfusion.SfListView.XForms"
              x:Class="Quattroid.Views.CalendarioPage"
 			 BindingContext="{Binding Main, Source={StaticResource Locator}}"
 			 Title="Calendario">
-    <ContentPage.Content>
-        <StackLayout BindingContext="{Binding CalendarioVM}">
+
+	<ContentPage.Resources>
+		<cnv:DayColorConverter x:Key="cnvDayColor"/>
+		<cnv:FranqueoColorConverter x:Key="cnvFranqueoColor"/>
+		<cnv:FondoCalendarioConverter x:Key="cnvFondoCalendario"/>
+		<cnv:ColorDecimalConverter x:Key="cnvColorDecimal"/>
+		<cnv:HorarioConverter x:Key="cnvHorario"/>
+	</ContentPage.Resources>
+	
+	<ContentPage.Content>
+		<StackLayout BindingContext="{Binding CalendarioVM}">
 			<Button Text="Cargar Calendario" Command="{Binding CargarCommand}"/>
 			<!-- El Background transparente es importante por iOS -->
 			<ListView BackgroundColor="LightGray"
-					  SelectionMode="None"
 					  HasUnevenRows="True"
-					  IsRefreshing="{Binding IsRefreshing}"
-					  IsPullToRefreshEnabled="True"
 					  ItemsSource="{Binding Calendario}"
-					  RefreshCommand="{Binding RefreshCommand}"
+					  SelectionMode="None"
 					  SeparatorVisibility="None">
+				 <!-- PLANTILLA --> 
 				<ListView.ItemTemplate>
 					<DataTemplate>
 						<ViewCell>
-								<Grid Margin="1,1,1,0" BackgroundColor="White">
+							<Grid ColumnSpacing="0"
+								  RowSpacing="0"
+								  Padding="2">
 								<Grid.GestureRecognizers>
 									<TapGestureRecognizer Command="{Binding GotoDiaCommand}"/>
+									<SwipeGestureRecognizer Direction="Left" Command="{Binding FranqueoCommand}"/>
+									<TapGestureRecognizer NumberOfTapsRequired="2" Command="{Binding FestivoCommand}"/>
 								</Grid.GestureRecognizers>
-								<!-- CONTENIDO DE LA CELDA (Puede no ser un Grid, pero seguro que lo es) -->
-									<Grid.ColumnDefinitions>
-										<ColumnDefinition Width="*"/>
-										<ColumnDefinition Width="7*"/>
-									</Grid.ColumnDefinitions>
-									<Grid.RowDefinitions>
-										<RowDefinition Height="Auto"/>
-										<RowDefinition Height="*"/>
-										<RowDefinition Height="Auto"/>
-									</Grid.RowDefinitions>
-									<StackLayout Grid.RowSpan="3" BackgroundColor="LightGreen"
-												 HorizontalOptions="FillAndExpand"
-												 Padding="5"
-												 VerticalOptions="FillAndExpand">
-										<Label FontAttributes="Bold"
-											   FontSize="16"
-											   HorizontalOptions="CenterAndExpand"
-											   TextColor="Navy"
-											   Text="{Binding Fecha, StringFormat='{}{0:dd}'}"/>
-										<Label FontSize="10"
-											   HorizontalOptions="CenterAndExpand"
-											   TextColor="Navy"
-											   Text="{Binding Fecha, StringFormat='{}{0:ddd}'}"/>
+								<Grid.ColumnDefinitions>
+									<ColumnDefinition Width="0.5*"/>
+									<ColumnDefinition Width="2.5*"/>
+									<ColumnDefinition Width="17*"/>
+								</Grid.ColumnDefinitions>
+								
+								 <!--DÍA--> 
+								<Grid Grid.Column="0"
+									  Grid.ColumnSpan="2"
+									  BackgroundColor="{Binding Fecha, Converter={StaticResource cnvFondoCalendario}}"
+									  Margin="1">
+									<StackLayout Orientation="Vertical"
+												 HorizontalOptions="Center"
+												 VerticalOptions="Center">
+										<Label Text="{Binding Fecha, StringFormat='{}{0:dd}'}"
+											   TextColor="{Binding FechaFestivo, Converter={StaticResource cnvDayColor}}"
+											   FontSize="22"
+											   Margin="0"
+											   HorizontalTextAlignment="Center"
+											   FontAttributes="Bold"/>
+										<Label Text="{Binding DiaSemana}"
+											   TextColor="{Binding FechaFestivo, Converter={StaticResource cnvDayColor}}"
+											   FontSize="15"
+											   Margin="0"
+											   HorizontalTextAlignment="Center"
+											   FontAttributes="Bold"/>
 									</StackLayout>
-									<Label Grid.Column="1" Grid.Row="0"
-											   FontSize="10"
-											   HorizontalOptions="FillAndExpand"
-										       Margin="5"
-											   TextColor="Navy"
-											   Text="{Binding Servicio}"/>
 								</Grid>
+								
+								 <!--MARCADOR FRANQUEO--> 
+								<Label Grid.Column="0"
+									   Margin="0,1"
+									   BackgroundColor="{Binding EsFranqueo, Converter={StaticResource cnvFranqueoColor}}"/>
+								
+								 <!--CONTENIDO--> 
+								<Grid Grid.Column="2"
+									  Margin="1"
+									  Padding="5"
+									  ColumnSpacing="0"
+									  RowSpacing="5"
+									  HorizontalOptions="Fill"
+									  BackgroundColor="{Binding Fecha, Converter={StaticResource cnvFondoCalendario}}">
+									<Grid.RowDefinitions>
+										<RowDefinition Height="*"/>
+										<RowDefinition Height="*"/>
+										<RowDefinition Height="*"/>
+									</Grid.RowDefinitions>
+									<Grid.ColumnDefinitions>
+										<ColumnDefinition Width="Auto"/>
+										<ColumnDefinition Width="*"/>
+										<ColumnDefinition Width="Auto"/>
+									</Grid.ColumnDefinitions>
+									 <!--SERVICIO-->
+									<StackLayout Orientation="Horizontal"
+												 Grid.Column="0"
+												 Grid.ColumnSpan="3"
+												 Grid.Row="0"
+												 HorizontalOptions="Start">
+										<Image Source="ic_huelga"
+											   IsVisible="False"
+											   HeightRequest="15"/>
+										<Label Text="{Binding TextoServicio}"
+										   FontAttributes="Bold"
+										   FontSize="15"
+										   Margin="0"
+										   HorizontalTextAlignment="Start"/>
+									</StackLayout>
+									<!--HORARIO--> 
+									<Label Grid.Column="0"
+										   Grid.Row="1"
+										   Text="{Binding Horario, Converter={StaticResource cnvHorario}}"
+										   FontSize="13"
+										   Margin="0"
+										   HorizontalTextAlignment="Start"/>
+									 <!--ICONOS--> 
+									<StackLayout Orientation="Horizontal"
+												 Grid.Column="1"
+												 Grid.Row="1"
+												 HorizontalOptions="Center">
+										<Image Source="ic_desayuno"
+											   IsVisible="{Binding Desayuno}"
+											   HeightRequest="15"/>
+										<Image Source="ic_comida"
+											   IsVisible="{Binding Comida}"
+											   HeightRequest="15"/>
+										<Image Source="ic_cena"
+											   IsVisible="{Binding Cena}"
+											   HeightRequest="15"/>
+										<Image Source="ic_notas"
+											   IsVisible="{Binding HayNotas}"
+											   HeightRequest="15"/>
+									</StackLayout>
+									 <!--HORAS--> 
+									<StackLayout Orientation="Horizontal"
+												 Grid.Column="2"
+												 Grid.Row="1"
+												 Opacity="{Binding OpacidadHoras}"
+												 HorizontalOptions="End">
+										<Label Text="{Binding Acumuladas, StringFormat='{}{0:0.00}'}"
+											   TextColor="{Binding Acumuladas, Converter={StaticResource cnvColorDecimal}}"
+											   Margin="0"
+											   FontSize="13"/>
+										<Label Text=" - "
+											   Margin="0"
+											   FontSize="13"/>
+										<Label Text="{Binding Nocturnas, StringFormat='{}{0:0.00}'}"
+											   Margin="0"
+											   TextColor="Blue"
+											   FontSize="13"/>
+									</StackLayout>
+									 <!--RELEVO-->
+									<StackLayout Orientation="Horizontal"
+												 Grid.Column="0"
+												 Grid.ColumnSpan="3"
+												 Grid.Row="2"
+												 Opacity="{Binding OpacidadHoras}"
+												 HorizontalOptions="Start">
+										<Image Source="ic_hacemos"
+											   IsVisible="{Binding Hacemos}"
+											   HeightRequest="15"/>
+										<Image Source="ic_nos_hacen"
+											   IsVisible="{Binding NosHacen}"
+											   HeightRequest="15"/>
+										<Label Text="{Binding Relevo.Matricula}"
+										   TextColor="DimGray"
+										   MaxLines="1"
+										   FontSize="15"
+										   Margin="0"
+										   HorizontalTextAlignment="Start"/>
+										<Label Text=" - "
+										   TextColor="DimGray"
+										   MaxLines="1"
+										   FontSize="15"
+										   Margin="0"
+										   HorizontalTextAlignment="Start"/>
+										<Label Text="{Binding Relevo.Apellidos}"
+										   TextColor="DimGray"
+										   MaxLines="1"
+										   FontSize="15"
+										   Margin="0"
+										   HorizontalTextAlignment="Start"/>
+										<!--<Label Text="{Binding TextoRelevo}"
+										   TextColor="DimGray"
+										   MaxLines="1"
+										   FontSize="15"
+										   Margin="0"
+										   HorizontalTextAlignment="Start"/>-->
+									</StackLayout>
+								</Grid>
+								
+							</Grid>
 						</ViewCell>
 					</DataTemplate>
 				</ListView.ItemTemplate>
+
 			</ListView>
-        </StackLayout>
-    </ContentPage.Content>
+
+
+
+
+		</StackLayout>
+	</ContentPage.Content>
 </ContentPage>

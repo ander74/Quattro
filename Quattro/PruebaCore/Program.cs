@@ -1,22 +1,61 @@
-﻿using System;
-using Quattro.Common;
-
-namespace PruebaCore
+﻿namespace PruebaCore
 {
+	using System;
+	using System.Collections.Generic;
+	using System.Linq;
+	using Microsoft.EntityFrameworkCore;
+	using Quattro.Common;
+	using Quattro.Models;
+	using Quattro.Services;
+
 	class Program
 	{
 		static void Main(string[] args)
 		{
+			Console.WriteLine();
 
-			Tiempo t1 = new Tiempo(2,0,60);
-			Tiempo t2 = new Tiempo(15);
-			
-			Tiempo t3 =  -t2;
+			List<DiaCalendario> lista;
+			DateTime d1, d2;
+			QuattroService servicio = QuattroService.GetInstance();
+
+			d1 = DateTime.Now;
+
+			servicio.MigrateDataBase(@"D:\QuattroDb.db3");
+
+			d2 = DateTime.Now;
+
+			Console.WriteLine($"{(d2 - d1).TotalSeconds} segundos.");
+			Console.ReadKey();
+
+			d1 = DateTime.Now;
+
+			lista = servicio.GetCalendariosPorMesAsync(2018, 10, @"D:\QuattroDb.db3").Result;
+
+			d2 = DateTime.Now;
+
+			Console.WriteLine($"{(d2 - d1).TotalSeconds} segundos.");
+			Console.ReadKey();
+
+			d1 = DateTime.Now;
+
+			lista = servicio.GetCalendariosPorMesAsync(DateTime.Now.Year, DateTime.Now.Month, @"D:\QuattroDb.db3").Result;
+
+			d2 = DateTime.Now;
+
+			foreach (var c in lista)
+			{
+				Console.WriteLine($"Fecha: {c.Fecha.ToShortDateString()}  --  {c.Servicio} -- {c.Trabajadas}");
+			}
 
 			Console.WriteLine();
-			Console.WriteLine($"{-t1:hmm} + {t2} = {t3}");
+			Console.WriteLine($"{(d2-d1).TotalSeconds} segundos.");
+
+			
+
 
 			Console.ReadKey();
 		}
 	}
+
+
 }

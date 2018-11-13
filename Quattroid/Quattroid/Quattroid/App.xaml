@@ -5,7 +5,7 @@
              x:Class="Quattroid.App">
 	<Application.Resources>
 		<ResourceDictionary>
-			
+
 			<!-- LOCATOR -->
 			<infra:InstanceLocator x:Key="Locator"/>
 			

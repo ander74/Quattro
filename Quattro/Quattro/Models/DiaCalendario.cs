@@ -9,6 +9,7 @@ namespace Quattro.Models
 {
 	using System;
 	using System.Collections.Generic;
+	using System.Runtime.CompilerServices;
 
 	public class DiaCalendario : Servicio, IEquatable<DiaCalendario>
 	{
@@ -19,6 +20,9 @@ namespace Quattro.Models
 
 		public DiaCalendario() : base()
 		{
+			//Incidencia = new Incidencia();
+			//Relevo = new Compañero { Matricula = 0 };
+			//Susti = new Compañero { Matricula = 0};
 			Servicios = new List<ServicioCalendario>();
 		}
 
@@ -79,12 +83,18 @@ namespace Quattro.Models
 		}
 
 
-		public int CodigoIncidencia { get; set; }
+		private int codigoIncidencia;
+		public int CodigoIncidencia
+		{
+			get { return codigoIncidencia; }
+			set { SetValue(ref codigoIncidencia, value); }
+		}
 		public virtual Incidencia Incidencia { get; set; }
 
 
 		private bool huelgaParcial;
-		public bool HuelgaParcial {
+		public bool HuelgaParcial
+		{
 			get { return huelgaParcial; }
 			set { SetValue(ref huelgaParcial, value); }
 		}
@@ -98,17 +108,28 @@ namespace Quattro.Models
 
 
 		private string textoLinea;
-		public string TextoLinea {
+		public string TextoLinea
+		{
 			get { return textoLinea; }
 			set { SetValue(ref textoLinea, value); }
 		}
 
 
-		public int MatriculaRelevo { get; set; }
+		private int matriculaRelevo;
+		public int MatriculaRelevo
+		{
+			get { return matriculaRelevo; }
+			set { SetValue(ref matriculaRelevo, value); }
+		}
 		public virtual Compañero Relevo { get; set; }
 
 
-		public int MatriculaSusti { get; set; }
+		private int matriculaSusti;
+		public int MatriculaSusti
+		{
+			get { return matriculaSusti; }
+			set { SetValue(ref matriculaSusti, value); }
+		}
 		public virtual Compañero Susti { get; set; }
 
 

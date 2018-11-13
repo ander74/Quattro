@@ -12,9 +12,9 @@ namespace Quattroid.Views
 	[XamlCompilation(XamlCompilationOptions.Compile)]
 	public partial class CalendarioPage : ContentPage
 	{
-		public CalendarioPage ()
+		public CalendarioPage()
 		{
-			InitializeComponent ();
+			InitializeComponent();
 		}
 	}
 }

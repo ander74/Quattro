@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Quattro", "Quattro\Quattro.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Prueba", "Prueba\Prueba.csproj", "{162C7560-C275-415C-AD55-BE1FE6B5E3BB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PruebaCore", "PruebaCore\PruebaCore.csproj", "{E6C2F664-8071-4679-A04B-9617F9E0EB0D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PruebaCore", "PruebaCore\PruebaCore.csproj", "{E6C2F664-8071-4679-A04B-9617F9E0EB0D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -78,7 +78,7 @@ namespace Quattro.Models
 		}
 
 
-		private Tiempo tomaDeje;
+		private Tiempo tomaDeje = new Tiempo(0);
 		public Tiempo TomaDeje {
 			get { return tomaDeje; }
 			set { SetValue(ref tomaDeje, value); }

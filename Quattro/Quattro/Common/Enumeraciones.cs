@@ -19,5 +19,28 @@ namespace Quattro.Common
 	}
 
 
+	public enum DiaSem
+	{
+		Domingo = 0,
+		Lunes = 1,
+		Martes = 2,
+		Miércoles = 3,
+		Jueves = 4,
+		Viernes = 5,
+		Sábado = 6
+	}
+
+
+	public enum DiaSemAbrev
+	{
+		Dom = 0,
+		Lun = 1,
+		Mar = 2,
+		Mié = 3,
+		Jue = 4,
+		Vie = 5,
+		Sáb = 6
+	}
+
 
 }
