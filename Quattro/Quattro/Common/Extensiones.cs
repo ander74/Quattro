@@ -131,7 +131,7 @@ namespace Quattro.Common
 
 
 		/// <summary>
-		/// Extrae un campo de tipo Tiempo del lector.
+		/// Extrae un campo de tipo Tiempo del un DbDataReader.
 		/// </summary>
 		/// <param name="lector">Lector del que se extraerá el campo.</param>
 		/// <param name="campo">Campo que se va a extraer</param>
